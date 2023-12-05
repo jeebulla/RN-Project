@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
   confirmationText: {
     fontSize: fontScale * 24,
     fontWeight: "bold",
-    color: "#333",
+    color: "#390D7C",
     textAlign: "center",
-    width: "60%",
+    width: width * 0.65,
   },
   //Buttons
   textWhite: {
@@ -39,6 +39,15 @@ const styles = StyleSheet.create({
     color: "#390D7C",
     textAlign: "center",
     fontSize: fontScale * 18,
+  },
+  coloredBtn: {
+    width: width * 0.8,
+    textAlign: "center",
+    alignSelf: "center",
+    backgroundColor: "#390D7C",
+    borderRadius: 10,
+    padding: 20,
+    marginTop: 20,
   },
   outlineBtn: {
     width: width * 0.8,
