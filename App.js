@@ -4,6 +4,7 @@ import Ionicon from "react-native-vector-icons/Ionicons";
 import SuccessPage from "./Screens/Success";
 import Rewards from "./Screens/Rewards";
 import Details from "./Screens/Details";
+import Settings from "./Screens/Settings";
 
 const Tab = createBottomTabNavigator();
 export default function App() {
