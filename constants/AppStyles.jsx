@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     left: 23,
     borderWidth: 1,
     padding: 5,
-    borderRadius: "50%",
+    borderRadius: 50,
     borderColor: "#ae9cc9",
   },
   rewardHeader: {
