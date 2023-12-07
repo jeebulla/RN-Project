@@ -5,9 +5,10 @@ import Ionicon from "react-native-vector-icons/Ionicons";
 import SuccessPage from "./Screens/Success";
 import Rewards from "./Screens/Rewards";
 import Settings from "./Screens/Settings";
+import Home from "./Screens/Home";
 
 import SignUp from "./Screens/SignUp";
-import Home from "./Screens/Home";
+import SignIn from "./Screens/SignIn";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -32,8 +33,8 @@ export default function App() {
           tabBarInactiveTintColor: "#390D7C",
         })}
       >
-        <Tab.Screen name="Home" component={Rewards} />
-        <Tab.Screen name="Rewards" component={SuccessPage} />
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Rewards" component={Rewards} />
         <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>
     </NavigationContainer>
@@ -45,8 +46,8 @@ export default function App() {
     //       options={{ headerShown: false }}
     //     />
     //     <Stack.Screen
-    //       name="Home"
-    //       component={Home}
+    //       name="SignIn"
+    //       component={SignIn}
     //       options={{ headerShown: false }}
     //     />
     //   </Stack.Navigator>

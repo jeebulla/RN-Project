@@ -3,12 +3,17 @@ import styles from "../constants/AppStyles";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import Trophy from "../assets/Trophy_sm.svg";
 import RewardTypes from "./RewardNotification";
+import { useNavigation } from "@react-navigation/native";
 
 function RewardsTab() {
+  const navigation = useNavigation();
   return (
     <View style={styles.rewardTop}>
       <View style={styles.rewardHeader}>
-        <Pressable style={styles.backButton}>
+        <Pressable
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
           <Ionicon name="arrow-back" size={27} color="#fff" />
         </Pressable>
         <Text style={styles.rewardHeading}>Free Lunches</Text>

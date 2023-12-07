@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import Home from "../Screens/Home";
+import SignIn from "./SignIn";
 
 const SignUp = () => {
   const [isOrganization, setIsOrganization] = useState(true);
@@ -31,7 +31,7 @@ const SignUp = () => {
   const goToHome = () => {
     // Close the modal and navigate to WelcomeBackScreen
     toggleSuccessModal();
-    navigation.navigate("Home");
+    navigation.navigate("SignIn");
   };
 
   return (
