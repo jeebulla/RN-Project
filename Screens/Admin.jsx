@@ -3,8 +3,8 @@ import {
   View,
   Text,
   SafeAreaView,
-  StyleSheet,
   Pressable,
+  StyleSheet,
   Image,
   Dimensions,
   TouchableOpacity,
@@ -17,38 +17,41 @@ import EvilIcons from "react-native-vector-icons/EvilIcons";
 
 const { width, height, fontScale, scale } = Dimensions.get("window");
 
-const HomePage = () => {
+const Admin = () => {
   return (
     <SafeAreaView>
       <View style={styles.body}>
         <View style={styles.introContainer}>
-          <Image
-            source={require("../assets/images/profile.png")}
-            style={styles.avatar}
-          />
+          <View style={styles.adminAcc}>
+            <Image
+              source={require("../assets/images/profile.png")}
+              style={styles.avatar}
+            />
+            <Text style={styles.adminTag}>Admin</Text>
+          </View>
           <View>
             <Text style={styles.intro}>Hello, Tofunmi</Text>
             <Text style={styles.introGreet}>How are you doing today?</Text>
           </View>
         </View>
         <View style={styles.cheerboard}>
-          <View style={styles.cheerboardInfo}>
-            <Text style={styles.cheerboardTitle}>
-              You have been rewarded!!!
-            </Text>
-            <Text style={styles.cheerboardAlert}>
-              You have 2 pending lunches to redeem
-            </Text>
-            <Pressable
-              style={({ pressed }) => [
-                styles.cheerboardBtn,
-                { backgroundColor: pressed ? "#23084c" : "#390D7C" },
-              ]}
-            >
-              <Text style={styles.cheerboardBtnText}>Redeem</Text>
-            </Pressable>
+          <View style={styles.cheerboardCards}>
+            <View style={styles[("lunchSent", "lunchBox")]}>
+              <Text style={styles.lunchNum}>45</Text>
+              <Text style={styles.lunchText}>Lunch Sent</Text>
+            </View>
+            <View style={styles[("lunchRedeemed", "lunchBox")]}>
+              <Text style={styles.lunchNum}>21</Text>
+              <Text style={styles.lunchText}>Lunch Redeemed</Text>
+            </View>
           </View>
-          <LTrophy style={styles.cheerboardTrophy} />
+          <View style={styles.cheerboardBtn}>
+            <TouchableOpacity>
+              <View>
+                <Text style={styles.cheerboardBtnText}>View Employee</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.cardContainer}>
@@ -98,7 +101,7 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Admin;
 
 function Home() {
   const navigation = useNavigation();
@@ -121,23 +124,6 @@ function Home() {
   );
 }
 
-// const Stack = createNativeStackNavigator();
-
-// export default function HomeNavigation() {
-//   return (
-//     <Stack.Navigator
-//       initialRouteName="Home"
-//       screenOptions={{ headerShown: false }}
-//     >
-//       <Stack.Screen name="Home" component={Home} />
-//       <Stack.Screen name="Rewards" component={Rewards} />
-//       <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
-//       <Stack.Screen name="RedeemDetails" component={RedeemDetails} />
-//       <Stack.Screen name="RedeemSuccess" component={RedeemSuccess} />
-//     </Stack.Navigator>
-//   );
-// }
-
 const styles = StyleSheet.create({
   body: {
     display: "flex",
@@ -159,19 +145,46 @@ const styles = StyleSheet.create({
     fontSize: fontScale * 15,
     fontWeight: "bold",
   },
+  adminAcc: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: -10,
+  },
+  adminTag: {
+    color: "gray",
+    marginBottom: 4,
+  },
 
   cheerboard: {
-    flexDirection: "row",
+    flexDirection: "column",
+    justifyContent: "space-between",
     borderRadius: 10,
-    backgroundColor: "#EEC543",
+    backgroundColor: "#fff",
     padding: 10,
     height: (height * 1.4) / 4,
     position: "relative",
   },
-  cheerboardInfo: {
-    justifyContent: "space-evenly",
-    alignItems: "flex-start",
-    width: width * 0.6,
+  cheerboardCards: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderRadius: 10,
+  },
+  lunchBox: {
+    width: width * 0.42,
+    height: (height * 0.9) / 4,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
+    backgroundColor: "#eec543",
+  },
+  lunchNum: {
+    fontSize: fontScale * 45,
+    fontWeight: "bold",
+  },
+  lunchText: {
+    fontSize: fontScale * 18,
   },
 
   cheerboardTitle: {
@@ -192,14 +205,15 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   cheerboardBtn: {
+    display: "block",
     color: "white",
     backgroundColor: "#390D7C",
     padding: 20,
-    width: width * 0.5,
+    width: width * 0.86,
     borderRadius: 10,
   },
   cheerboardBtnText: {
-    fontSize: 14,
+    fontSize: fontScale * 16,
     color: "white",
     textAlign: "center",
   },

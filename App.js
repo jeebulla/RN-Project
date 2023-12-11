@@ -6,6 +6,7 @@ import SuccessPage from "./Screens/Success";
 import Rewards from "./Screens/Rewards";
 import Settings from "./Screens/Settings";
 import Home from "./Screens/Home";
+import AdminPage from "./Screens/Admin";
 
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
@@ -36,6 +37,7 @@ export default function App() {
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Rewards" component={Rewards} />
         <Tab.Screen name="Settings" component={Settings} />
+        <Tab.Screen name="Admin" component={AdminPage} />
       </Tab.Navigator>
     </NavigationContainer>
     // <NavigationContainer>
