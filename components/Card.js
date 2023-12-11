@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 const Card = ({ title, number, color, backgroundColor }) => {
   return (
@@ -16,9 +16,9 @@ const styles = StyleSheet.create({
     height: 75,
     padding: 15,
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
     gap: 15,
   },
   title: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   number: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

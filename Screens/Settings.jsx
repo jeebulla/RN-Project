@@ -1,6 +1,5 @@
 import {
   Dimensions,
-  StatusBar,
   TouchableOpacity,
   StyleSheet,
   Text,
@@ -14,6 +13,7 @@ import {
 } from "react-native-responsive-screen";
 import Card from "../components/Card";
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 // import * as SplashScreen from "expo-splash-screen";
 // import { PlayfairDisplay_700Bold } from "@expo-google-fonts/playfair-display";
 
@@ -78,11 +78,8 @@ const Item = ({ item, index }) => {
 const { height, width } = Dimensions.get("window");
 export default function Settings() {
   const image = require("../assets/images/profile.png");
-
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-
+    <SafeAreaView style={styles.container}>
       <View style={styles.headerText}>
         <Text style={styles.headerText}>Profile</Text>
       </View>
@@ -105,27 +102,29 @@ export default function Settings() {
 
       <View style={{ flex: 1 }}>
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={data}
           renderItem={Item}
           keyExtractor={(item) => item.id}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    padding: 10,
+    width: width * 1,
   },
   headerText: {
     alignItems: "flex-start",
     justifyContent: "flex-start",
-    // fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 30,
     color: "#390D7C",
-    marginBottom: 10,
+    margin: 10,
     fontFamily: "PlayfairDisplay-BoldItalic",
   },
   heading: {
@@ -134,12 +133,12 @@ const styles = StyleSheet.create({
     color: "#390D7C",
   },
   header: {
-    height: hp(15),
+    width: width * 1,
     alignItems: "center",
     justifyContent: "center",
   },
   card: {
-    height: hp(30),
+    marginVertical: 20,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",

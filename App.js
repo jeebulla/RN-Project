@@ -1,12 +1,17 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import SuccessPage from "./Screens/Success";
 import Rewards from "./Screens/Rewards";
-import Details from "./Screens/Details";
 import Settings from "./Screens/Settings";
+import Home from "./Screens/Home";
+
+import SignUp from "./Screens/SignUp";
+import SignIn from "./Screens/SignIn";
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
@@ -28,10 +33,24 @@ export default function App() {
           tabBarInactiveTintColor: "#390D7C",
         })}
       >
-        <Tab.Screen name="Home" component={Rewards} />
-        <Tab.Screen name="Rewards" component={SuccessPage} />
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Rewards" component={Rewards} />
         <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>
     </NavigationContainer>
+    // <NavigationContainer>
+    //   <Stack.Navigator>
+    //     <Stack.Screen
+    //       name="Sign"
+    //       component={SignUp}
+    //       options={{ headerShown: false }}
+    //     />
+    //     <Stack.Screen
+    //       name="SignIn"
+    //       component={SignIn}
+    //       options={{ headerShown: false }}
+    //     />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
   );
 }

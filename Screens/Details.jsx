@@ -1,13 +1,25 @@
-import { SafeAreaView, Text, View, Pressable, Image } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  View,
+  Pressable,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import styles from "../constants/AppStyles";
 import Button from "./Buttons";
 import Ionicon from "react-native-vector-icons/Ionicons";
 
 const LunchDetails = () => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.lunchContainer}>
       <View style={styles.lunchHeader}>
-        <Pressable style={styles.backButton}>
+        <Pressable
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
           <Ionicon name="arrow-back" size={30} color="#390D7C" />
         </Pressable>
         <Text style={styles.lunchHeading}>Lunch Details</Text>
@@ -35,11 +47,13 @@ const LunchDetails = () => {
         </View>
       </View>
       <View>
-        <Button
-          title="Back to Home"
-          buttonStyle="coloredBtn"
-          textStyle="textWhite"
-        />
+        <TouchableOpacity onPress={() => navigation.navigate("RedeemSuccess")}>
+          <Button
+            title="Redeem Lunch"
+            buttonStyle="coloredBtn"
+            textStyle="textWhite"
+          />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
