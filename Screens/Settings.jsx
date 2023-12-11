@@ -84,7 +84,7 @@ export default function Settings() {
       <StatusBar style="auto" />
 
       <View style={styles.headerText}>
-        <Text style={styles.headerText}>Prrofile</Text>
+        <Text style={styles.headerText}>Profile</Text>
       </View>
 
       <View style={styles.header}>
