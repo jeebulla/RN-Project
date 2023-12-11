@@ -1,42 +1,128 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../constants/AppStyles";
+import { SafeAreaView } from "react-native-safe-area-context";
+const timestamp = () => {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const newDate = new Date();
+  const day = newDate.getDate();
+  const month = months[newDate.getMonth()];
+  const year = newDate.getFullYear();
+  const hour = newDate.getHours();
+  const minute = newDate.getMinutes();
 
-const RewardType = ({ rewardType }) => {
+  const userTimestamp = {
+    day,
+    month,
+    year,
+    hour,
+    minute,
+  };
+  return userTimestamp;
+};
+
+const rewardData = [
+  {
+    id: 1,
+    type: "send",
+    sentBy: "Chibuzor",
+    sentTo: "Joe Sandy",
+    timestamp: timestamp(),
+  },
+  {
+    id: 2,
+    type: "receive",
+    sentBy: "Musa",
+    sentTo: "Princess",
+    timestamp: timestamp(),
+  },
+  {
+    id: 3,
+    type: "send",
+    sentBy: "Prosper",
+    sentTo: "Sanusi",
+    timestamp: timestamp(),
+  },
+  {
+    id: 4,
+    type: "receive",
+    sentBy: "Henry",
+    sentTo: "Haruna",
+    timestamp: timestamp(),
+  },
+  {
+    id: 5,
+    type: "send",
+    sentBy: "Taiwo",
+    sentTo: "Sherifah",
+    timestamp: timestamp(),
+  },
+];
+
+const Item = ({ item }) => {
   const navigation = useNavigation();
   const handleRedeem = () => {
-    navigation.navigate("RedeemDetails");
+    navigation.navigate("Redeem");
   };
   return (
-    <TouchableOpacity onPress={handleRedeem}>
-      <View style={styles[rewardType]}>
+    <TouchableOpacity>
+      <View style={styles[item.type]}>
         <View style={styles.rewardInfo}>
           <Image
             source={require("../assets/redeem.png")}
             style={styles.rewardImage}
           />
-          <Text style={styles.rewardTypeText}>
-            You got a free lunch from Chibuzor in your department.
-          </Text>
+          {item.type === "send" ? (
+            <Text style={styles.rewardTypeText}>
+              You sent a free lunch to {item.sentTo} in your department.
+            </Text>
+          ) : (
+            <Text style={styles.rewardTypeText}>
+              You got a free lunch from {item.sentBy} in your department.
+            </Text>
+          )}
         </View>
         <View style={styles.timestampActions}>
-          <Text style={styles.date}>July 19, 2023</Text>
-          <Text style={styles.time}>9:50AM</Text>
+          <Text
+            style={styles.date}
+          >{`${item.timestamp.month} ${item.timestamp.day}, ${item.timestamp.year} `}</Text>
+          <Text style={styles.time}>{`${item.timestamp.hour}:${
+            item.timestamp.minute
+          }${item.timestamp.hour > 12 ? "PM" : "AM"}`}</Text>
         </View>
       </View>
     </TouchableOpacity>
   );
 };
-
 export default function RewardColor() {
   return (
-    <ScrollView style={styles.rewards} showsVerticalScrollIndicator={false}>
-      <RewardType rewardType="send" />
-      <RewardType rewardType="receive" />
-      <RewardType rewardType="send" />
-      <RewardType rewardType="receive" />
-      <RewardType rewardType="send" />
-      <RewardType rewardType="receive" />
-    </ScrollView>
+    <View style={styles.rewards}>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={rewardData}
+        renderItem={({ item }) => <Item item={item} />}
+        keyExtractor={(item) => item.id}
+      />
+    </View>
   );
 }

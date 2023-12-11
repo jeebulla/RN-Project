@@ -29,13 +29,28 @@ function RewardsTab() {
 }
 
 function RewardDate() {
-  //   const day = Date.now();
-  //   const year = day.getFullYear();
-  //   return <View>{/* <Text>{rewardDate}</Text> */}</View>;
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const newDate = new Date();
+  const day = newDate.getDate();
+  const month = months[newDate.getMonth()];
+  const year = newDate.getFullYear();
   return (
     <View style={styles.timestampContainer}>
       <Ionicon name="calendar-outline" size={25} color="#390D7C" />
-      <Text style={styles.timestamp}>July 19 - August 15, 2023</Text>
+      <Text style={styles.timestamp}>{`${month} ${day}, ${year}`}</Text>
     </View>
   );
 }
