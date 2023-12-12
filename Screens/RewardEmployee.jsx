@@ -94,9 +94,8 @@ const RewardEmployee = () => {
               horizontal={true}
               ItemSeparatorComponent={itemSeperator}
               data={users}
-              renderItem={({ item }) => (
-                <Item item={item} style={styles.employeeImg} />
-              )}
+              renderItem={({ item }) => <Item item={item} />}
+              keyExtractor={(item) => item.id}
             />
           </View>
           <View>
