@@ -4,6 +4,10 @@ import Ionicon from "react-native-vector-icons/Ionicons";
 import Trophy from "../assets/Trophy_sm.svg";
 import RewardTypes from "./RewardNotification";
 import { useNavigation } from "@react-navigation/native";
+import { useLayoutEffect } from "react";
+
+
+
 
 function RewardsTab() {
   const navigation = useNavigation();
@@ -56,6 +60,10 @@ function RewardDate() {
 }
 
 export default function Rewards() {
+
+
+  // useLayoutEffect(() => {}, [])
+
   return (
     <SafeAreaView style={styles.rewardContainer}>
       <RewardsTab />
