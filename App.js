@@ -7,6 +7,7 @@ import Rewards from "./Screens/Rewards";
 import Settings from "./Screens/Settings";
 import Home from "./Screens/Home";
 import AdminPage from "./Screens/Admin";
+import Employee from "./Screens/RewardEmployee";
 
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
@@ -38,6 +39,7 @@ export default function App() {
         <Tab.Screen name="Rewards" component={Rewards} />
         <Tab.Screen name="Settings" component={Settings} />
         <Tab.Screen name="Admin" component={AdminPage} />
+        <Tab.Screen name="Employee" component={Employee} />
       </Tab.Navigator>
     </NavigationContainer>
     // <NavigationContainer>
