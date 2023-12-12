@@ -61,7 +61,7 @@ const HomePage = () => {
                 ]}
               >
                 <View style={styles.cardDescContainer}>
-                  <Text style={styles.cardText}>Reward Employee</Text>
+                  <Text style={styles.cardText}>Transfer Reward</Text>
                   <EvilIcons
                     name="arrow-right"
                     size={50}

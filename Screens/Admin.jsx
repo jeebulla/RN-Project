@@ -10,9 +10,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import LTrophy from "../assets/Big_Trophy.svg";
 import Gift from "../assets/Gift.svg";
 import Badge from "../assets/Badge.svg";
+import RTrophy from "../assets/TrophyR.svg";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 
 const { width, height, fontScale, scale } = Dimensions.get("window");
@@ -45,12 +45,8 @@ const Admin = () => {
               <Text style={styles.lunchText}>Lunch Redeemed</Text>
             </View>
           </View>
-          <View style={styles.cheerboardBtn}>
-            <TouchableOpacity>
-              <View>
-                <Text style={styles.cheerboardBtnText}>View Employee</Text>
-              </View>
-            </TouchableOpacity>
+          <View style={styles.rewardTrophyCon}>
+            <RTrophy style={styles.cheerboardTrophy} />
           </View>
         </View>
 
@@ -157,7 +153,7 @@ const styles = StyleSheet.create({
   },
 
   cheerboard: {
-    flexDirection: "column",
+    flexDirection: "row",
     justifyContent: "space-between",
     borderRadius: 10,
     backgroundColor: "#fff",
@@ -166,25 +162,28 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   cheerboardCards: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
     borderRadius: 10,
   },
   lunchBox: {
     width: width * 0.42,
-    height: (height * 0.9) / 4,
+    height: (height * 0.6) / 4,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
     padding: 10,
-    backgroundColor: "#eec543",
+    backgroundColor: "#5b3692",
+    marginVertical: 5,
   },
   lunchNum: {
     fontSize: fontScale * 45,
     fontWeight: "bold",
+    color: "white",
   },
   lunchText: {
-    fontSize: fontScale * 18,
+    fontSize: fontScale * 20,
+    color: "white",
   },
 
   cheerboardTitle: {
@@ -198,11 +197,15 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#390D7C",
   },
+  rewardTrophyCon: {
+    aspectRatio: 1,
+    width: width * 0.4,
+  },
   cheerboardTrophy: {
     position: "absolute",
-    top: -35,
-    right: -20,
+    left: -45,
     zIndex: -1,
+    transform: [{ rotate: "-10deg" }],
   },
   cheerboardBtn: {
     display: "block",
