@@ -14,46 +14,52 @@ import {
 import Card from "../components/Card";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import * as SplashScreen from "expo-splash-screen";
-// import { PlayfairDisplay_700Bold } from "@expo-google-fonts/playfair-display";
+import ChangePassword from './ChangePassword'
 
 const data = [
   {
     id: "1",
     icon: "person-outline",
     text: "Edit Profile",
+    // screen: EditProfile,
   },
   {
     id: "2",
     icon: "ios-lock-closed-outline",
     text: "Change Password",
+    screen: ChangePassword,
   },
   {
     id: "3",
     icon: "ios-card-outline",
     text: "Converted Lunches",
+    // screen: ConvertedLunches,
   },
   {
     id: "4",
     icon: "moon",
     text: "Dark Theme",
+    // screen: DarkTheme,
   },
   {
     id: "5",
     icon: "ios-shield-outline",
     text: "Privacy Policy",
+    // screen: PrivacyPolicy,
   },
   {
     id: "6",
     icon: "md-arrow-forward-circle-outline",
     text: "Logout",
+    // screen: Logout,
   },
 ];
 
-const Item = ({ item, index }) => {
+const Item = ({ item, index, navigation }) => {
   return (
     <TouchableOpacity
       style={{ flexDirection: "row", alignItems: "center", padding: 10 }}
+      onPress={() => navigation.navigate(item.screen)}
     >
       <Ionicons
         name={item.icon}
@@ -125,7 +131,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "#390D7C",
     margin: 10,
-    fontFamily: "PlayfairDisplay-BoldItalic",
   },
   heading: {
     fontWeight: "bold",
