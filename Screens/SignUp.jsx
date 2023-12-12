@@ -7,15 +7,25 @@ import {
   TouchableOpacity,
   StyleSheet,
   Modal,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import SignIn from "./SignIn";
+import { signUp } from "../http/auth";
 
 const SignUp = () => {
   const [isOrganization, setIsOrganization] = useState(true);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [organizationName, setOrganizationName] = useState('');
+  const [staffName, setStaffName] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigation = useNavigation();
+
+
+  
 
   const toggleSuccessModal = () => {
     setSuccessModalVisible(!successModalVisible);
@@ -23,6 +33,18 @@ const SignUp = () => {
 
   const handleSignup = () => {
     // Implement your signup logic here
+
+    if(String(password) !== String(confirmPassword)){
+      return Alert.alert("Password Mismatch", "Passwords do not match");
+    }
+
+    const role = isOrganization ? "organization": "staff";
+    const name = isOrganization ? organizationName : staffName
+
+    const signUpRequest = signUp(role, name, email, password);
+
+
+    
 
     // Show success modal
     toggleSuccessModal();
@@ -99,18 +121,21 @@ const SignUp = () => {
             <Text style={styles.inputTitle}>Organization’s Name:</Text>
             <TextInput
               style={styles.input}
+              onChangeText={setOrganizationName}
               placeholder="Enter organization’s name"
             />
 
             <Text style={styles.inputTitle}>Email Address:</Text>
             <TextInput
               style={styles.input}
+              onChangeText={setEmail}
               placeholder="Enter your work email address"
             />
 
             <Text style={styles.inputTitle}>Password:</Text>
             <TextInput
               style={styles.input}
+              onChangeText={setPassword}
               placeholder="Enter your password"
               secureTextEntry
             />
@@ -120,24 +145,27 @@ const SignUp = () => {
               style={styles.input}
               placeholder="Re-enter your password"
               secureTextEntry
+              onChangeText={setConfirmPassword}
             />
           </View>
         </React.Fragment>
       ) : (
-        <React.Fragment>
+        <>
           {/* Staff Form */}
           <View style={styles.con}>
             <Text style={styles.inputTitle}>Full Name:</Text>
-            <TextInput style={styles.input} placeholder="Enter full name" />
+            <TextInput style={styles.input} placeholder="Enter full name" onChangeText={setStaffName} />
 
             <Text style={styles.inputTitle}>Work Email Address:</Text>
             <TextInput
+            onChangeText={setEmail}
               style={styles.input}
               placeholder="Enter work email address"
             />
 
             <Text style={styles.inputTitle}>Password:</Text>
             <TextInput
+            onChangeText={setPassword}
               style={styles.input}
               placeholder="Enter password"
               secureTextEntry
@@ -145,6 +173,7 @@ const SignUp = () => {
 
             <Text style={styles.inputTitle}>Confirm Password:</Text>
             <TextInput
+            onChangeText={setConfirmPassword}
               style={styles.input}
               placeholder="Confirm password"
               secureTextEntry
@@ -156,7 +185,7 @@ const SignUp = () => {
               placeholder="Enter verification code"
             />
           </View>
-        </React.Fragment>
+        </>
       )}
 
       <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>

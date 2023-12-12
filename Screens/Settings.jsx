@@ -14,6 +14,9 @@ import {
 import Card from "../components/Card";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { createStackNavigator } from "@react-navigation/stack";
+
+const Stack = createStackNavigator();
 // import * as SplashScreen from "expo-splash-screen";
 // import { PlayfairDisplay_700Bold } from "@expo-google-fonts/playfair-display";
 
@@ -77,39 +80,16 @@ const Item = ({ item, index }) => {
 
 const { height, width } = Dimensions.get("window");
 export default function Settings() {
-  const image = require("../assets/images/profile.png");
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.headerText}>
-        <Text style={styles.headerText}>Profile</Text>
-      </View>
-
-      <View style={styles.header}>
-        <Image source={image} />
-        <Text style={styles.heading}>Tofunmi Awolowo</Text>
-        <Text style={styles.smallText}>tofunmi.awolowo@gmail.com</Text>
-      </View>
-
-      <View style={styles.card}>
-        <Card
-          title="Lunches Redeemed"
-          number="21"
-          backgroundColor="#390D7C"
-          color="white"
-        />
-        <Card title="Lunches Rewarded" number="10" backgroundColor="#F2C950" />
-      </View>
-
-      <View style={{ flex: 1 }}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={data}
-          renderItem={Item}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-    </SafeAreaView>
-  );
+    <Stack.Navigator initialRouteName="profile">
+      <Stack.Screen name="profile" component={Profile} />
+      <Stack.Screen name="ChangePassword" component={Profile} />
+    </Stack.Navigator>
+  )
+  // const image = require("../assets/images/profile.png");
+  // return (
+    
+  // );
 }
 
 const styles = StyleSheet.create({

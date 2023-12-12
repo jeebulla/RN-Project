@@ -37,7 +37,15 @@ export default function App() {
         })}
       >
         {/* <Tab.Screen name="Home" component={RewardEmployee} /> */}
-        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen
+          name="Home"
+          component={Home}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Ionicon name={focused ? "home" : "home-outline"} size={34} />
+            ),
+          }}
+        />
         <Tab.Screen name="Rewards" component={Rewards} />
         <Tab.Screen name="Settings" component={Settings} />
         <Tab.Screen name="Admin" component={AdminPage} />
