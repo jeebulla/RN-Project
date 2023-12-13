@@ -2,17 +2,15 @@ import { View, Text, SafeAreaView, Pressable } from "react-native";
 import styles from "../constants/AppStyles";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import Trophy from "../assets/Trophy_sm.svg";
-import RewardTypes from "./RewardNotification";
-import { useNavigation } from "@react-navigation/native";
+import Types from "./Notification";
 
-function RewardsTab() {
-  const navigation = useNavigation();
+function HeaderTab({ navigation }) {
   return (
     <View style={styles.rewardTop}>
       <View style={styles.rewardHeader}>
         <Pressable
           style={styles.backButton}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("Home")}
         >
           <Ionicon name="arrow-back" size={27} color="#fff" />
         </Pressable>
@@ -28,7 +26,7 @@ function RewardsTab() {
   );
 }
 
-function RewardDate() {
+function CreatedAt() {
   const months = [
     "January",
     "February",
@@ -55,12 +53,12 @@ function RewardDate() {
   );
 }
 
-export default function Rewards() {
+export default function RewardsUI() {
   return (
     <SafeAreaView style={styles.rewardContainer}>
-      <RewardsTab />
-      <RewardDate />
-      <RewardTypes />
+      <HeaderTab />
+      <CreatedAt />
+      <Types />
     </SafeAreaView>
   );
 }

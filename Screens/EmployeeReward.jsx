@@ -5,7 +5,6 @@ import {
   Pressable,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { EvilIcons } from "@expo/vector-icons";
@@ -57,11 +56,8 @@ const Item = ({ item }) => {
     </Pressable>
   );
 };
-const itemSeperator = () => {
-  return <View style={styles.separator} />;
-};
 
-const RewardEmployee = () => {
+const RewardEmployee = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.body}>
       <View>
@@ -92,7 +88,6 @@ const RewardEmployee = () => {
               showsHorizontalScrollIndicator={false}
               legacyImplementation={false}
               horizontal={true}
-              ItemSeparatorComponent={itemSeperator}
               data={users}
               renderItem={({ item }) => <Item item={item} />}
               keyExtractor={(item) => item.id}
@@ -108,7 +103,7 @@ const RewardEmployee = () => {
               placeholder="Type here..."
               multiline
               numberOfLines={4} // Adjust as needed
-              onChangeText={(inputText) => setText(inputText)}
+              // onChangeText={(inputText) => setText(inputText)}
               // value={text}
             />
           </View>
@@ -116,17 +111,13 @@ const RewardEmployee = () => {
 
         <View>
           <Pressable
+            onPress={() => navigation.navigate("GiftSuccess")}
             style={({ pressed }) => [
               styles.btn,
-              { backgroundColor: pressed ? "grey" : "purple" },
+              { backgroundColor: pressed ? "#280957" : "#390d7c" },
             ]}
           >
-            <Text
-              style={styles.btnText}
-              //   onPress={navigation.navigate('Dashboard')}
-            >
-              Reward Employee
-            </Text>
+            <Text style={styles.btnText}>Reward Employee</Text>
           </Pressable>
         </View>
       </View>

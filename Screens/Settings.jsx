@@ -14,8 +14,6 @@ import {
 import Card from "../components/Card";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import * as SplashScreen from "expo-splash-screen";
-// import { PlayfairDisplay_700Bold } from "@expo-google-fonts/playfair-display";
 
 const data = [
   {
@@ -125,7 +123,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "#390D7C",
     margin: 10,
-    fontFamily: "PlayfairDisplay-BoldItalic",
   },
   heading: {
     fontWeight: "bold",
