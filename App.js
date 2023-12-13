@@ -8,6 +8,7 @@ import Settings from "./Screens/Settings";
 
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
+// import RewardEmployee from "./Screens/RewardEmployee";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
