@@ -7,51 +7,53 @@ import {
   Image,
   View,
 } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+
 import Card from "../components/Card";
+import SettingsButton from "../components/SettingsButton";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ChangePassword from './ChangePassword'
+import { createStackNavigator } from '@react-navigation/stack';
+import Screen1  from './Screen1';
+import Screen2  from './Screen2';
+import Screen3  from './Screen3';
+import Screen4  from './Screen4';
 
+
+
+// const Stack = createStackNavigator();
+
+{/*
 const data = [
   {
     id: "1",
     icon: "person-outline",
     text: "Edit Profile",
-    // screen: EditProfile,
   },
   {
     id: "2",
     icon: "ios-lock-closed-outline",
     text: "Change Password",
-    screen: ChangePassword,
   },
   {
     id: "3",
     icon: "ios-card-outline",
     text: "Converted Lunches",
-    // screen: ConvertedLunches,
   },
   {
     id: "4",
     icon: "moon",
     text: "Dark Theme",
-    // screen: DarkTheme,
   },
   {
     id: "5",
     icon: "ios-shield-outline",
     text: "Privacy Policy",
-    // screen: PrivacyPolicy,
   },
   {
     id: "6",
     icon: "md-arrow-forward-circle-outline",
     text: "Logout",
-    // screen: Logout,
   },
 ];
 
@@ -59,7 +61,7 @@ const Item = ({ item, index, navigation }) => {
   return (
     <TouchableOpacity
       style={{ flexDirection: "row", alignItems: "center", padding: 10 }}
-      onPress={() => navigation.navigate(item.screen)}
+      onPress={() => navigation.navigate(item.id)}
     >
       <Ionicons
         name={item.icon}
@@ -80,7 +82,7 @@ const Item = ({ item, index, navigation }) => {
     </TouchableOpacity>
   );
 };
-
+*/}
 const { height, width } = Dimensions.get("window");
 export default function Settings() {
   const image = require("../assets/images/profile.png");
@@ -106,14 +108,62 @@ export default function Settings() {
         <Card title="Lunches Rewarded" number="10" backgroundColor="#F2C950" />
       </View>
 
-      <View style={{ flex: 1 }}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={data}
-          renderItem={Item}
-          keyExtractor={(item) => item.id}
-        />
+      <View>
+      <TouchableOpacity style={styles.button}>
+      <View style={styles.iconContainer}>      
+      <Ionicons name="person-outline" size={24} style={styles.icon} />    
       </View>
+      <Text style={styles.text}>Edit Profile</Text>
+      <Ionicons name="md-chevron-forward" size={24} style={{ color: '#390D7C', marginLeft: 'auto' }} />
+     </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button}>
+      <View style={styles.iconContainer}>      
+      <Ionicons name="ios-lock-closed-outline" size={24} style={styles.icon} />    
+      </View>
+      <Text style={styles.text}>Change Password</Text>
+      <Ionicons name="md-chevron-forward" size={24} style={{color: '#390D7C', marginLeft: 'auto' }} />
+     </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button}>
+      <View style={styles.iconContainer}>      
+      <Ionicons name="ios-card-outline" size={24} style={styles.icon} />    
+      </View>
+      <Text style={styles.text}>Converted Lunches</Text>
+      <Ionicons name="md-chevron-forward" size={24} style={{color: '#390D7C', marginLeft: 'auto' }} />
+     </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button}>
+      <View style={styles.iconContainer}>      
+      <Ionicons name="moon" size={24} style={styles.icon} />    
+      </View>
+      <Text style={styles.text}>Dark Theme</Text>
+      <Ionicons name="md-chevron-forward" size={24} style={{color: '#390D7C', marginLeft: 'auto' }} />
+     </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button}>
+      <View style={styles.iconContainer}>      
+      <Ionicons name="ios-shield-outline" size={24} style={styles.icon} />    
+      </View>
+      <Text style={styles.text}>Privacy Policy</Text>
+      <Ionicons name="md-chevron-forward" size={24} style={{color: '#390D7C', marginLeft: 'auto' }} />
+     </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button}>
+      <View style={styles.iconContainer}>      
+      <Ionicons name="md-arrow-forward-circle-outline" size={24} style={styles.icon} />    
+      </View>
+      <Text style={styles.text}>Logout</Text>
+         </TouchableOpacity>
+      </View>
+
+      {/*
+      <Stack.Navigator>
+        <Stack.Screen name="Screen1" component={Screen1} />
+        <Stack.Screen name="Screen2" component={Screen2} />
+        <Stack.Screen name="Screen3" component={Screen3} />
+      </Stack.Navigator>    
+    */}
     </SafeAreaView>
   );
 }
@@ -154,5 +204,18 @@ const styles = StyleSheet.create({
     width: "94%",
     backgroundColor: "#9F9F9F",
     marginLeft: 10,
+  },
+  button: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 12,
+  },
+  text: {
+    fontSize: 16,
+    textAlign: 'center'
+  },
+  icon: {
+    // marginRight: 20,
   },
 });
