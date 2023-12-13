@@ -10,7 +10,7 @@ import AppLoading from "expo-app-loading";
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import RewardEmployee from "./Screens/RewardEmployee";
 
