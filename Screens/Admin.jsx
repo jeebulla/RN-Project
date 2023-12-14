@@ -3,13 +3,11 @@ import {
   View,
   Text,
   SafeAreaView,
-  Pressable,
   StyleSheet,
   Image,
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Gift from "../assets/Gift.svg";
 import Badge from "../assets/Badge.svg";
 import RTrophy from "../assets/TrophyR.svg";
@@ -17,7 +15,7 @@ import EvilIcons from "react-native-vector-icons/EvilIcons";
 
 const { width, height, fontScale, scale } = Dimensions.get("window");
 
-const Admin = () => {
+const Admin = ({ navigation }) => {
   return (
     <SafeAreaView>
       <View style={styles.body}>
@@ -55,6 +53,7 @@ const Admin = () => {
             <View style={styles.card}>
               <Gift style={styles.cardImage} />
               <TouchableOpacity
+                onPress={() => navigation.navigate("EmployeeReward")}
                 style={({ pressed }) => [
                   { backgroundColor: pressed ? "grey" : "white" },
                 ]}
@@ -75,6 +74,7 @@ const Admin = () => {
             <View style={styles.card}>
               <Badge style={(styles.cardImage, { marginTop: 30 })} />
               <TouchableOpacity
+                onPress={() => navigation.navigate("LeaderBoard")}
                 style={({ pressed }) => [
                   { backgroundColor: pressed ? "grey" : "white" },
                 ]}
@@ -98,27 +98,6 @@ const Admin = () => {
 };
 
 export default Admin;
-
-function Home() {
-  const navigation = useNavigation();
-  const handleRewards = () => {
-    navigation.navigate("Rewards");
-  };
-  const leaderBoard = () => {
-    navigation.navigate("LeaderBoard");
-  };
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Home Screen</Text>
-      <TouchableOpacity onPress={() => navigation.navigate("Rewards")}>
-        <Text style={styles.button}>Go to Rewards</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("LeaderBoard")}>
-        <Text style={styles.button}>Go to Leader Board</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   body: {

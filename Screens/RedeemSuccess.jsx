@@ -2,7 +2,6 @@ import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 import Smiley from "../assets/Success.svg";
 import Confetti from "../assets/Confetti.svg";
 import styles from "../constants/AppStyles";
-import Button from "./Buttons";
 import { useNavigation } from "@react-navigation/native";
 
 const SuccessMessage = ({ message }) => {
@@ -12,7 +11,7 @@ const SuccessMessage = ({ message }) => {
     </View>
   );
 };
-export default function Success() {
+export default function RedeemSuccess() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.confirmation}>
@@ -20,21 +19,11 @@ export default function Success() {
       <Smiley />
       <SuccessMessage message="Free lunch redeemed successfully!" />
       <View style={styles.buttons}>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-          <Button
-            onPress={() => navigation.navigate("Home")}
-            title="Send another employee lunch"
-            buttonStyle="coloredBtn"
-            textStyle="textWhite"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-          <Button
-            onPress={() => navigation.navigate("Home")}
-            title="Back to Home"
-            buttonStyle="outlineBtn"
-            textStyle="textColored"
-          />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Rewards")}
+          style={styles.outlineBtn}
+        >
+          <Text style={styles.textColored}>Back to Rewards</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

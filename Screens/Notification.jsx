@@ -1,14 +1,8 @@
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
 import styles from "../constants/AppStyles";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+
 const timestamp = () => {
   const months = [
     "January",
@@ -82,10 +76,10 @@ const rewardData = [
 const Item = ({ item }) => {
   const navigation = useNavigation();
   const handleRedeem = () => {
-    navigation.navigate("Redeem");
+    navigation.navigate("Details");
   };
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={handleRedeem}>
       <View style={styles[item.type]}>
         <View style={styles.rewardInfo}>
           <Image

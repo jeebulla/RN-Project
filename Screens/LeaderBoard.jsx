@@ -22,7 +22,7 @@ const DATA = [
   {
     name: "Chibuzor Okafor",
     rank: 19,
-    department: "L &D",
+    department: "L&D",
     imageUri:
       "https://res.cloudinary.com/dycukxm7r/image/upload/v1701532495/Ellipse_4_mykjym.png",
   },
@@ -67,12 +67,15 @@ const Persons = ({ item }) => (
 );
 
 const { height, width, fontScale, scale } = Dimensions.get("window");
-export default function LeaderBoard() {
+export default function LeaderBoard({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.mainHeader}>
-          <Pressable style={styles.backButton}>
+          <Pressable
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
             <Ionicon name="arrow-back" size={27} color="#390D7C" />
           </Pressable>
           <Text style={styles.headerText}>Leader Board</Text>

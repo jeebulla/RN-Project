@@ -22,6 +22,7 @@ const SignUp = () => {
   };
 
   const handleSignup = () => {
+    navigation.navigate("Login");
     // Implement your signup logic here
 
     // Show success modal
