@@ -207,15 +207,13 @@ const styles = StyleSheet.create({
   },
   button: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     padding: 12,
+    gap: 20,
   },
   text: {
     fontSize: 16,
     textAlign: 'center'
-  },
-  icon: {
-    // marginRight: 20,
   },
 });
