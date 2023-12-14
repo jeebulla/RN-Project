@@ -7,39 +7,85 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-const Home = () => {
-  const handleSignup = () => {
-    // Implement your signup logic here
-    // Show success modal
+import { Formik } from "formik";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
+});
+
+const SignIn = ({ navigation }) => {
+  const handleSignIn = (values) => {
+    // Handling  sign-in logic here using the 'values' object
+    console.log("Sign-in values:", values);
+    navigation.navigate("Home");
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.con}>
-        <View>
-          <Text style={styles.text}>Hi there,</Text>
-          <Text style={styles.welcomeText}>Welcome back!</Text>
-          <Text style={styles.appInput}>
-            Please input your log-in details to get into the app
-          </Text>
-        </View>
-        <Text style={styles.inputTitle}>Username or Email address:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter organization’s name"
-        />
+        <Text style={styles.text}>Hi there,</Text>
+        <Text style={styles.welcomeText}>Welcome back!</Text>
+        <Text style={styles.appInput}>
+          Please input your log-in details to get into the app
+        </Text>
 
-        <Text style={styles.inputTitle}>Password:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter password"
-          secureTextEntry
-        />
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          validationSchema={validationSchema}
+          onSubmit={handleSignIn}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <>
+              <Text style={styles.inputTitle}>Username or Email address:</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter organization’s name"
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                value={values.email}
+              />
+              {touched.email && errors.email && (
+                <Text style={{ color: "red" }}>{errors.email}</Text>
+              )}
 
-        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+              <Text style={styles.inputTitle}>Password:</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter password"
+                secureTextEntry
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+              />
+              {touched.password && errors.password && (
+                <Text style={{ color: "red" }}>{errors.password}</Text>
+              )}
 
-        <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-          <Text style={styles.signupButtonText}>Sign In</Text>
-        </TouchableOpacity>
+              <Text
+                style={styles.forgotPassword}
+                onPress={() => console.log("Forgot Password clicked")}
+              >
+                Forgot Password?
+              </Text>
+
+              <TouchableOpacity
+                style={styles.signupButton}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.signupButtonText}>Sign In</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </Formik>
 
         <View style={styles.accountContainer}>
           <Text style={styles.accountText}>Don’t have an account?</Text>
@@ -124,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default SignIn;

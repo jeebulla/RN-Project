@@ -1,4 +1,5 @@
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useState, useContext, useEffect, } from "react";
+import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicon from "react-native-vector-icons/Ionicons";
@@ -9,8 +10,9 @@ import AppLoading from "expo-app-loading";
 
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
+// import DarkTheme from "./components/DarkTheme";
+import DarkThemeToggle from "./components/DarkThemeToggle";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
-import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import RewardEmployee from "./Screens/RewardEmployee";
 
@@ -44,9 +46,26 @@ const Stack = createNativeStackNavigator();
 //   );
 // };
 
-const AuthenticatedScreen = () => {
+const AuthenticatedScreen = ({ theme }) => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === "Home") {
+            iconName = focused ? "home" : "home-outline";
+          } else if (route.name === "Rewards") {
+            iconName = focused ? "trophy" : "trophy-outline";
+          } else if (route.name === "Settings") {
+            iconName = focused ? "settings" : "settings-outline";
+          }
+          return <Ionicon name={iconName} size={25} color={color} />;
+        },
+        tabBarActiveTintColor: theme.tabActiveTintColor,
+        tabBarInactiveTintColor: theme.tabInactiveTintColor,
+      })}
+    >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Rewards" component={Rewards} />
       <Tab.Screen name="Settings" component={Settings} />
@@ -63,19 +82,20 @@ const AuthScreen = () => {
   );
 };
 
-const Navigation = () => {
+const Navigation = ({ theme, toggleTheme }) => {
   const authCtx = useContext(AuthContext);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={theme}>
       {!authCtx.isAuthenticated && <AuthScreen />}
-      {authCtx.isAuthenticated && <AuthenticatedScreen />}
+      {authCtx.isAuthenticated && <AuthenticatedScreen theme={theme} />}
     </NavigationContainer>
   );
 };
 
 const Root = () => {
   const [isTryingLogin, setIsTryingLogin] = useState(true);
+  const [theme, setTheme] = useState(DefaultTheme); // or DarkTheme for dark theme
 
   const authCtx = useContext(AuthContext);
 
@@ -93,11 +113,15 @@ const Root = () => {
     fetchToken();
   }, []);
 
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === DefaultTheme ? DarkTheme : DefaultTheme));
+  };
+
   if (isTryingLogin) {
     return <AppLoading />;
   }
 
-  return <Navigation />;
+  return <Navigation theme={theme} toggleTheme={toggleTheme} />;
 };
 
 export default function App() {
