@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   textArea: {
     height: 100, // Adjust the height as needed
-    borderColor: "gray",
+    borderColor: "#390d7c",
     borderWidth: 1,
     borderRadius: 14,
     paddingHorizontal: 20,

@@ -12,7 +12,9 @@ import SignIn from "./Screens/SignIn";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
 import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import RewardEmployee from "./Screens/RewardEmployee";
+// import RewardEmployee from "./Screens/EmployeeReward";
+import PaymentScreen from "./Screens/PaymentScreen";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -57,8 +59,10 @@ const AuthenticatedScreen = () => {
 const AuthScreen = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="Login" component={SignIn} />
+      {/* <Stack.Screen name="SignUp" component={RewardEmployee} /> */}
+      <Stack.Screen name="SignUp" component={PaymentScreen} />
+      {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
+      {/* <Stack.Screen name="Login" component={SignIn} /> */}
     </Stack.Navigator>
   );
 };
