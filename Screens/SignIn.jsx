@@ -7,13 +7,10 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-
 const Home = () => {
   const handleSignup = () => {
     // Implement your signup logic here
-
     // Show success modal
-    toggleSuccessModal();
   };
   return (
     <View style={styles.container}>
