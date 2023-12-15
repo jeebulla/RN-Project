@@ -14,23 +14,8 @@ import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import RewardEmployee from "./Screens/RewardEmployee";
 
-import Screen1  from './Screens/Screen1';
-import ChangePassword  from './Screens/ChangePassword';
-import Screen3  from './Screens/Screen3';
-import Screen4  from './Screens/Screen4';
-
-
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-const SettingsStackScreen = () => (
-  <Stack.Navigator>
-    <Stack.Screen name="Settings" component={Settings} headerTitle=""/>
-    <Stack.Screen name="Screen1" component={Screen1} />
-    <Stack.Screen name="ChangePassword" component={ChangePassword} headerBackTitle={false}  />
-    <Stack.Screen name="Screen3" component={Screen3} />
-  </Stack.Navigator>
-);
 
 // const TabScreen = () => {
 //   return (
@@ -61,13 +46,11 @@ const SettingsStackScreen = () => (
 
 const AuthenticatedScreen = () => {
   return (
-    <NavigationContainer>
     <Tab.Navigator>
-    <Tab.Screen name="Settings" component={SettingsStackScreen} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Rewards" component={Rewards} />
+      <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 
@@ -80,47 +63,47 @@ const AuthScreen = () => {
   );
 };
 
-// const Navigation = () => {
-//   const authCtx = useContext(AuthContext);
+const Navigation = () => {
+  const authCtx = useContext(AuthContext);
 
-//   return (
-//     <NavigationContainer>
-//       {!authCtx.isAuthenticated && <AuthScreen />}
-//       {authCtx.isAuthenticated && <AuthenticatedScreen />}
-//     </NavigationContainer>
-//   );
-// };
+  return (
+    <NavigationContainer>
+      {!authCtx.isAuthenticated && <AuthScreen />}
+      {authCtx.isAuthenticated && <AuthenticatedScreen />}
+    </NavigationContainer>
+  );
+};
 
-// const Root = () => {
-//   const [isTryingLogin, setIsTryingLogin] = useState(true);
+const Root = () => {
+  const [isTryingLogin, setIsTryingLogin] = useState(true);
 
-//   const authCtx = useContext(AuthContext);
+  const authCtx = useContext(AuthContext);
 
-//   useEffect(() => {
-//     async function fetchToken() {
-//       const storedToken = await AsyncStorage.getItem("token");
+  useEffect(() => {
+    async function fetchToken() {
+      const storedToken = await AsyncStorage.getItem("token");
 
-//       if (storedToken) {
-//         authCtx.authenticate(storedToken);
-//       }
+      if (storedToken) {
+        authCtx.authenticate(storedToken);
+      }
 
-//       setIsTryingLogin(false);
-//     }
+      setIsTryingLogin(false);
+    }
 
-//     fetchToken();
-//   }, []);
+    fetchToken();
+  }, []);
 
-//   if (isTryingLogin) {
-//     return <AppLoading />;
-//   }
+  if (isTryingLogin) {
+    return <AppLoading />;
+  }
 
-//   return <Navigation />;
-// };
+  return <Navigation />;
+};
 
 export default function App() {
   return (
     <AuthContextProvider>
-      <AuthenticatedScreen />
+      <Root />
     </AuthContextProvider>
   );
 }

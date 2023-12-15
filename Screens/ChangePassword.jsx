@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import CustomInput from "../components/CustomInput";
 
-export default function App() {
+export default function ChangePassword() {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
