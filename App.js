@@ -1,5 +1,9 @@
-import React, { useState, useContext, useEffect, } from "react";
-import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
+import React, { useState, useContext, useEffect } from "react";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicon from "react-native-vector-icons/Ionicons";
@@ -84,7 +88,6 @@ const AuthScreen = () => {
 
 const Navigation = ({ theme, toggleTheme }) => {
   const authCtx = useContext(AuthContext);
-
   return (
     <NavigationContainer theme={theme}>
       {!authCtx.isAuthenticated && <AuthScreen />}
@@ -114,13 +117,14 @@ const Root = () => {
   }, []);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === DefaultTheme ? DarkTheme : DefaultTheme));
+    setTheme((prevTheme) =>
+      prevTheme === DefaultTheme ? DarkTheme : DefaultTheme
+    );
   };
 
   if (isTryingLogin) {
     return <AppLoading />;
   }
-
   return <Navigation theme={theme} toggleTheme={toggleTheme} />;
 };
 
