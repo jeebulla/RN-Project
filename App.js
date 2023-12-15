@@ -16,8 +16,6 @@ import RewardEmployee from "./Screens/EmployeeReward";
 // import PaymentScreen from "./Screens/PaymentScreen";
 // import RecieveReward from './Screens/RecieveReward'
 
-
-
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -61,11 +59,11 @@ const AuthenticatedScreen = () => {
 const AuthScreen = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="SignUp" component={RewardEmployee} />
+      {/* <Stack.Screen name="SignUp" component={RewardEmployee} /> */}
       {/* <Stack.Screen name="SignUp" component={PaymentScreen} /> */}
       {/* <Stack.Screen name="SignUp" component={RecieveReward} /> */}
-      {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
-      {/* <Stack.Screen name="Login" component={SignIn} /> */}
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="Login" component={SignIn} />
     </Stack.Navigator>
   );
 };
