@@ -70,7 +70,7 @@ export default function ChangePassword() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    // backgroundColor: "white",
     justifyContent: "center",
   },
   title: {
