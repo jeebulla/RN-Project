@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import CustomInput from "../components/CustomInput";
 
-export default function App() {
+export default function ChangePassword() {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
@@ -70,7 +70,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    // backgroundColor: "white",
     justifyContent: "center",
   },
   title: {
