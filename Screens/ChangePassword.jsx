@@ -15,15 +15,15 @@ export default function ChangePassword() {
   const [passwordError, setPasswordError] = useState("");
 
   const imageUrl =
-    "https://res.cloudinary.com/dycukxm7r/image/upload/v1702378915/Lock_-3-removebg-preview_rolwtl.png";
+    "https://res.cloudinary.com/dycukxm7r/image/upload/v1702723200/IMG-20231216-WA0012_kw4fiw.jpg";
   return (
     <SafeAreaView>
-      <View>
+      <View style={styles.header}>
         <View style={styles.header}>
           <Image source={{ uri: imageUrl }} style={styles.image} />
           <Text style={styles.title}>Change Password</Text>
         </View>
-
+{/*
         <CustomInput
           style={styles.container}
           containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
@@ -48,8 +48,9 @@ export default function ChangePassword() {
             onChangeText={setPassword}
             error={passwordError}
             secureTextEntry
-          />
-        </KeyboardAvoidingView>
+          /> 
+          </KeyboardAvoidingView>
+        */}
         <TouchableOpacity
           style={styles.signupButton}
           onPress={() => {
@@ -68,11 +69,6 @@ export default function ChangePassword() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // backgroundColor: "white",
-    justifyContent: "center",
-  },
   title: {
     fontSize: 20,
     fontWeight: "bold",
