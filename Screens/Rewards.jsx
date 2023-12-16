@@ -8,12 +8,12 @@ function HeaderTab({ navigation }) {
   return (
     <View style={styles.rewardTop}>
       <View style={styles.rewardHeader}>
-        <Pressable
+        {/* <Pressable
           style={styles.backButton}
           onPress={() => navigation.navigate("Home")}
         >
           <Ionicon name="arrow-back" size={27} color="#fff" />
-        </Pressable>
+        </Pressable> */}
         <Text style={styles.rewardHeading}>Free Lunches</Text>
       </View>
       <View style={styles.rewardBody}>

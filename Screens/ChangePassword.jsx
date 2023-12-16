@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  SafeAreaView,
   KeyboardAvoidingView,
   StyleSheet,
   Text,
@@ -9,8 +8,9 @@ import {
   View,
 } from "react-native";
 import CustomInput from "../components/CustomInput";
+import { ScrollView } from "react-native-gesture-handler";
 
-export default function ChangePassword() {
+export default function ChangePassword({ navigation }) {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
