@@ -129,7 +129,7 @@ export default function Settings() {
          
       <TouchableOpacity style={styles.button}>
       <View style={styles.iconContainer}>      
-      <Ionicons name="md-arrow-forward-circle-outline" size={24} style={styles.icon} />    
+      <Ionicons name="md-arrow-forward-circle-outline" size={24} style={{ color: "red" }} />    
       </View>
       <Text style={styles.text}>Logout</Text>
       </TouchableOpacity>
