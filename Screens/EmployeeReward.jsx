@@ -54,15 +54,6 @@ const users = [
   },
 ];
 
-// const Item = ({ item }) => {
-//   return (
-//     <Pressable style={styles.employeeImg}>
-//       <Text>{item.icon}</Text>
-//       <Text style={styles.scrollImgText}>{item.name}</Text>
-//     </Pressable>
-//   );
-// };
-
 const RewardEmployee = ({ navigation }) => {
   const [selectedEmployee, setSelectedEmployee] = useState([]);
   const [checked, setChecked] = React.useState(true);
@@ -110,7 +101,10 @@ const RewardEmployee = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.body}>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardDismissMode="on-drag"
+      >
         <View>
           <View style={styles.introContainer}>
             <Text style={styles.introText}>
@@ -195,7 +189,7 @@ const RewardEmployee = ({ navigation }) => {
                   <Text style={{ color: checked ? "black" : "#390d7c" }}>
                     {checked
                       ? "Your reward will be made public"
-                      : "Make my reward is Public"}
+                      : "Make my reward Public"}
                   </Text>
                 </View>
               </View>
