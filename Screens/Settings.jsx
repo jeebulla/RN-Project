@@ -163,6 +163,23 @@ export default function Settings() {
           <Text style={styles.text}>Logout</Text>
         </TouchableOpacity>
       </View>
+<<<<<<< HEAD
+      <Text style={styles.text}>Privacy Policy</Text>
+      <Ionicons name="md-chevron-forward" size={24} style={{color: '#390D7C', marginLeft: 'auto' }} />
+     </TouchableOpacity>
+     
+         
+      <TouchableOpacity style={styles.button}>
+      <View style={styles.iconContainer}>      
+      <Ionicons name="md-arrow-forward-circle-outline" size={24} style={{ color: "red" }} />    
+      </View>
+      <Text style={styles.text}>Logout</Text>
+      </TouchableOpacity>
+      </View> 
+       
+     
+=======
+>>>>>>> main
     </SafeAreaView>
   );
 }

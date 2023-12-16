@@ -6,72 +6,106 @@ import {
   TouchableOpacity,
   Image,
   View,
+  TextInput,
+  Button,
 } from "react-native";
-import CustomInput from "../components/CustomInput";
-import { ScrollView } from "react-native-gesture-handler";
+import { Formik, Field } from 'formik';
+import * as Yup from 'yup';
 
-export default function ChangePassword({ navigation }) {
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+import CustomInput from "../components/CustomInput";
+
+
+const ChangePasswordSchema = Yup.object().shape({
+  currentPassword: Yup.string()
+    .required("Current password is required.")
+    .test(
+      "match-current-password",
+      "Current password is incorrect.",
+      (value, context) => {
+        // This is to Access stored current password from context
+        const storedPassword = context.password;
+        return value === storedPassword;
+      },
+    ),
+  newPassword: Yup.string()
+    .required("New password is required.")
+    .min(6, "New password must be at least 6 characters.")
+    .oneOf([Yup.ref("confirmPassword"), null], "Passwords must match."),
+  confirmPassword: Yup.string()
+    .required("Confirm password is required.")
+    .oneOf([Yup.ref("newPassword"), null], "Passwords must match."),
+});
+
+export default function ChangePassword() {
+  const [storedPassword, setStoredPassword] = useState(""); // Store  current password here
 
   const imageUrl =
-    "https://res.cloudinary.com/dycukxm7r/image/upload/v1702378915/Lock_-3-removebg-preview_rolwtl.png";
+    "https://res.cloudinary.com/dycukxm7r/image/upload/v1702723200/IMG-20231216-WA0012_kw4fiw.jpg";
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "Android" ? "padding" : "height"}
+    <SafeAreaView>    
+    <KeyboardAvoidingView style={styles.container}>
+    <View style={styles.header}>
+      <Image source={{ uri: imageUrl }} style={styles.image} />
+      <Text style={styles.title}>Change Password</Text>
+    </View>
+    <Formik
+      initialValues={{ currentPassword: "", newPassword: "", confirmPassword: "" }}
+      validationSchema={ChangePasswordSchema}
+      onSubmit={(values) => {
+        // Implement the logic to update password with newPassword
+        console.log("New password:", values.newPassword);
+      }}
     >
-      <ScrollView keyboardDismissMode="on-drag">
-        <View>
-          <View style={styles.header}>
-            <Image source={{ uri: imageUrl }} style={styles.image} />
-            <Text style={styles.title}>Change Password</Text>
-          </View>
+      {({ values, errors, handleChange, handleSubmit }) => (
+        <View style={styles.inputBox}>
+          <TextInput
+            style={styles.input}
+            placeholder="Current Password"
+            secureTextEntry
+            value={values.currentPassword}
+            onChangeText={handleChange("currentPassword")}
+          />
+          {errors.currentPassword && <Text style={{ color: "red" }}>{errors.currentPassword}</Text>}
 
-          <CustomInput
-            style={styles.container}
-            containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
-            placeholder={"Current Password"}
-            onChangeText={setPassword}
-            error={passwordError}
+          <TextInput
+            style={styles.input}
+            placeholder="New Password"
             secureTextEntry
+            value={values.newPassword}
+            onChangeText={handleChange("newPassword")}
           />
-          <CustomInput
-            containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
-            placeholder={"New Password"}
-            onChangeText={setPassword}
-            error={passwordError}
+          {errors.newPassword && <Text style={{ color: "red" }}>{errors.newPassword}</Text>}
+
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm Password"
             secureTextEntry
+            value={values.confirmPassword}
+            onChangeText={handleChange("confirmPassword")}
           />
-          <CustomInput
-            containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
-            placeholder={"Confirm New Password"}
-            onChangeText={setPassword}
-            error={passwordError}
-            secureTextEntry
-          />
+          {errors.confirmPassword && <Text style={{ color: "red" }}>{errors.confirmPassword}</Text>}
+
+         
           <TouchableOpacity
-            style={styles.signupButton}
-            onPress={() => {
-              if (password.length < 6) {
-                setPasswordError("The password is to short");
-              } else {
-                setPasswordError("");
-              }
-            }}
+          style={styles.signupButton}
+          onPress={handleSubmit}
           >
-            <Text style={styles.signupButtonText}>Reset Password</Text>
+          <Text style={styles.signupButtonText}>Reset Password</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      )}
+    </Formik>
     </KeyboardAvoidingView>
-  );
-}
-
+    </SafeAreaView>
+    );
+  }
+  
+    
+  
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // backgroundColor: "white",
-    justifyContent: "center",
+    backgroundColor: "#fff",
+    
   },
   title: {
     fontSize: 20,
@@ -79,7 +113,16 @@ const styles = StyleSheet.create({
     color: "#390D7C",
     marginBottom: 10,
   },
-
+  input: {
+    width: "90%",
+    height: 40,
+    borderColor: "#AE9CC9",
+    borderWidth: 1,
+    margin: 15,
+    padding: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+  },
   signupButtonText: {
     color: "#fff",
     textAlign: "center",
@@ -93,12 +136,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#390D7C",
     padding: 10,
     borderRadius: 5,
-    marginTop: 30,
+    marginTop: 10,
     width: "90%",
     paddingVertical: 15,
+    
+  },
+  inputBox: {
     alignItems: "center",
-    alignSelf: "center",
-    justifyContent: "center",
   },
   buttonText: {
     fontSize: 18,
@@ -108,5 +152,6 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     resizeMode: "cover",
+    margin: 10,
   },
 });
