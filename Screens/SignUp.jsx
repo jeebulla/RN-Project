@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   Modal,
+  Alert,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { signUp } from "../http/auth";
 
 const SignUp = () => {
   const [isOrganization, setIsOrganization] = React.useState(true);
@@ -21,12 +23,22 @@ const SignUp = () => {
     setSuccessModalVisible(!successModalVisible);
   };
 
-  const handleSignup = (values) => {
+  const handleSignup = async (values) => {
     // Implement signup logic using the 'values' object
     console.log("Signup values:", values);
+    const result = await signUp(
+      isOrganization ? "organization" : "staff",
+      isOrganization ? values.organizationName : values.fullName,
+      values.email,
+      isOrganization ? null : values.verificationCode
+    );
+    console.log(result.data);
+    if (result.status !== 201) {
+      return Alert.alert("Error", result.data.message);
+    }
 
     // Show success modal
-    toggleSuccessModal();
+    // toggleSuccessModal();
   };
 
   const goToHome = () => {

@@ -16,7 +16,10 @@ import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import RewardEmployee from "./Screens/RewardEmployee";
+import PaymentScreen from "./Screens/PaymentScreen";
+
+import ChangePassword from "./Screens/ChangePassword";
+// import RecieveReward from './Screens/RecieveReward'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -50,7 +53,22 @@ const Stack = createNativeStackNavigator();
 
 const AuthenticatedScreen = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === "Home") {
+            iconName = focused ? "home" : "home-outline";
+          } else if (route.name === "Rewards") {
+            iconName = focused ? "trophy" : "trophy-outline";
+          } else if (route.name === "Settings") {
+            iconName = focused ? "settings" : "settings-outline";
+          }
+          return <Ionicon name={iconName} size={25} color={color} />;
+        },
+      })}
+    >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Rewards" component={Rewards} />
       <Tab.Screen name="Settings" component={Settings} />
@@ -63,6 +81,7 @@ const AuthScreen = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="Login" component={SignIn} />
+      <Stack.Screen name="Payment" component={PaymentScreen} />
     </Stack.Navigator>
   );
 };
@@ -71,8 +90,8 @@ const Navigation = () => {
   const authCtx = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {authCtx.isAuthenticated && <AuthScreen />}
-      {!authCtx.isAuthenticated && <AuthenticatedScreen />}
+      {!authCtx.isAuthenticated && <AuthScreen />}
+      {authCtx.isAuthenticated && <AuthenticatedScreen />}
     </NavigationContainer>
   );
 };
@@ -98,9 +117,9 @@ const Root = () => {
   if (isTryingLogin) {
     return <AppLoading />;
   }
-
   return <Navigation />;
 };
+
 // const toggleTheme = () => {
 //   setTheme((prevTheme) =>
 //     prevTheme === DefaultTheme ? DarkTheme : DefaultTheme
