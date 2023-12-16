@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  SafeAreaView,
   KeyboardAvoidingView,
   StyleSheet,
   Text,
@@ -9,39 +8,40 @@ import {
   View,
 } from "react-native";
 import CustomInput from "../components/CustomInput";
+import { ScrollView } from "react-native-gesture-handler";
 
-export default function ChangePassword() {
+export default function ChangePassword({ navigation }) {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
   const imageUrl =
     "https://res.cloudinary.com/dycukxm7r/image/upload/v1702378915/Lock_-3-removebg-preview_rolwtl.png";
   return (
-    <SafeAreaView>
-      <View>
-        <View style={styles.header}>
-          <Image source={{ uri: imageUrl }} style={styles.image} />
-          <Text style={styles.title}>Change Password</Text>
-        </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "Android" ? "padding" : "height"}
+    >
+      <ScrollView keyboardDismissMode="on-drag">
+        <View>
+          <View style={styles.header}>
+            <Image source={{ uri: imageUrl }} style={styles.image} />
+            <Text style={styles.title}>Change Password</Text>
+          </View>
 
-        <CustomInput
-          style={styles.container}
-          containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
-          placeholder={"Current Password"}
-          onChangeText={setPassword}
-          error={passwordError}
-          secureTextEntry
-        />
-        <CustomInput
-          containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
-          placeholder={"New Password"}
-          onChangeText={setPassword}
-          error={passwordError}
-          secureTextEntry
-        />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "Android" ? "padding" : "height"}
-        >
+          <CustomInput
+            style={styles.container}
+            containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
+            placeholder={"Current Password"}
+            onChangeText={setPassword}
+            error={passwordError}
+            secureTextEntry
+          />
+          <CustomInput
+            containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
+            placeholder={"New Password"}
+            onChangeText={setPassword}
+            error={passwordError}
+            secureTextEntry
+          />
           <CustomInput
             containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
             placeholder={"Confirm New Password"}
@@ -49,21 +49,21 @@ export default function ChangePassword() {
             error={passwordError}
             secureTextEntry
           />
-        </KeyboardAvoidingView>
-        <TouchableOpacity
-          style={styles.signupButton}
-          onPress={() => {
-            if (password.length < 6) {
-              setPasswordError("The password is to short");
-            } else {
-              setPasswordError("");
-            }
-          }}
-        >
-          <Text style={styles.signupButtonText}>Reset Password</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+          <TouchableOpacity
+            style={styles.signupButton}
+            onPress={() => {
+              if (password.length < 6) {
+                setPasswordError("The password is to short");
+              } else {
+                setPasswordError("");
+              }
+            }}
+          >
+            <Text style={styles.signupButtonText}>Reset Password</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 

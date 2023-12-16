@@ -9,17 +9,17 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import Home from "./Pages/HomeAdmin";
 import Rewards from "./Pages/RewardsPage";
-import Settings from "./Screens/Settings";
+import Settings from "./Pages/SettingsPage";
 import AppLoading from "expo-app-loading";
 
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import PaymentScreen from "./Screens/PaymentScreen";
 
-import ChangePassword from "./Screens/ChangePassword";
-// import RecieveReward from './Screens/RecieveReward'
+import PaymentScreen from "./Screens/PaymentScreen";
+import RecieveReward from "./Screens/RecieveReward";
+import RewardEmployee from "./Screens/EmployeeReward";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -72,6 +72,9 @@ const AuthenticatedScreen = () => {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Rewards" component={Rewards} />
       <Tab.Screen name="Settings" component={Settings} />
+      {/* <Tab.Screen name="Payment" component={PaymentScreen} />
+      <Tab.Screen name="RecieveReward" component={RecieveReward} />
+      <Tab.Screen name="RewardEmployee" component={RewardEmployee} />  */}
     </Tab.Navigator>
   );
 };
@@ -81,7 +84,7 @@ const AuthScreen = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="Login" component={SignIn} />
-      <Stack.Screen name="Payment" component={PaymentScreen} />
+      {/* <Stack.Screen name="Payment" component={PaymentScreen} /> */}
     </Stack.Navigator>
   );
 };
@@ -90,8 +93,8 @@ const Navigation = () => {
   const authCtx = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {!authCtx.isAuthenticated && <AuthScreen />}
-      {authCtx.isAuthenticated && <AuthenticatedScreen />}
+      {authCtx.isAuthenticated && <AuthScreen />}
+      {!authCtx.isAuthenticated && <AuthenticatedScreen />}
     </NavigationContainer>
   );
 };
