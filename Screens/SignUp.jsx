@@ -1,5 +1,4 @@
-// src/screens/SignupScreen.js
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -7,162 +6,268 @@ import {
   TouchableOpacity,
   StyleSheet,
   Modal,
+  Alert,
 } from "react-native";
+import { Formik } from "formik";
+import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
-import SignIn from "./SignIn";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { signUp } from "../http/auth";
 
 const SignUp = () => {
-  const [isOrganization, setIsOrganization] = useState(true);
-  const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [isOrganization, setIsOrganization] = React.useState(true);
+  const [successModalVisible, setSuccessModalVisible] = React.useState(false);
   const navigation = useNavigation();
 
   const toggleSuccessModal = () => {
     setSuccessModalVisible(!successModalVisible);
   };
 
-  const handleSignup = () => {
-    navigation.navigate("Login");
-    // Implement your signup logic here
+  const handleSignup = async (values) => {
+    // Implement signup logic using the 'values' object
+    console.log("Signup values:", values);
+    const result = await signUp(
+      isOrganization ? "organization" : "staff",
+      isOrganization ? values.organizationName : values.fullName,
+      values.email,
+      isOrganization ? null : values.verificationCode
+    );
+    console.log(result.data);
+    if (result.status !== 201) {
+      return Alert.alert("Error", result.data.message);
+    }
 
     // Show success modal
-    toggleSuccessModal();
+    // toggleSuccessModal();
   };
 
   const goToHome = () => {
-    // Close the modal and navigate to WelcomeBackScreen
+    // Close the modal and navigate to the login screen
     toggleSuccessModal();
-    navigation.navigate("SignIn");
+    navigation.navigate("Login");
   };
+
+  const validationSchema = Yup.object().shape({
+    organizationName: isOrganization ? Yup.string().required("Required") : null,
+    email: Yup.string().email("Invalid email").required("Required"),
+    password: Yup.string().required("Required"),
+    confirmPassword: isOrganization
+      ? Yup.string()
+          .oneOf([Yup.ref("password"), null], "Passwords must match")
+          .required("Required")
+      : null,
+    fullName: !isOrganization ? Yup.string().required("Required") : null,
+    verificationCode: !isOrganization
+      ? Yup.string().required("Required")
+      : null,
+  });
 
   return (
     <View style={styles.container}>
-      <View style={styles.sec}>
-        <Text style={styles.title}>CREATE AN ACCOUNT</Text>
+      <Text style={styles.title}>CREATE AN ACCOUNT</Text>
 
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            isOrganization
+              ? { backgroundColor: "#390D7C" }
+              : {
+                  backgroundColor: "#EBE7F2",
+                  borderColor: "#390D7C",
+                  borderWidth: 1,
+                },
+          ]}
+          onPress={() => setIsOrganization(true)}
+        >
+          <Text
             style={[
-              styles.button,
-              isOrganization
-                ? { backgroundColor: "#390D7C" }
-                : {
-                    backgroundColor: "#EBE7F2",
-                    borderColor: "#390D7C",
-                    borderWidth: 1,
-                  },
+              styles.buttonText,
+              { color: isOrganization ? "#E8E8E8" : "#9F9F9F" },
             ]}
-            onPress={() => setIsOrganization(true)}
           >
-            <Text
-              style={[
-                styles.buttonText,
-                { color: isOrganization ? "#E8E8E8" : "#9F9F9F" },
-              ]}
-            >
-              ORGANIZATION
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+            ORGANIZATION
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            !isOrganization
+              ? { backgroundColor: "#390D7C" }
+              : {
+                  backgroundColor: "#EBE7F2",
+                  borderColor: "#390D7C",
+                  borderWidth: 1,
+                },
+          ]}
+          onPress={() => setIsOrganization(false)}
+        >
+          <Text
             style={[
-              styles.button,
-              !isOrganization
-                ? { backgroundColor: "#390D7C" }
-                : {
-                    backgroundColor: "#EBE7F2",
-                    borderColor: "#390D7C",
-                    borderWidth: 1,
-                  },
+              styles.buttonText,
+              { color: !isOrganization ? "#E8E8E8" : "#9F9F9F" },
             ]}
-            onPress={() => setIsOrganization(false)}
           >
-            <Text
-              style={[
-                styles.buttonText,
-                { color: !isOrganization ? "#E8E8E8" : "#9F9F9F" },
-              ]}
-            >
-              STAFF
-            </Text>
-          </TouchableOpacity>
-        </View>
+            STAFF
+          </Text>
+        </TouchableOpacity>
       </View>
+
       <View>
         <Text style={styles.conText}>
           Kindly ensure you input the correct details in the forms below
         </Text>
       </View>
 
-      {isOrganization ? (
-        <React.Fragment>
-          {/* Organization Form */}
+      <Formik
+        initialValues={{
+          organizationName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          fullName: "",
+          verificationCode: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={handleSignup}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
           <View style={styles.con}>
-            <Text style={styles.inputTitle}>Organization’s Name:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter organization’s name"
-            />
+            {isOrganization ? (
+              <React.Fragment>
+                {/* Organization Form */}
+                <Text style={styles.inputTitle}>Organization’s Name:</Text>
+                <View style={styles.nameContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter organization’s name"
+                    onChangeText={handleChange("organizationName")}
+                    onBlur={handleBlur("organizationName")}
+                    value={values.organizationName}
+                  />
 
+                  <Icon
+                    name="user-edit"
+                    size={15}
+                    color="#3C3C3C"
+                    style={styles.icon}
+                  />
+                </View>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                {/* Staff Form */}
+                <Text style={styles.inputTitle}>Full Name:</Text>
+                <View style={styles.nameContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter full name"
+                    onChangeText={handleChange("fullName")}
+                    onBlur={handleBlur("fullName")}
+                    value={values.fullName}
+                  />
+
+                  <Icon
+                    name="user-edit"
+                    size={15}
+                    color="#3C3C3C"
+                    style={styles.icon}
+                  />
+                </View>
+
+                <Text style={styles.inputTitle}>Company Code:</Text>
+                <View style={styles.nameContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter company code"
+                    onChangeText={handleChange("verificationCode")}
+                    onBlur={handleBlur("verificationCode")}
+                    value={values.verificationCode}
+                    keyboardType="numeric"
+                  />
+                </View>
+              </React.Fragment>
+            )}
+
+            {/* Common Fields */}
             <Text style={styles.inputTitle}>Email Address:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your work email address"
-            />
+            <View style={styles.nameContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your work email address"
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                value={values.email}
+                keyboardType="email-address"
+              />
+
+              <Icon
+                name="envelope"
+                size={15}
+                color="#3C3C3C"
+                style={styles.icon}
+              />
+            </View>
 
             <Text style={styles.inputTitle}>Password:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password"
-              secureTextEntry
-            />
+            <View style={styles.nameContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your password"
+                secureTextEntry
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+              />
 
-            <Text style={styles.inputTitle}>Confirm Password:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Re-enter your password"
-              secureTextEntry
-            />
+              <Icon name="lock" size={15} color="#3C3C3C" style={styles.icon} />
+            </View>
+            {isOrganization && (
+              <React.Fragment>
+                <Text style={styles.inputTitle}>Confirm Password:</Text>
+                <View style={styles.nameContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Re-enter your password"
+                    secureTextEntry
+                    onChangeText={handleChange("confirmPassword")}
+                    onBlur={handleBlur("confirmPassword")}
+                    value={values.confirmPassword}
+                  />
+
+                  <Icon
+                    name="lock"
+                    size={15}
+                    color="#3C3C3C"
+                    style={styles.icon}
+                  />
+                </View>
+              </React.Fragment>
+            )}
+
+            {/* Display error messages */}
+            {Object.keys(errors).map((field, index) => (
+              <Text key={index} style={{ color: "red" }}>
+                {touched[field] && errors[field]}
+              </Text>
+            ))}
+
+            <TouchableOpacity
+              style={styles.signupButton}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.signupButtonText}>Create Account</Text>
+            </TouchableOpacity>
           </View>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          {/* Staff Form */}
-          <View style={styles.con}>
-            <Text style={styles.inputTitle}>Full Name:</Text>
-            <TextInput style={styles.input} placeholder="Enter full name" />
-
-            <Text style={styles.inputTitle}>Work Email Address:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter work email address"
-            />
-
-            <Text style={styles.inputTitle}>Password:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter password"
-              secureTextEntry
-            />
-
-            <Text style={styles.inputTitle}>Confirm Password:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm password"
-              secureTextEntry
-            />
-
-            <Text style={styles.inputTitle}>Verification Code:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter verification code"
-            />
-          </View>
-        </React.Fragment>
-      )}
-
-      <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-        <Text style={styles.signupButtonText}>Create Account</Text>
-      </TouchableOpacity>
+        )}
+      </Formik>
 
       {/* Success Modal */}
       <Modal
@@ -198,9 +303,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  sec: {
-    height: 100,
-  },
+  // sec: {
+  //   height: 100,
+  // },
   con: {
     width: "90%",
   },
@@ -211,6 +316,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonsContainer: {
+    width: "100%",
     flexDirection: "row",
     marginBottom: 20,
   },
@@ -239,7 +345,19 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-start",
   },
+  nameContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+
+    position: "relative",
+  },
+  icon: {
+    position: "absolute",
+    right: 20,
+    top: 12,
+  },
   input: {
+    flex: 1,
     width: "100%",
     height: 40,
     borderColor: "#AE9CC9",
@@ -255,6 +373,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "90%",
     paddingVertical: 15,
+    alignSelf: "center",
   },
   signupButtonText: {
     color: "#fff",

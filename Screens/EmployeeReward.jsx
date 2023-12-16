@@ -65,12 +65,11 @@ const users = [
 
 const RewardEmployee = ({ navigation }) => {
   const [selectedEmployee, setSelectedEmployee] = useState([]);
-  const [checked, setState] = React.useState(true)
-  const [text, setText] = useState('');
+  const [checked, setChecked] = React.useState(true);
+  const [text, setText] = useState("");
   // const [showAll, setShowAll] = useState(false);
 
-  const toggleCheckbox = () => setState(!checked);
-
+  const toggleCheckbox = () => setChecked(!checked);
 
   const togglePreview = (employee) => {
     const index = selectedEmployee.findIndex((item) => item.id === employee.id);
@@ -96,12 +95,11 @@ const RewardEmployee = ({ navigation }) => {
     </Pressable>
   );
 
-
-
   const renderPreviewItem = ({ item }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       onPress={() => togglePreview(item)}
-      style={styles.scrollImgContainer}>
+      style={styles.scrollImgContainer}
+    >
       <Text>{item.icon}</Text>
       <Text style={styles.scrollImgText}>{item.name}</Text>
       <TouchableOpacity>
@@ -110,101 +108,100 @@ const RewardEmployee = ({ navigation }) => {
     </TouchableOpacity>
   );
 
-
-
   return (
     <SafeAreaView style={styles.body}>
-     <ScrollView>
-      <View>
-        <View style={styles.introContainer}>
-          <Text style={styles.introText}>
-            Select an employee you want to reward
-          </Text>
-        </View>
-        <View style={styles.inputContainer}>
-          <EvilIcons name="search" style={styles.searchIcon} />
-          <TextInput
-            placeholder="Search for an employee"
-            style={styles.inputField}
-          />
-        </View>
-        <View style={styles.scrollContainer}>
-          <View style={styles.scrollHeaderContainer}>
-            <Text style={styles.scrollHeaderText1}>
-              Who are you giving free lunch?
+      <ScrollView>
+        <View>
+          <View style={styles.introContainer}>
+            <Text style={styles.introText}>
+              Select an employee you want to reward
             </Text>
-            <Text style={styles.scrollHeaderText2}>View all</Text>
           </View>
-
-          <View>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              horizontal={true}
-              data={users}
-              // renderItem={({ item }) => <Item item={item} />}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
+          <View style={styles.inputContainer}>
+            <EvilIcons name="search" style={styles.searchIcon} />
+            <TextInput
+              placeholder="Search for an employee"
+              style={styles.inputField}
             />
-
-            {selectedEmployee.length > 0 && (
-              <View >
-                <Text style={styles.previewTitle}>Preview:</Text>
-                <FlatList
-                //  style={styles.scrollImgContainer}
-                  data={selectedEmployee}
-                  keyExtractor={(item) => item.id}
-                  renderItem={renderPreviewItem}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                />
-              </View>
-            )}
           </View>
-          <View  style={styles.footer}>
-            <View>
-              <View style={styles.textAreaContainer}>
-                <Text style={styles.textAreaText1}>Personalized note</Text>
-                <Text style={styles.textAreaText2}>(optional)</Text>
-              </View>
-              <TextInput
-                style={styles.textArea}
-                placeholder="Type here..."
-                multiline
-                numberOfLines={4} // Adjust as needed
-                // onChangeText={(inputText) => setText(inputText)}
-                // value={text}
-              />
+          <View style={styles.scrollContainer}>
+            <View style={styles.scrollHeaderContainer}>
+              <Text style={styles.scrollHeaderText1}>
+                Who are you giving free lunch?
+              </Text>
+              <Text style={styles.scrollHeaderText2}>View all</Text>
             </View>
 
             <View>
-          <Pressable
-            onPress={() => navigation.navigate("GiftSuccess")}
-            style={({ pressed }) => [
-              styles.btn,
-              { backgroundColor: pressed ? "#280957" : "#390d7c" },
-            ]}
-          >
-            <Text style={styles.btnText}>Reward Employee</Text>
-          </Pressable>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                horizontal={true}
+                data={users}
+                // renderItem={({ item }) => <Item item={item} />}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+              />
 
-          <View style={styles.checkboxContainer}>
-            <CheckBox
-              size={20}
-              checked={checked}
-              checkedIcon="heart"
-              uncheckedIcon="heart-o"
-              checkedColor={checked? "#390d7c" : 'black'}
-              onPress={toggleCheckbox}
-            />
-            <Text style={{color: checked? 'black' : '#390d7c'}}>{checked ? 'my reward is oublic' : 'your reward will be made public' }</Text>
+              {selectedEmployee.length > 0 && (
+                <View>
+                  <Text style={styles.previewTitle}>Preview:</Text>
+                  <FlatList
+                    //  style={styles.scrollImgContainer}
+                    data={selectedEmployee}
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderPreviewItem}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                  />
+                </View>
+              )}
+            </View>
+            <View style={styles.footer}>
+              <View>
+                <View style={styles.textAreaContainer}>
+                  <Text style={styles.textAreaText1}>Personalized note</Text>
+                  <Text style={styles.textAreaText2}>(optional)</Text>
+                </View>
+                <TextInput
+                  style={styles.textArea}
+                  placeholder="Type here..."
+                  multiline
+                  numberOfLines={4} // Adjust as needed
+                  // onChangeText={(inputText) => setText(inputText)}
+                  // value={text}
+                />
+              </View>
+
+              <View>
+                <Pressable
+                  onPress={() => navigation.navigate("GiftSuccess")}
+                  style={({ pressed }) => [
+                    styles.btn,
+                    { backgroundColor: pressed ? "#280957" : "#390d7c" },
+                  ]}
+                >
+                  <Text style={styles.btnText}>Reward Employee</Text>
+                </Pressable>
+
+                <View style={styles.checkboxContainer}>
+                  <CheckBox
+                    size={20}
+                    checked={checked}
+                    checkedIcon="heart"
+                    uncheckedIcon="heart-o"
+                    checkedColor={checked ? "#390d7c" : "black"}
+                    onPress={toggleCheckbox}
+                  />
+                  <Text style={{ color: checked ? "black" : "#390d7c" }}>
+                    {checked
+                      ? "Your reward will be made public"
+                      : "Make my reward is Public"}
+                  </Text>
+                </View>
+              </View>
+            </View>
           </View>
         </View>
-            
-          </View>
-        </View>
-
-       
-      </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -216,14 +213,14 @@ const styles = StyleSheet.create({
     // marginHorizontal: 25,
     paddingHorizontal: 23,
     paddingVertical: 18,
-    flex: 1
+    flex: 1,
   },
   introContainer: {
     marginVertical: 20,
   },
   introText: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     // fontFamily: ''
   },
   inputContainer: {
@@ -269,16 +266,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 3,
     paddingVertical: 8,
     paddingHorizontal: 10,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 8,
-    borderWidth: 1
+    borderWidth: 1,
   },
   selectedItem: {
-    backgroundColor: '#add8e6', // Light blue background for selected items
+    backgroundColor: "#add8e6", // Light blue background for selected items
   },
   previewTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   textAreaContainer: {
     display: "flex",
@@ -314,13 +311,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 17,
   },
-  footer:{
-    gap: 70
+  footer: {
+    gap: 70,
   },
-  checkboxContainer:{
-   flexDirection: 'row',
-   alignItems: 'center'
-  }
-
- 
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });
