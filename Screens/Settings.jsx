@@ -11,17 +11,14 @@ import Card from "../components/Card";
 import SettingsButton from "../components/SettingsButton";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ChangePassword from './ChangePassword'
-import { useNavigation } from '@react-navigation/native';
+import ChangePassword from "./ChangePassword";
+import { useNavigation } from "@react-navigation/native";
 // import { createStackNavigator } from '@react-navigation/stack';
-
-
-
 
 // const Stack = createStackNavigator();
 
-
-{/*
+{
+  /*
 const Item = ({ item, index, navigation }) => {
   return (
     <TouchableOpacity
@@ -47,8 +44,8 @@ const Item = ({ item, index, navigation }) => {
     </TouchableOpacity>
   );
 };
-*/}
-
+*/
+}
 
 const { height, width } = Dimensions.get("window");
 export default function Settings() {
@@ -57,7 +54,7 @@ export default function Settings() {
   const navigateToScreen = (screenName) => {
     navigation.navigate(screenName);
   };
-  
+
   const image = require("../assets/images/profile.png");
   return (
     <SafeAreaView style={styles.container}>
@@ -81,47 +78,92 @@ export default function Settings() {
         <Card title="Lunches Rewarded" number="10" backgroundColor="#F2C950" />
       </View>
 
-     
-      
       <View>
-      <TouchableOpacity style={styles.button}
-      onPress={() => navigateToScreen('Screen1')}>
-      <View>      
-      <Ionicons name="person-outline" size={24} style={styles.icon} />    
-      </View>
-      <Text style={styles.text}>Edit Profile</Text>
-      <Ionicons name="md-chevron-forward" size={24} style={{ color: '#390D7C', marginLeft: 'auto' }} />
-     </TouchableOpacity>
-    
-      <TouchableOpacity style={styles.button}
-      onPress={() => navigateToScreen('ChangePassword')}>
-      <View style={styles.iconContainer}>      
-      <Ionicons name="ios-lock-closed-outline" size={24} style={styles.icon} />    
-      </View>
-      <Text style={styles.text}>Change Password</Text>
-      <Ionicons name="md-chevron-forward" size={24} style={{color: '#390D7C', marginLeft: 'auto' }} />
-     </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigateToScreen("Screen1")}
+        >
+          <View>
+            <Ionicons name="person-outline" size={24} style={styles.icon} />
+          </View>
+          <Text style={styles.text}>Edit Profile</Text>
+          <Ionicons
+            name="md-chevron-forward"
+            size={24}
+            style={{ color: "#390D7C", marginLeft: "auto" }}
+          />
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
-      <View style={styles.iconContainer}>      
-      <Ionicons name="ios-card-outline" size={24} style={styles.icon} />    
-      </View>
-      <Text style={styles.text}>Converted Lunches</Text>
-      <Ionicons name="md-chevron-forward" size={24} style={{color: '#390D7C', marginLeft: 'auto' }} />
-     </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigateToScreen("ChangePassword")}
+        >
+          <View style={styles.iconContainer}>
+            <Ionicons
+              name="ios-lock-closed-outline"
+              size={24}
+              style={styles.icon}
+            />
+          </View>
+          <Text style={styles.text}>Change Password</Text>
+          <Ionicons
+            name="md-chevron-forward"
+            size={24}
+            style={{ color: "#390D7C", marginLeft: "auto" }}
+          />
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
-      <View style={styles.iconContainer}>      
-      <Ionicons name="moon" size={24} style={styles.icon} />    
-      </View>
-      <Text style={styles.text}>Darks Theme</Text>
-      <Ionicons name="md-chevron-forward" size={24} style={{color: '#390D7C', marginLeft: 'auto' }} />
-     </TouchableOpacity>
+        <TouchableOpacity style={styles.button}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="ios-card-outline" size={24} style={styles.icon} />
+          </View>
+          <Text style={styles.text}>Converted Lunches</Text>
+          <Ionicons
+            name="md-chevron-forward"
+            size={24}
+            style={{ color: "#390D7C", marginLeft: "auto" }}
+          />
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
-      <View style={styles.iconContainer}>      
-      <Ionicons name="ios-shield-outline" size={24} style={styles.icon} />    
+        <TouchableOpacity style={styles.button}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="moon" size={24} style={styles.icon} />
+          </View>
+          <Text style={styles.text}>Darks Theme</Text>
+          <Ionicons
+            name="md-chevron-forward"
+            size={24}
+            style={{ color: "#390D7C", marginLeft: "auto" }}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigateToScreen("PrivacyPolicy")}
+        >
+          <View style={styles.iconContainer}>
+            <Ionicons name="ios-shield-outline" size={24} style={styles.icon} />
+          </View>
+          <Text style={styles.text}>Privacy Policy</Text>
+          <Ionicons
+            name="md-chevron-forward"
+            size={24}
+            style={{ color: "#390D7C", marginLeft: "auto" }}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button}>
+          <View style={styles.iconContainer}>
+            <Ionicons
+              name="md-arrow-forward-circle-outline"
+              size={24}
+              style={styles.icon}
+            />
+          </View>
+          <Text style={styles.text}>Logout</Text>
+        </TouchableOpacity>
       </View>
+<<<<<<< HEAD
       <Text style={styles.text}>Privacy Policy</Text>
       <Ionicons name="md-chevron-forward" size={24} style={{color: '#390D7C', marginLeft: 'auto' }} />
      </TouchableOpacity>
@@ -136,6 +178,8 @@ export default function Settings() {
       </View> 
        
      
+=======
+>>>>>>> main
     </SafeAreaView>
   );
 }
@@ -178,14 +222,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   button: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
     padding: 12,
     gap: 20,
   },
   text: {
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: "center",
   },
 });

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  SafeAreaView,
   KeyboardAvoidingView,
   StyleSheet,
   Text,

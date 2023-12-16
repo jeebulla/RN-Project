@@ -190,6 +190,7 @@ const SignUp = () => {
                     onChangeText={handleChange("verificationCode")}
                     onBlur={handleBlur("verificationCode")}
                     value={values.verificationCode}
+                    keyboardType="numeric"
                   />
                 </View>
               </React.Fragment>
@@ -204,6 +205,7 @@ const SignUp = () => {
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
                 value={values.email}
+                keyboardType="email-address"
               />
 
               <Icon
