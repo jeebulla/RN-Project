@@ -53,7 +53,7 @@ export default function ChangePassword() {
       initialValues={{ currentPassword: "", newPassword: "", confirmPassword: "" }}
       validationSchema={ChangePasswordSchema}
       onSubmit={(values) => {
-        // Implement logic to update password with newPassword
+        // Implement the logic to update password with newPassword
         console.log("New password:", values.newPassword);
       }}
     >
