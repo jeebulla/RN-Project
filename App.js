@@ -12,10 +12,10 @@ import SignIn from "./Screens/SignIn";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
 import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import RewardEmployee from "./Screens/EmployeeReward";
+// import RewardEmployee from "./Screens/EmployeeReward";
 // import PaymentScreen from "./Screens/PaymentScreen";
-// import RecieveReward from './Screens/RecieveReward'
-
+// import RecieveReward from "./Screens/RecieveReward";
+// import TransferReward from './Screens/TransferReward'
 
 
 const Tab = createBottomTabNavigator();
@@ -61,11 +61,11 @@ const AuthenticatedScreen = () => {
 const AuthScreen = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="SignUp" component={RewardEmployee} />
-      {/* <Stack.Screen name="SignUp" component={PaymentScreen} /> */}
+      {/* <Stack.Screen name="SignUp" component={RewardEmployee} /> */}
+      {/* <Stack.Screen name="SignUp" component={TransferReward} /> */}
       {/* <Stack.Screen name="SignUp" component={RecieveReward} /> */}
-      {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
-      {/* <Stack.Screen name="Login" component={SignIn} /> */}
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="Login" component={SignIn} />
     </Stack.Navigator>
   );
 };
