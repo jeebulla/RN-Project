@@ -7,16 +7,23 @@ import {
   StyleSheet,
   Modal,
   Alert,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { signUp } from "../http/auth";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignUp = () => {
   const [isOrganization, setIsOrganization] = React.useState(true);
   const [successModalVisible, setSuccessModalVisible] = React.useState(false);
+  const [passwordVisible, setPasswordVisible] = React.useState(false); // New state
+  const [confirmPasswordVisible, setConfirmPasswordVisible] =
+    React.useState(false); // New state
   const navigation = useNavigation();
 
   const toggleSuccessModal = () => {
@@ -38,7 +45,7 @@ const SignUp = () => {
     }
 
     // Show success modal
-    // toggleSuccessModal();
+    toggleSuccessModal();
   };
 
   const goToHome = () => {
@@ -63,13 +70,13 @@ const SignUp = () => {
   });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>CREATE AN ACCOUNT</Text>
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={[
-            styles.button,
+            styles.button,    
             isOrganization
               ? { backgroundColor: "#390D7C" }
               : {
@@ -118,84 +125,133 @@ const SignUp = () => {
           Kindly ensure you input the correct details in the forms below
         </Text>
       </View>
-
-      <Formik
-        initialValues={{
-          organizationName: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          fullName: "",
-          verificationCode: "",
-        }}
-        validationSchema={validationSchema}
-        onSubmit={handleSignup}
+      <KeyboardAvoidingView
+        behavior="height"
+        style={styles.keyboardAvoidingContainer}
       >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-        }) => (
-          <View style={styles.con}>
-            {isOrganization ? (
-              <React.Fragment>
-                {/* Organization Form */}
-                <Text style={styles.inputTitle}>Organization’s Name:</Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Formik
+            initialValues={{
+              organizationName: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+              fullName: "",
+              verificationCode: "",
+            }}
+            validationSchema={validationSchema}
+            onSubmit={handleSignup}
+          >
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
+              <View style={styles.con}>
+                {isOrganization ? (
+                  <React.Fragment >
+                    {/* Organization Form */}
+                    <Text style={styles.inputTitle}>Organization’s Name:</Text>
+                    <View style={styles.nameContainer}>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Enter organization’s name"
+                        onChangeText={handleChange("organizationName")}
+                        onBlur={handleBlur("organizationName")}
+                        value={values.organizationName}
+                      />
+                      <Icon
+                        name="user-edit"
+                        size={15}
+                        color="#3C3C3C"
+                        style={styles.icon}
+                      />
+                    </View>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    {/* Staff Form */}
+                    <Text style={styles.inputTitle}>Full Name:</Text>
+                    <View style={styles.nameContainer}>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Enter full name"
+                        onChangeText={handleChange("fullName")}
+                        onBlur={handleBlur("fullName")}
+                        value={values.fullName}
+                      />
+                      <Icon
+                        name="user-edit"
+                        size={15}
+                        color="#3C3C3C"
+                        style={styles.icon}
+                      />
+                    </View>
+
+                    <Text style={styles.inputTitle}>Company Code:</Text>
+                    <View style={styles.nameContainer}>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Enter company code"
+                        onChangeText={handleChange("verificationCode")}
+                        onBlur={handleBlur("verificationCode")}
+                        value={values.verificationCode}
+                      />
+                    </View>
+                  </React.Fragment>
+                )}
+
+                {/* Common Fields */}
+                <Text style={styles.inputTitle}>Email Address:</Text>
                 <View style={styles.nameContainer}>
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter organization’s name"
-                    onChangeText={handleChange("organizationName")}
-                    onBlur={handleBlur("organizationName")}
-                    value={values.organizationName}
+                    placeholder="Enter your work email address"
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
                   />
-
                   <Icon
-                    name="user-edit"
+                    name="envelope"
                     size={15}
                     color="#3C3C3C"
                     style={styles.icon}
                   />
                 </View>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {/* Staff Form */}
-                <Text style={styles.inputTitle}>Full Name:</Text>
+                {/* Display email error message */}
+                <Text style={styles.errorMessage}>
+                  {touched.email && errors.email}
+                </Text>
+
+                {/* Display password and confirm password with visibility toggle */}
+                <Text style={styles.inputTitle}>Password:</Text>
                 <View style={styles.nameContainer}>
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter full name"
-                    onChangeText={handleChange("fullName")}
-                    onBlur={handleBlur("fullName")}
-                    value={values.fullName}
+                    placeholder="Enter your password"
+                    secureTextEntry={!passwordVisible}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
                   />
-
-                  <Icon
-                    name="user-edit"
-                    size={15}
-                    color="#3C3C3C"
+                  <TouchableOpacity
+                    onPress={() => setPasswordVisible(!passwordVisible)}
                     style={styles.icon}
-                  />
+                  >
+                    <Icon
+                      name={passwordVisible ? "eye-slash" : "eye"}
+                      size={15}
+                      color="#3C3C3C"
+                    />
+                  </TouchableOpacity>
                 </View>
-
-                <Text style={styles.inputTitle}>Company Code:</Text>
-                <View style={styles.nameContainer}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter company code"
-                    onChangeText={handleChange("verificationCode")}
-                    onBlur={handleBlur("verificationCode")}
-                    value={values.verificationCode}
-                    keyboardType="numeric"
-                  />
-                </View>
-              </React.Fragment>
-            )}
-
+                {/* Display password error message */}
+                <Text style={styles.errorMessage}>
+                  {touched.password && errors.password}
+                </Text>
             {/* Common Fields */}
             <Text style={styles.inputTitle}>Email Address:</Text>
             <View style={styles.nameContainer}>
@@ -231,43 +287,48 @@ const SignUp = () => {
             </View>
             {isOrganization && (
               <React.Fragment>
+
                 <Text style={styles.inputTitle}>Confirm Password:</Text>
-                <View style={styles.nameContainer}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Re-enter your password"
-                    secureTextEntry
-                    onChangeText={handleChange("confirmPassword")}
-                    onBlur={handleBlur("confirmPassword")}
-                    value={values.confirmPassword}
-                  />
+                    <View style={styles.nameContainer}>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Re-enter your password"
+                        secureTextEntry={!confirmPasswordVisible}
+                        onChangeText={handleChange("confirmPassword")}
+                        onBlur={handleBlur("confirmPassword")}
+                        value={values.confirmPassword}
+                      />
+                      <TouchableOpacity
+                        onPress={() =>
+                          setConfirmPasswordVisible(!confirmPasswordVisible)
+                        }
+                        style={styles.icon}
+                      >
+                        <Icon
+                          name={confirmPasswordVisible ? "eye-slash" : "eye"}
+                          size={15}
+                          color="#3C3C3C"
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    {/* Display confirm password error message */}
+                    <Text style={styles.errorMessage}>
+                      {touched.confirmPassword && errors.confirmPassword}
+                    </Text>
 
-                  <Icon
-                    name="lock"
-                    size={15}
-                    color="#3C3C3C"
-                    style={styles.icon}
-                  />
-                </View>
-              </React.Fragment>
+              
+
+                <TouchableOpacity
+                  style={styles.signupButton}
+                  onPress={handleSubmit}
+                >
+                  <Text style={styles.signupButtonText}>Create Account</Text>
+                </TouchableOpacity>
+              </View>
             )}
-
-            {/* Display error messages */}
-            {Object.keys(errors).map((field, index) => (
-              <Text key={index} style={{ color: "red" }}>
-                {touched[field] && errors[field]}
-              </Text>
-            ))}
-
-            <TouchableOpacity
-              style={styles.signupButton}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.signupButtonText}>Create Account</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
+          </Formik>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
 
       {/* Success Modal */}
       <Modal
@@ -292,7 +353,7 @@ const SignUp = () => {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -303,11 +364,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  keyboardAvoidingContainer: {
+    flex: 1,
+    width: "90%",
+    justifyContent: "center"
+  },
   // sec: {
   //   height: 100,
   // },
   con: {
-    width: "90%",
+    
+   
   },
   title: {
     fontSize: 20,
@@ -335,7 +402,6 @@ const styles = StyleSheet.create({
   conText: {
     marginLeft: 10,
     fontSize: 18,
-    marginBottom: 15,
   },
   inputTitle: {
     marginTop: 10,
@@ -348,7 +414,6 @@ const styles = StyleSheet.create({
   nameContainer: {
     flexDirection: "row",
     alignItems: "center",
-
     position: "relative",
   },
   icon: {
@@ -362,7 +427,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: "#AE9CC9",
     borderWidth: 1,
-    marginBottom: 10,
     padding: 10,
     borderRadius: 5,
   },
@@ -424,6 +488,10 @@ const styles = StyleSheet.create({
     color: "#141414",
     textAlign: "center",
     fontWeight: "600",
+  },
+  errorMessage: {
+    color: "red",
+    marginBottom: 10,
   },
 });
 
