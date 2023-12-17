@@ -9,8 +9,10 @@ import AppLoading from "expo-app-loading";
 
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
+import LogOut from "./Screens/LogOut";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
 import { useContext, useEffect, useState } from "react";
+import { ThemeProvider } from "./ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import PaymentScreen from "./Screens/PaymentScreen";
@@ -79,7 +81,6 @@ const AuthScreen = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="Login" component={SignIn} />
-      {/* <Stack.Screen name="Payment" component={PaymentScreen} /> */}
     </Stack.Navigator>
   );
 };
@@ -94,36 +95,36 @@ const Navigation = () => {
   );
 };
 
-// const Root = () => {
-//   const [isTryingLogin, setIsTryingLogin] = useState(true);
+const Root = () => {
+  const [isTryingLogin, setIsTryingLogin] = useState(true);
 
-//   const authCtx = useContext(AuthContext);
+  const authCtx = useContext(AuthContext);
 
-//   useEffect(() => {
-//     async function fetchToken() {
-//       const storedToken = await AsyncStorage.getItem("token");
+  useEffect(() => {
+    async function fetchToken() {
+      const storedToken = await AsyncStorage.getItem("token");
 
-//       if (storedToken) {
-//         authCtx.authenticate(storedToken);
-//       }
+      if (storedToken) {
+        authCtx.authenticate(storedToken);
+      }
 
-//       setIsTryingLogin(false);
-//     }
+      setIsTryingLogin(false);
+    }
 
-//     fetchToken();
-//   }, []);
+    fetchToken();
+  }, []);
 
-//   if (isTryingLogin) {
-//     return <AppLoading />;
-//   }
+  if (isTryingLogin) {
+    return <AppLoading />;
+  }
 
-//   return <Navigation />;
-// };
+  return <Navigation />;
+};
 
 export default function App() {
   return (
     <AuthContextProvider>
-      <AuthenticatedScreen />
+      <Root />
     </AuthContextProvider>
   );
 }

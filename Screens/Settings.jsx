@@ -13,6 +13,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ChangePassword from "./ChangePassword";
 import { useNavigation } from "@react-navigation/native";
+import LogOut from "./LogOut";
+import { useTheme } from "../ThemeContext";
+
 // import { createStackNavigator } from '@react-navigation/stack';
 
 // const Stack = createStackNavigator();
@@ -54,6 +57,14 @@ export default function Settings() {
   const navigateToScreen = (screenName) => {
     navigation.navigate(screenName);
   };
+
+  const { isDarkTheme, toggleTheme } = useTheme();
+
+  // Update styles based on the theme
+  const containerStyles = [
+    styles.container,
+    isDarkTheme && styles.darkContainer,
+  ];
 
   const image = require("../assets/images/profile.png");
   return (
@@ -125,11 +136,13 @@ export default function Settings() {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+
+        <TouchableOpacity style={styles.button} onPress={toggleTheme}>
           <View style={styles.iconContainer}>
             <Ionicons name="moon" size={24} style={styles.icon} />
           </View>
-          <Text style={styles.text}>Darks Theme</Text>
+          <Text style={styles.text}>Toggle Dark Theme</Text>
+
           <Ionicons
             name="md-chevron-forward"
             size={24}
@@ -152,7 +165,10 @@ export default function Settings() {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("LogOut")}
+        >
           <View style={styles.iconContainer}>
             <Ionicons
               name="md-arrow-forward-circle-outline"
@@ -163,23 +179,6 @@ export default function Settings() {
           <Text style={styles.text}>Logout</Text>
         </TouchableOpacity>
       </View>
-<<<<<<< HEAD
-      <Text style={styles.text}>Privacy Policy</Text>
-      <Ionicons name="md-chevron-forward" size={24} style={{color: '#390D7C', marginLeft: 'auto' }} />
-     </TouchableOpacity>
-     
-         
-      <TouchableOpacity style={styles.button}>
-      <View style={styles.iconContainer}>      
-      <Ionicons name="md-arrow-forward-circle-outline" size={24} style={{ color: "red" }} />    
-      </View>
-      <Text style={styles.text}>Logout</Text>
-      </TouchableOpacity>
-      </View> 
-       
-     
-=======
->>>>>>> main
     </SafeAreaView>
   );
 }
@@ -189,6 +188,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     width: width * 1,
+  },
+  darkContainer: {
+    backgroundColor: "#000", // Dark background color
   },
   headerText: {
     alignItems: "flex-start",

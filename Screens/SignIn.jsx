@@ -6,7 +6,11 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome5";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -16,6 +20,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignIn = ({ navigation }) => {
+  const [passwordVisible, setPasswordVisible] = React.useState(false); 
+
   const handleSignIn = (values) => {
     // Handling  sign-in logic here using the 'values' object
     console.log("Sign-in values:", values);
@@ -23,6 +29,11 @@ const SignIn = ({ navigation }) => {
   };
 
   return (
+    <KeyboardAvoidingView
+    behavior="padding" // 'padding' or 'height' depending on your preference
+    style={styles.keyboardAvoidingContainer}
+  >
+  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
       <View style={styles.con}>
         <Text style={styles.text}>Hi there,</Text>
@@ -58,14 +69,26 @@ const SignIn = ({ navigation }) => {
               )}
 
               <Text style={styles.inputTitle}>Password:</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter password"
-                secureTextEntry
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
-              />
+                <View style={styles.nameContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your password"
+                    secureTextEntry={!passwordVisible}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setPasswordVisible(!passwordVisible)}
+                    style={styles.icon}
+                  >
+                    <Icon
+                      name={passwordVisible ? "eye-slash" : "eye"}
+                      size={15}
+                      color="#3C3C3C"
+                    />
+                  </TouchableOpacity>
+                </View>
               {touched.password && errors.password && (
                 <Text style={{ color: "red" }}>{errors.password}</Text>
               )}
@@ -93,6 +116,8 @@ const SignIn = ({ navigation }) => {
         </View>
       </View>
     </View>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -102,6 +127,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
+  },
+  keyboardAvoidingContainer: {
+    flex: 1,
+    justifyContent: "center",
   },
   con: {
     width: "90%",
@@ -167,6 +196,17 @@ const styles = StyleSheet.create({
   account: {
     fontSize: 14,
     color: "#390D7C",
+  },
+  nameContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+
+    position: "relative",
+  },
+  icon: {
+    position: "absolute",
+    right: 20,
+    top: 12,
   },
 });
 
