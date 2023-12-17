@@ -72,9 +72,6 @@ const AuthenticatedScreen = () => {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Rewards" component={Rewards} />
       <Tab.Screen name="Settings" component={Settings} />
-      {/* <Tab.Screen name="Payment" component={PaymentScreen} />
-      <Tab.Screen name="RecieveReward" component={RecieveReward} />
-      <Tab.Screen name="RewardEmployee" component={RewardEmployee} />  */}
     </Tab.Navigator>
   );
 };
@@ -93,8 +90,8 @@ const Navigation = () => {
   const authCtx = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {authCtx.isAuthenticated && <AuthScreen />}
-      {!authCtx.isAuthenticated && <AuthenticatedScreen />}
+      {!authCtx.isAuthenticated && <AuthScreen />}
+      {authCtx.isAuthenticated && <AuthenticatedScreen />}
     </NavigationContainer>
   );
 };
