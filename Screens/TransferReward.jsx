@@ -54,13 +54,22 @@ const users = [
   },
 ];
 
+// const Item = ({ item }) => {
+//   return (
+//     <Pressable style={styles.employeeImg}>
+//       <Text>{item.icon}</Text>
+//       <Text style={styles.scrollImgText}>{item.name}</Text>
+//     </Pressable>
+//   );
+// };
+
 const RewardEmployee = ({ navigation }) => {
   const [selectedEmployee, setSelectedEmployee] = useState([]);
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setState] = React.useState(true);
   const [text, setText] = useState("");
   // const [showAll, setShowAll] = useState(false);
 
-  const toggleCheckbox = () => setChecked(!checked);
+  const toggleCheckbox = () => setState(!checked);
 
   const togglePreview = (employee) => {
     const index = selectedEmployee.findIndex((item) => item.id === employee.id);
@@ -101,14 +110,11 @@ const RewardEmployee = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.body}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        keyboardDismissMode="on-drag"
-      >
+      <ScrollView>
         <View>
           <View style={styles.introContainer}>
             <Text style={styles.introText}>
-              Select an employee you want to reward
+              Select a user to transfer reward
             </Text>
           </View>
           <View style={styles.inputContainer}>
@@ -121,7 +127,7 @@ const RewardEmployee = ({ navigation }) => {
           <View style={styles.scrollContainer}>
             <View style={styles.scrollHeaderContainer}>
               <Text style={styles.scrollHeaderText1}>
-                Who are you giving free lunch?
+                Available to transfer to :
               </Text>
               <Text style={styles.scrollHeaderText2}>View all</Text>
             </View>
@@ -174,7 +180,7 @@ const RewardEmployee = ({ navigation }) => {
                     { backgroundColor: pressed ? "#280957" : "#390d7c" },
                   ]}
                 >
-                  <Text style={styles.btnText}>Reward Employee</Text>
+                  <Text style={styles.btnText}>Transfer Reward</Text>
                 </Pressable>
 
                 <View style={styles.checkboxContainer}>

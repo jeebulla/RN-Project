@@ -252,6 +252,41 @@ const SignUp = () => {
                 <Text style={styles.errorMessage}>
                   {touched.password && errors.password}
                 </Text>
+            {/* Common Fields */}
+            <Text style={styles.inputTitle}>Email Address:</Text>
+            <View style={styles.nameContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your work email address"
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                value={values.email}
+                keyboardType="email-address"
+              />
+
+              <Icon
+                name="envelope"
+                size={15}
+                color="#3C3C3C"
+                style={styles.icon}
+              />
+            </View>
+
+            <Text style={styles.inputTitle}>Password:</Text>
+            <View style={styles.nameContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your password"
+                secureTextEntry
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+              />
+
+              <Icon name="lock" size={15} color="#3C3C3C" style={styles.icon} />
+            </View>
+            {isOrganization && (
+              <React.Fragment>
 
                 <Text style={styles.inputTitle}>Confirm Password:</Text>
                     <View style={styles.nameContainer}>

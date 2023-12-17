@@ -44,6 +44,12 @@ const LunchDetails = ({ navigation }) => {
         >
           <Text style={styles.textWhite}>Redeem Lunch</Text>
         </Pressable>
+        <Pressable
+          style={styles.coloredBtn}
+          onPress={() => navigation.navigate("Transfer")}
+        >
+          <Text style={styles.textWhite}>Tranfer Lunch</Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

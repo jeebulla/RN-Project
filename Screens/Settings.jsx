@@ -136,11 +136,13 @@ export default function Settings() {
           />
         </TouchableOpacity>
 
+
         <TouchableOpacity style={styles.button} onPress={toggleTheme}>
           <View style={styles.iconContainer}>
             <Ionicons name="moon" size={24} style={styles.icon} />
           </View>
           <Text style={styles.text}>Toggle Dark Theme</Text>
+
           <Ionicons
             name="md-chevron-forward"
             size={24}
@@ -148,7 +150,10 @@ export default function Settings() {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigateToScreen("PrivacyPolicy")}
+        >
           <View style={styles.iconContainer}>
             <Ionicons name="ios-shield-outline" size={24} style={styles.icon} />
           </View>
