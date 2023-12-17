@@ -9,8 +9,10 @@ import AppLoading from "expo-app-loading";
 
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
+import LogOut from "./Screens/LogOut";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
 import { useContext, useEffect, useState } from "react";
+import { ThemeProvider } from "./ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RewardEmployee from "./Screens/EmployeeReward";
 // import PaymentScreen from "./Screens/PaymentScreen";
@@ -63,7 +65,12 @@ const AuthScreen = () => {
       {/* <Stack.Screen name="SignUp" component={PaymentScreen} /> */}
       {/* <Stack.Screen name="SignUp" component={RecieveReward} /> */}
       <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="Login" component={SignIn} />
+      
+      {/* <Stack.Screen name="Logout" component={LogOut} /> */}
+      {/* <Stack.Screen name="Login" component={SignIn} /> */}
+      {/* <Stack.Screen name="Home" component={Home} /> */}
+      {/* <Stack.Screen name="Settings" component={Settings} /> */}
+      {/* <Stack.Screen name="LogOut" component={LogOut} />  */}
     </Stack.Navigator>
   );
 };
@@ -107,8 +114,10 @@ const Root = () => {
 
 export default function App() {
   return (
-    <AuthContextProvider>
-      <Root />
-    </AuthContextProvider>
+    <ThemeProvider>
+      <AuthContextProvider>
+        <Root />
+      </AuthContextProvider>
+    </ThemeProvider>
   );
 }
