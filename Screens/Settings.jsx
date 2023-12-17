@@ -11,12 +11,12 @@ import Card from "../components/Card";
 import SettingsButton from "../components/SettingsButton";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ChangePassword from "./ChangePassword";
 import { useNavigation } from "@react-navigation/native";
 import LogOut from "./LogOut";
 import { useTheme } from "../ThemeContext";
 
 // import { createStackNavigator } from '@react-navigation/stack';
+import ChangePassword from './ChangePassword';
 
 // const Stack = createStackNavigator();
 
@@ -92,7 +92,7 @@ export default function Settings() {
       <View>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigateToScreen("Screen1")}
+          onPress={() => navigateToScreen("EditProfile")}
         >
           <View>
             <Ionicons name="person-outline" size={24} style={styles.icon} />
