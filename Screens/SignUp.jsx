@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -18,8 +18,10 @@ import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { signUp } from "../http/auth";
+import { AuthContext } from "../store/auth-context";
 
 const SignUp = () => {
+  const authCtx = useContext(AuthContext);
   const [isOrganization, setIsOrganization] = React.useState(true);
   const [successModalVisible, setSuccessModalVisible] = React.useState(false);
   const [passwordVisible, setPasswordVisible] = React.useState(false); // New state
@@ -27,8 +29,28 @@ const SignUp = () => {
     React.useState(false); // New state
   const navigation = useNavigation();
 
-  const toggleSuccessModal = () => {
-    setSuccessModalVisible(!successModalVisible);
+  const toggleSuccessModal = (value) => {
+    console.log(value);
+    if (value === "done") {
+      setSuccessModalVisible(!successModalVisible);
+      return authCtx.authenticate(
+        result?.data?.tokens?.access?.token,
+        result?.data?.user?.name,
+        result?.data?.user?.role,
+        result?.data?.organization?.organizationCode,
+        result?.data?.organization?.id,
+        result?.data?.user?.email,
+        isOrganization
+          ? result?.data?.organization?.numberOfRewardsGenerated
+          : result?.data?.staff?.rewardsReceived,
+        isOrganization
+          ? result?.data?.organization?.numberOfRewardsRedeemed
+          : result?.data?.staff?.rewardsRedeemed,
+        isOrganization ? null : result?.data?.staff?.rewardsReceived,
+        isOrganization ? null : result?.data?.staff?.rewardsTransferred,
+        isOrganization ? null : result?.data?.staff?.id
+      );
+    }
   };
 
   const handleSignup = async (values) => {
@@ -38,6 +60,7 @@ const SignUp = () => {
       isOrganization ? "organization" : "staff",
       isOrganization ? values.organizationName : values.fullName,
       values.email,
+      values.password,
       isOrganization ? null : values.verificationCode
     );
     console.log(result.data);
@@ -46,13 +69,13 @@ const SignUp = () => {
     }
 
     // Show success modal
-    toggleSuccessModal();
+    toggleSuccessModal(result);
   };
 
-  const goToHome = () => {
+  const goToHome = (param) => {
     // Close the modal and navigate to the login screen
-    toggleSuccessModal();
-    navigation.navigate("Login");
+    toggleSuccessModal(param);
+    // navigation.navigate("Login");
   };
 
   const validationSchema = Yup.object().shape({
@@ -318,7 +341,10 @@ const SignUp = () => {
                   ? "Zuri Organization has been created successfully. Your employees can now reward and redeem free lunches."
                   : "Your details have been registered successfully. You can now reward and redeem free lunches."}
               </Text>
-              <TouchableOpacity style={styles.goHomeButton} onPress={goToHome}>
+              <TouchableOpacity
+                style={styles.goHomeButton}
+                onPress={() => goToHome("done")}
+              >
                 <Text style={styles.goHomeButtonText}>Go Home</Text>
               </TouchableOpacity>
             </View>

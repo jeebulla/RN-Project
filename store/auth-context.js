@@ -12,6 +12,7 @@ export const AuthContext = createContext({
   numberofLaunchesRedeemed: 0,
   numberOfLaunchedReceived: 0,
   numberOfLanchesTransferred: 0,
+  staffId: "",
 
   isAuthenticated: false,
   authenticate: (
@@ -24,7 +25,8 @@ export const AuthContext = createContext({
     numberofLaunchedSent,
     numberofLaunchesRedeemed,
     numberOfLaunchedReceived,
-    numberOfLanchesTransferred
+    numberOfLanchesTransferred,
+    staffId
   ) => {},
   logout: () => {},
 });
@@ -40,6 +42,7 @@ export const AuthContextProvider = ({ children }) => {
   const [numberofLaunchesRedeemed, setNumberOfLaunchRedeemed] = useState(0);
   const [numberOfLanchesTransferred, setNumberOfLanchTransferred] = useState(0);
   const [numberOfLaunchedReceived, setNumberOfLanchReceived] = useState(0);
+  const [staffId, setStaffId] = useState("");
 
   const authenticate = (
     token,
@@ -51,7 +54,8 @@ export const AuthContextProvider = ({ children }) => {
     numberofLaunchedSent,
     numberofLaunchesRedeemed,
     numberOfLaunchedReceived,
-    numberOfLanchesTransferred
+    numberOfLanchesTransferred,
+    staffId
   ) => {
     setAuthToken(token);
     setUsername(username);
@@ -63,6 +67,7 @@ export const AuthContextProvider = ({ children }) => {
     setNumberOfLanchTransferred(numberOfLanchesTransferred);
     setNumberOfLaunchRedeemed(numberofLaunchesRedeemed);
     setNumberofLaunchSent(numberofLaunchedSent);
+    setStaffId(staffId);
 
     AsyncStorage.setItem("username", username);
     AsyncStorage.setItem("userrole", userRole);
@@ -83,6 +88,7 @@ export const AuthContextProvider = ({ children }) => {
       numberofLaunchesRedeemed
     );
     AsyncStorage.setItem("number_of_launched_sent", numberofLaunchedSent);
+    AsyncStorage.setItem("staff_id", staffId);
   };
 
   const logout = () => {
@@ -96,6 +102,7 @@ export const AuthContextProvider = ({ children }) => {
     setNumberOfLaunchRedeemed(0);
     setNumberOfLanchTransferred(0);
     setNumberOfLanchReceived(0);
+    setStaffId(null);
     AsyncStorage.clear();
   };
   const value = {

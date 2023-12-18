@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export async function signUp(role, name, email, password, companyCode) {
+  console.log("Expected values ", role, name, email, password, companyCode);
   try {
     const url =
       "https://employee-management-system-z05q.onrender.com/v1/auth/register";
@@ -11,6 +12,7 @@ export async function signUp(role, name, email, password, companyCode) {
       password,
       code: companyCode,
     });
+    console.log(result.data);
     return result;
   } catch (error) {
     return error.response;
