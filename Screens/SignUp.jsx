@@ -4,19 +4,20 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  ScrollView,
   StyleSheet,
   Modal,
   Alert,
+  SafeAreaView,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
   Keyboard,
+  // Platform,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { signUp } from "../http/auth";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignUp = () => {
   const [isOrganization, setIsOrganization] = React.useState(true);
@@ -72,64 +73,64 @@ const SignUp = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>CREATE AN ACCOUNT</Text>
-
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={[
-            styles.button,    
-            isOrganization
-              ? { backgroundColor: "#390D7C" }
-              : {
-                  backgroundColor: "#EBE7F2",
-                  borderColor: "#390D7C",
-                  borderWidth: 1,
-                },
-          ]}
-          onPress={() => setIsOrganization(true)}
-        >
-          <Text
-            style={[
-              styles.buttonText,
-              { color: isOrganization ? "#E8E8E8" : "#9F9F9F" },
-            ]}
-          >
-            ORGANIZATION
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.button,
-            !isOrganization
-              ? { backgroundColor: "#390D7C" }
-              : {
-                  backgroundColor: "#EBE7F2",
-                  borderColor: "#390D7C",
-                  borderWidth: 1,
-                },
-          ]}
-          onPress={() => setIsOrganization(false)}
-        >
-          <Text
-            style={[
-              styles.buttonText,
-              { color: !isOrganization ? "#E8E8E8" : "#9F9F9F" },
-            ]}
-          >
-            STAFF
-          </Text>
-        </TouchableOpacity>
-      </View>
-
       <View>
-        <Text style={styles.conText}>
-          Kindly ensure you input the correct details in the forms below
-        </Text>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              isOrganization
+                ? { backgroundColor: "#390D7C" }
+                : {
+                    backgroundColor: "#EBE7F2",
+                    borderColor: "#390D7C",
+                    borderWidth: 1,
+                  },
+            ]}
+            onPress={() => setIsOrganization(true)}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                { color: isOrganization ? "#E8E8E8" : "#9F9F9F" },
+              ]}
+            >
+              ORGANIZATION
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              !isOrganization
+                ? { backgroundColor: "#390D7C" }
+                : {
+                    backgroundColor: "#EBE7F2",
+                    borderColor: "#390D7C",
+                    borderWidth: 1,
+                  },
+            ]}
+            onPress={() => setIsOrganization(false)}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                { color: !isOrganization ? "#E8E8E8" : "#9F9F9F" },
+              ]}
+            >
+              STAFF
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <Text style={styles.conText}>
+            Kindly ensure you input the correct details in the forms below
+          </Text>
+        </View>
       </View>
       <KeyboardAvoidingView
-        behavior="height"
+        behavior="Platform.OS === 'ios' ? 'padding' : 'height'"
         style={styles.keyboardAvoidingContainer}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView onPress={Keyboard.dismiss}>
           <Formik
             initialValues={{
               organizationName: "",
@@ -150,9 +151,9 @@ const SignUp = () => {
               errors,
               touched,
             }) => (
-              <View style={styles.con}>
+              <View>
                 {isOrganization ? (
-                  <React.Fragment >
+                  <View>
                     {/* Organization Form */}
                     <Text style={styles.inputTitle}>Organization’s Name:</Text>
                     <View style={styles.nameContainer}>
@@ -170,9 +171,9 @@ const SignUp = () => {
                         style={styles.icon}
                       />
                     </View>
-                  </React.Fragment>
+                  </View>
                 ) : (
-                  <React.Fragment>
+                  <View>
                     {/* Staff Form */}
                     <Text style={styles.inputTitle}>Full Name:</Text>
                     <View style={styles.nameContainer}>
@@ -201,7 +202,7 @@ const SignUp = () => {
                         value={values.verificationCode}
                       />
                     </View>
-                  </React.Fragment>
+                  </View>
                 )}
 
                 {/* Common Fields */}
@@ -252,71 +253,34 @@ const SignUp = () => {
                 <Text style={styles.errorMessage}>
                   {touched.password && errors.password}
                 </Text>
-            {/* Common Fields */}
-            <Text style={styles.inputTitle}>Email Address:</Text>
-            <View style={styles.nameContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your work email address"
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                value={values.email}
-                keyboardType="email-address"
-              />
-
-              <Icon
-                name="envelope"
-                size={15}
-                color="#3C3C3C"
-                style={styles.icon}
-              />
-            </View>
-
-            <Text style={styles.inputTitle}>Password:</Text>
-            <View style={styles.nameContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your password"
-                secureTextEntry
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
-              />
-
-              <Icon name="lock" size={15} color="#3C3C3C" style={styles.icon} />
-            </View>
-            {isOrganization && (
-              <React.Fragment>
 
                 <Text style={styles.inputTitle}>Confirm Password:</Text>
-                    <View style={styles.nameContainer}>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Re-enter your password"
-                        secureTextEntry={!confirmPasswordVisible}
-                        onChangeText={handleChange("confirmPassword")}
-                        onBlur={handleBlur("confirmPassword")}
-                        value={values.confirmPassword}
-                      />
-                      <TouchableOpacity
-                        onPress={() =>
-                          setConfirmPasswordVisible(!confirmPasswordVisible)
-                        }
-                        style={styles.icon}
-                      >
-                        <Icon
-                          name={confirmPasswordVisible ? "eye-slash" : "eye"}
-                          size={15}
-                          color="#3C3C3C"
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    {/* Display confirm password error message */}
-                    <Text style={styles.errorMessage}>
-                      {touched.confirmPassword && errors.confirmPassword}
-                    </Text>
-
-              
+                <View style={styles.nameContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Re-enter your password"
+                    secureTextEntry={!confirmPasswordVisible}
+                    onChangeText={handleChange("confirmPassword")}
+                    onBlur={handleBlur("confirmPassword")}
+                    value={values.confirmPassword}
+                  />
+                  <TouchableOpacity
+                    onPress={() =>
+                      setConfirmPasswordVisible(!confirmPasswordVisible)
+                    }
+                    style={styles.icon}
+                  >
+                    <Icon
+                      name={confirmPasswordVisible ? "eye-slash" : "eye"}
+                      size={15}
+                      color="#3C3C3C"
+                    />
+                  </TouchableOpacity>
+                </View>
+                {/* Display confirm password error message */}
+                <Text style={styles.errorMessage}>
+                  {touched.confirmPassword && errors.confirmPassword}
+                </Text>
 
                 <TouchableOpacity
                   style={styles.signupButton}
@@ -327,7 +291,7 @@ const SignUp = () => {
               </View>
             )}
           </Formik>
-        </TouchableWithoutFeedback>
+        </ScrollView>
       </KeyboardAvoidingView>
 
       {/* Success Modal */}
@@ -361,26 +325,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
-    justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 20,
   },
   keyboardAvoidingContainer: {
     flex: 1,
-    width: "90%",
-    justifyContent: "center"
-  },
-  // sec: {
-  //   height: 100,
-  // },
-  con: {
-    
-   
+    width: "100%",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#390D7C",
-    marginBottom: 20,
+    marginVertical: 30,
   },
   buttonsContainer: {
     width: "100%",
@@ -405,25 +362,25 @@ const styles = StyleSheet.create({
   },
   inputTitle: {
     marginTop: 10,
-    marginBottom: 5,
+    marginLeft: 22,
     fontSize: 16,
     fontWeight: "bold",
     justifyContent: "flex-start",
     alignItems: "flex-start",
   },
   nameContainer: {
-    flexDirection: "row",
-    alignItems: "center",
     position: "relative",
+    alignItems: "center",
+    marginVertical: 4,
   },
   icon: {
     position: "absolute",
-    right: 20,
+    right: 40,
     top: 12,
   },
   input: {
-    flex: 1,
-    width: "100%",
+    width: "90%",
+    alignSelf: "center",
     height: 40,
     borderColor: "#AE9CC9",
     borderWidth: 1,
@@ -491,7 +448,8 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     color: "red",
-    marginBottom: 10,
+    marginLeft: 22,
+    fontSize: 14,
   },
 });
 

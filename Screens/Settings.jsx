@@ -136,7 +136,6 @@ export default function Settings() {
           />
         </TouchableOpacity>
 
-
         <TouchableOpacity style={styles.button} onPress={toggleTheme}>
           <View style={styles.iconContainer}>
             <Ionicons name="moon" size={24} style={styles.icon} />
@@ -167,7 +166,7 @@ export default function Settings() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("LogOut")}
+          onPress={() => navigation.navigate("SignIn")}
         >
           <View style={styles.iconContainer}>
             <Ionicons

@@ -9,29 +9,22 @@ import AppLoading from "expo-app-loading";
 
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
-import LogOut from "./Screens/LogOut";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
 import { useContext, useEffect, useState } from "react";
 import { ThemeProvider } from "./ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import PaymentScreen from "./Screens/PaymentScreen";
-import RecieveReward from "./Screens/RecieveReward";
-import RewardEmployee from "./Screens/EmployeeReward";
-
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const SettingsStackScreen = () => (
-  <Stack.Navigator>
-    <Stack.Screen name="Settings" component={Settings}
-    options={{ headerShown: false }} />
-    <Stack.Screen name="Screen1" component={Screen1} />
-    <Stack.Screen name="ChangePassword" component={ChangePassword}
-    options={{ headerShown: false }} />
-    <Stack.Screen name="Screen3" component={Screen3} />
-  </Stack.Navigator>
-);
+// const SettingsStackScreen = () => (
+//   <Stack.Navigator screenOptions={{ headerShown: false }}>
+//     <Stack.Screen name="Settings" component={Settings} />
+//     <Stack.Screen name="Screen1" component={Screen1} />
+//     <Stack.Screen name="ChangePassword" component={ChangePassword} />
+//     <Stack.Screen name="Screen3" component={Screen3} />
+//   </Stack.Navigator>
+// );
 
 // const TabScreen = () => {
 //   return (
@@ -62,14 +55,29 @@ const SettingsStackScreen = () => (
 
 const AuthenticatedScreen = () => {
   return (
-    <NavigationContainer>
-    <Tab.Navigator>
-      <Tab.Screen options={{ headerShown: false }} name="Settings" component={SettingsStackScreen} />
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === "Home") {
+            iconName = focused ? "home" : "home-outline";
+          } else if (route.name === "Rewards") {
+            iconName = focused ? "trophy" : "trophy-outline";
+          } else if (route.name === "Settings") {
+            iconName = focused ? "settings" : "settings-outline";
+          }
+          return <Ionicon name={iconName} size={25} color={color} />;
+        },
+        tabBarActiveTintColor: "#390D7C",
+        tabBarInactiveTintColor: "#390D7C",
+      })}
+      initialRouteName="Home"
+    >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Rewards" component={Rewards} />
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 
@@ -86,8 +94,8 @@ const Navigation = () => {
   const authCtx = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {!authCtx.isAuthenticated && <AuthScreen />}
-      {authCtx.isAuthenticated && <AuthenticatedScreen />}
+      {authCtx.isAuthenticated && <AuthScreen />}
+      {!authCtx.isAuthenticated && <AuthenticatedScreen />}
     </NavigationContainer>
   );
 };
@@ -120,8 +128,10 @@ const Root = () => {
 
 export default function App() {
   return (
-    <AuthContextProvider>
-      <Root />
-    </AuthContextProvider>
+    <ThemeProvider>
+      <AuthContextProvider>
+        <Root />
+      </AuthContextProvider>
+    </ThemeProvider>
   );
 }

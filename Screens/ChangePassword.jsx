@@ -7,14 +7,15 @@ import {
   Image,
   View,
   TextInput,
-  Button,
+  ScrollView,
+  SafeAreaView,
+  Dimensions,
 } from "react-native";
-import { Formik, Field } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Field } from "formik";
+import * as Yup from "yup";
 
 import CustomInput from "../components/CustomInput";
-
-
+const { width, height } = Dimensions.get("window");
 const ChangePasswordSchema = Yup.object().shape({
   currentPassword: Yup.string()
     .required("Current password is required.")
@@ -25,7 +26,7 @@ const ChangePasswordSchema = Yup.object().shape({
         // This is to Access stored current password from context
         const storedPassword = context.password;
         return value === storedPassword;
-      },
+      }
     ),
   newPassword: Yup.string()
     .required("New password is required.")
@@ -42,70 +43,87 @@ export default function ChangePassword() {
   const imageUrl =
     "https://res.cloudinary.com/dycukxm7r/image/upload/v1702723200/IMG-20231216-WA0012_kw4fiw.jpg";
   return (
-    <SafeAreaView>    
-    <KeyboardAvoidingView style={styles.container}>
-    <View style={styles.header}>
-      <Image source={{ uri: imageUrl }} style={styles.image} />
-      <Text style={styles.title}>Change Password</Text>
-    </View>
-    <Formik
-      initialValues={{ currentPassword: "", newPassword: "", confirmPassword: "" }}
-      validationSchema={ChangePasswordSchema}
-      onSubmit={(values) => {
-        // Implement the logic to update password with newPassword
-        console.log("New password:", values.newPassword);
-      }}
-    >
-      {({ values, errors, handleChange, handleSubmit }) => (
-        <View style={styles.inputBox}>
-          <TextInput
-            style={styles.input}
-            placeholder="Current Password"
-            secureTextEntry
-            value={values.currentPassword}
-            onChangeText={handleChange("currentPassword")}
-          />
-          {errors.currentPassword && <Text style={{ color: "red" }}>{errors.currentPassword}</Text>}
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+        <Text style={styles.title}>Change Password</Text>
+      </View>
+      <Formik
+        initialValues={{
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        }}
+        validationSchema={ChangePasswordSchema}
+        onSubmit={(values) => {
+          // Implement the logic to update password with newPassword
+          console.log("New password:", values.newPassword);
+        }}
+      >
+        {({ values, errors, handleChange, handleSubmit }) => (
+          <KeyboardAvoidingView behavior="Platform.OS === 'ios' ? 'padding' : 'height'">
+            <ScrollView keyboardDismissMode="on-drag">
+              <View style={styles.inputBox}>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Current Password"
+                    secureTextEntry
+                    value={values.currentPassword}
+                    onChangeText={handleChange("currentPassword")}
+                  />
+                  {errors.currentPassword && (
+                    <Text style={styles.errorMsg}>
+                      {errors.currentPassword}
+                    </Text>
+                  )}
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="New Password"
+                    secureTextEntry
+                    value={values.newPassword}
+                    onChangeText={handleChange("newPassword")}
+                  />
+                  {errors.newPassword && (
+                    <Text style={styles.errorMsg}>{errors.newPassword}</Text>
+                  )}
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Confirm Password"
+                    secureTextEntry
+                    value={values.confirmPassword}
+                    onChangeText={handleChange("confirmPassword")}
+                  />
+                  {errors.confirmPassword && (
+                    <Text style={styles.errorMsg}>
+                      {errors.confirmPassword}
+                    </Text>
+                  )}
+                </View>
 
-          <TextInput
-            style={styles.input}
-            placeholder="New Password"
-            secureTextEntry
-            value={values.newPassword}
-            onChangeText={handleChange("newPassword")}
-          />
-          {errors.newPassword && <Text style={{ color: "red" }}>{errors.newPassword}</Text>}
-
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm Password"
-            secureTextEntry
-            value={values.confirmPassword}
-            onChangeText={handleChange("confirmPassword")}
-          />
-          {errors.confirmPassword && <Text style={{ color: "red" }}>{errors.confirmPassword}</Text>}
-
-         
-          <TouchableOpacity
-          style={styles.signupButton}
-          onPress={handleSubmit}
-          >
-          <Text style={styles.signupButtonText}>Reset Password</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    </Formik>
-    </KeyboardAvoidingView>
+                <TouchableOpacity
+                  style={styles.signupButton}
+                  onPress={handleSubmit}
+                >
+                  <Text style={styles.signupButtonText}>Reset Password</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        )}
+      </Formik>
     </SafeAreaView>
-    );
-  }
-  
-    
-  
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#fff",
-    
   },
   title: {
     fontSize: 20,
@@ -113,15 +131,19 @@ const styles = StyleSheet.create({
     color: "#390D7C",
     marginBottom: 10,
   },
-  input: {
+  inputContainer: {
     width: "90%",
-    height: 40,
+    alignSelf: "center",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  input: {
+    width: "100%",
     borderColor: "#AE9CC9",
     borderWidth: 1,
-    margin: 15,
-    padding: 10,
+    padding: 15,
     borderRadius: 5,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   signupButtonText: {
     color: "#fff",
@@ -139,7 +161,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "90%",
     paddingVertical: 15,
-    
   },
   inputBox: {
     alignItems: "center",
@@ -149,9 +170,15 @@ const styles = StyleSheet.create({
     color: "white",
   },
   image: {
-    width: 300,
-    height: 300,
+    width: width * 0.8,
+    height: height * 0.3,
     resizeMode: "cover",
     margin: 10,
+  },
+  errorMsg: {
+    color: "red",
+    marginVertical: 5,
+    alignSelf: "flex-start",
+    // marginLeft: ,
   },
 });

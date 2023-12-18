@@ -13,6 +13,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -20,7 +21,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignIn = ({ navigation }) => {
-  const [passwordVisible, setPasswordVisible] = React.useState(false); 
+  const [passwordVisible, setPasswordVisible] = React.useState(false);
 
   const handleSignIn = (values) => {
     // Handling  sign-in logic here using the 'values' object
@@ -29,104 +30,107 @@ const SignIn = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-    behavior="padding" // 'padding' or 'height' depending on your preference
-    style={styles.keyboardAvoidingContainer}
-  >
-  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <View style={styles.container}>
-      <View style={styles.con}>
-        <Text style={styles.text}>Hi there,</Text>
-        <Text style={styles.welcomeText}>Welcome back!</Text>
-        <Text style={styles.appInput}>
-          Please input your log-in details to get into the app
-        </Text>
+    <SafeAreaView style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View>
+          <View style={styles.con}>
+            <Text style={styles.text}>Hi there,</Text>
+            <Text style={styles.welcomeText}>Welcome back!</Text>
+            <Text style={styles.appInput}>
+              Please input your log-in details to get into the app
+            </Text>
 
-        <Formik
-          initialValues={{ email: "", password: "" }}
-          validationSchema={validationSchema}
-          onSubmit={handleSignIn}
-        >
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-          }) => (
-            <>
-              <Text style={styles.inputTitle}>Username or Email address:</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter organization’s name"
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                value={values.email}
-              />
-              {touched.email && errors.email && (
-                <Text style={{ color: "red" }}>{errors.email}</Text>
-              )}
-
-              <Text style={styles.inputTitle}>Password:</Text>
-                <View style={styles.nameContainer}>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter your password"
-                    secureTextEntry={!passwordVisible}
-                    onChangeText={handleChange("password")}
-                    onBlur={handleBlur("password")}
-                    value={values.password}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setPasswordVisible(!passwordVisible)}
-                    style={styles.icon}
-                  >
-                    <Icon
-                      name={passwordVisible ? "eye-slash" : "eye"}
-                      size={15}
-                      color="#3C3C3C"
+            <Formik
+              initialValues={{ email: "", password: "" }}
+              validationSchema={validationSchema}
+              onSubmit={handleSignIn}
+            >
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                touched,
+              }) => (
+                <>
+                  <Text style={styles.inputTitle}>
+                    Username or Email address:
+                  </Text>
+                  <View style={styles.nameContainer}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Enter organization’s name"
+                      onChangeText={handleChange("email")}
+                      onBlur={handleBlur("email")}
+                      value={values.email}
                     />
-                  </TouchableOpacity>
-                </View>
-              {touched.password && errors.password && (
-                <Text style={{ color: "red" }}>{errors.password}</Text>
+                    {touched.email && errors.email && (
+                      <Text style={{ color: "red" }}>{errors.email}</Text>
+                    )}
+                  </View>
+                  <Text style={styles.inputTitle}>Password:</Text>
+                  <View style={styles.nameContainer}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Enter your password"
+                      secureTextEntry={!passwordVisible}
+                      onChangeText={handleChange("password")}
+                      onBlur={handleBlur("password")}
+                      value={values.password}
+                    />
+                    <TouchableOpacity
+                      onPress={() => setPasswordVisible(!passwordVisible)}
+                      style={styles.icon}
+                    >
+                      <Icon
+                        name={passwordVisible ? "eye-slash" : "eye"}
+                        size={15}
+                        color="#3C3C3C"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  {touched.password && errors.password && (
+                    <Text style={{ color: "red" }}>{errors.password}</Text>
+                  )}
+
+                  <Text
+                    style={styles.forgotPassword}
+                    onPress={() => console.log("Forgot Password clicked")}
+                  >
+                    Forgot Password?
+                  </Text>
+                  <View style={styles.nameContainer}>
+                    <TouchableOpacity
+                      style={styles.signupButton}
+                      onPress={handleSubmit}
+                    >
+                      <Text style={styles.signupButtonText}>Sign In</Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
               )}
+            </Formik>
 
-              <Text
-                style={styles.forgotPassword}
-                onPress={() => console.log("Forgot Password clicked")}
-              >
-                Forgot Password?
-              </Text>
-
-              <TouchableOpacity
-                style={styles.signupButton}
-                onPress={handleSubmit}
-              >
-                <Text style={styles.signupButtonText}>Sign In</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </Formik>
-
-        <View style={styles.accountContainer}>
-          <Text style={styles.accountText}>Don’t have an account?</Text>
-          <Text style={styles.account}> Create one now</Text>
+            <View style={styles.accountContainer}>
+              <Text style={styles.accountText}>Don’t have an account?</Text>
+              <Text style={styles.account}> Create one now</Text>
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
-    </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
+    backgroundColor: "transparent",
+    // justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 20,
+    marginTop: 50,
   },
   keyboardAvoidingContainer: {
     flex: 1,
@@ -185,7 +189,7 @@ const styles = StyleSheet.create({
   accountContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 80,
+    marginTop: 20,
     marginBottom: 150,
     justifyContent: "center",
   },
@@ -200,7 +204,7 @@ const styles = StyleSheet.create({
   nameContainer: {
     flexDirection: "row",
     alignItems: "center",
-
+    alignSelf: "center",
     position: "relative",
   },
   icon: {
