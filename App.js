@@ -7,6 +7,9 @@ import Rewards from "./Pages/RewardsPage";
 import Settings from "./Pages/SettingsPage";
 import AppLoading from "expo-app-loading";
 
+// import EditProfile from "./Screens/EditProfile";
+// import ChangePassword from "./Screens/ChangePassword";
+
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
@@ -20,9 +23,8 @@ const Stack = createNativeStackNavigator();
 // const SettingsStackScreen = () => (
 //   <Stack.Navigator screenOptions={{ headerShown: false }}>
 //     <Stack.Screen name="Settings" component={Settings} />
-//     <Stack.Screen name="Screen1" component={Screen1} />
+//     <Stack.Screen name="EditProfile" component={EditProfile} />
 //     <Stack.Screen name="ChangePassword" component={ChangePassword} />
-//     <Stack.Screen name="Screen3" component={Screen3} />
 //   </Stack.Navigator>
 // );
 
