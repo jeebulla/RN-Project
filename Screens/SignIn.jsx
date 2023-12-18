@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
+  Pressable,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
@@ -114,7 +114,9 @@ const SignIn = ({ navigation }) => {
 
             <View style={styles.accountContainer}>
               <Text style={styles.accountText}>Don’t have an account?</Text>
-              <Text style={styles.account}> Create one now</Text>
+              <Pressable onPress={() => navigation.navigate("SignUp")}>
+                <Text style={styles.account}> Create one now</Text>
+              </Pressable>
             </View>
           </View>
         </View>

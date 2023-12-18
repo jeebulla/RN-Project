@@ -96,8 +96,8 @@ const Navigation = () => {
   const authCtx = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {authCtx.isAuthenticated && <AuthScreen />}
-      {!authCtx.isAuthenticated && <AuthenticatedScreen />}
+      {!authCtx.isAuthenticated && <AuthScreen />}
+      {authCtx.isAuthenticated && <AuthenticatedScreen />}
     </NavigationContainer>
   );
 };

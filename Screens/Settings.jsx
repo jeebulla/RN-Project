@@ -16,7 +16,7 @@ import LogOut from "./LogOut";
 import { useTheme } from "../ThemeContext";
 
 // import { createStackNavigator } from '@react-navigation/stack';
-import ChangePassword from './ChangePassword';
+import ChangePassword from "./ChangePassword";
 
 // const Stack = createStackNavigator();
 
@@ -92,7 +92,7 @@ export default function Settings() {
       <View>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigateToScreen("EditProfile")}
+          onPress={() => navigateToScreen("Profile")}
         >
           <View>
             <Ionicons name="person-outline" size={24} style={styles.icon} />

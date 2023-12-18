@@ -56,15 +56,23 @@ const SignUp = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    organizationName: isOrganization ? Yup.string().required("Required") : null,
-    email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string().required("Required"),
+    organizationName: isOrganization
+      ? Yup.string()
+          .required("Please enter an organization name")
+          .min(6, "Name too short")
+      : null,
+    email: Yup.string()
+      .email("Invalid email")
+      .required("Please enter your email address"),
+    password: Yup.string().required("Please enter a password"),
     confirmPassword: isOrganization
       ? Yup.string()
-          .oneOf([Yup.ref("password"), null], "Passwords must match")
+          .oneOf([Yup.ref("password"), null], "Passwords does not match")
           .required("Required")
       : null,
-    fullName: !isOrganization ? Yup.string().required("Required") : null,
+    fullName: !isOrganization
+      ? Yup.string().required("Please enter your fullname")
+      : null,
     verificationCode: !isOrganization
       ? Yup.string().required("Required")
       : null,
