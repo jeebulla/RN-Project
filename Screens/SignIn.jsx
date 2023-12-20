@@ -99,7 +99,7 @@ const SignIn = ({ navigation }) => {
               }) => (
                 <>
                   <Text style={styles.inputTitle}>
-                    Username or Email address:
+                    Email address:
                   </Text>
                   <View style={styles.nameContainer}>
                     <TextInput

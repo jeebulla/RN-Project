@@ -81,7 +81,7 @@ const SignUp = () => {
       isOrganization ? values.organizationName : values.fullName,
       values.email,
       values.password,
-      isOrganization ? null : values.verificationCode
+      isOrganization ? "" : values.verificationCode
     );
     console.log("========= This is the result of the api call ==============", result.data)
     if (result.status !== 201) {
