@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -14,10 +14,12 @@ import LTrophy from "../assets/Big_Trophy.svg";
 import Gift from "../assets/Gift.svg";
 import Badge from "../assets/Badge.svg";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
+import { AuthContext } from "../store/auth-context";
 
 const { width, height, fontScale, scale } = Dimensions.get("window");
 
 const HomePage = () => {
+  const authCtx = useContext(AuthContext);
   return (
     <SafeAreaView>
       <View style={styles.body}>
@@ -27,7 +29,7 @@ const HomePage = () => {
             style={styles.avatar}
           />
           <View>
-            <Text style={styles.intro}>Hello, Tofunmi</Text>
+            <Text style={styles.intro}>Hello, {authCtx.username}</Text>
             <Text style={styles.introGreet}>How are you doing today?</Text>
           </View>
         </View>

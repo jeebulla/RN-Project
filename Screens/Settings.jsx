@@ -14,9 +14,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import LogOut from "./LogOut";
 import { useTheme } from "../ThemeContext";
+import { AuthContext } from "../store/auth-context";
 
 // import { createStackNavigator } from '@react-navigation/stack';
 import ChangePassword from "./ChangePassword";
+import { useContext } from "react";
 
 // const Stack = createStackNavigator();
 
@@ -52,6 +54,7 @@ const Item = ({ item, index, navigation }) => {
 
 const { height, width } = Dimensions.get("window");
 export default function Settings() {
+  const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
 
   const navigateToScreen = (screenName) => {
@@ -166,9 +169,9 @@ export default function Settings() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("SignIn")}
+          onPress={() => authCtx.logout()}
         >
-          <View style={styles.iconContainer}>
+          <View /* style={styles.iconContainer} */>
             <Ionicons
               name="md-arrow-forward-circle-outline"
               size={24}

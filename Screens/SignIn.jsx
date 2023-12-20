@@ -1,5 +1,5 @@
 // src/screens/WelcomeBackScreen.js
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -9,11 +9,15 @@ import {
   Pressable,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { login } from "../http/auth";
+import { AuthContext } from "../store/auth-context";
+import { ActivityIndicator } from "react-native";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -21,12 +25,52 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignIn = ({ navigation }) => {
+  const authCtx = useContext(AuthContext);
   const [passwordVisible, setPasswordVisible] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
-  const handleSignIn = (values) => {
-    // Handling  sign-in logic here using the 'values' object
-    console.log("Sign-in values:", values);
-    navigation.navigate("Home");
+  const handleSignIn =  async(values) => {
+    setLoading(true)
+    const result = await login(values.email, values.password);
+    if (result.status !== 200){
+      return Alert.alert("Error", `${result.data.message}`)
+    }
+
+    console.log("========= These are the values I am storing in local storage ============");
+      console.log(result?.data?.tokens?.access?.token,
+        result?.data?.user?.name,
+        result?.data?.user?.role,
+        result?.data?.user?.code,
+        result?.data?.organization?.id,
+        result?.data?.user?.email,
+        result?.data?.user?.role
+          ? JSON.stringify(result?.data?.organization?.numberOfRewardsGenerated)
+          : JSON.stringify(result?.data?.staff?.rewardsReceived),
+          result?.data?.user?.role
+          ? JSON.stringify(result?.data?.organization?.numberOfRewardsRedeemed)
+          : JSON.stringify(result?.data?.staff?.rewardsRedeemed),
+          result?.data?.user?.role ? "" : JSON.stringify(result?.data?.staff?.rewardsReceived),
+          result?.data?.user?.role ? "" : JSON.stringify(result?.data?.staff?.rewardsTransferred),
+          result?.data?.user?.role ? "" : result?.data?.staff?.id)
+          setLoading(false)
+      return authCtx.authenticate(
+        result?.data?.tokens?.access?.token,
+        result?.data?.user?.name,
+        result?.data?.user?.role,
+        result?.data?.user?.code,
+        result?.data?.organization?.id,
+        result?.data?.user?.email,
+        result?.data?.user?.role
+          ? JSON.stringify(result?.data?.organization?.numberOfRewardsGenerated)
+          : JSON.stringify(result?.data?.staff?.rewardsReceived),
+          result?.data?.user?.role
+          ? JSON.stringify(result?.data?.organization?.numberOfRewardsRedeemed)
+          : JSON.stringify(result?.data?.staff?.rewardsRedeemed),
+          result?.data?.user?.role ? "" : JSON.stringify(result?.data?.staff?.rewardsReceived),
+          result?.data?.user?.role ? "" : JSON.stringify(result?.data?.staff?.rewardsTransferred),
+          result?.data?.user?.role ? "" : result?.data?.staff?.id
+      );
+
   };
 
   return (
@@ -63,6 +107,7 @@ const SignIn = ({ navigation }) => {
                       placeholder="Enter organization’s name"
                       onChangeText={handleChange("email")}
                       onBlur={handleBlur("email")}
+                      autoCapitalize="none"
                       value={values.email}
                     />
                     {touched.email && errors.email && (
@@ -105,7 +150,7 @@ const SignIn = ({ navigation }) => {
                       style={styles.signupButton}
                       onPress={handleSubmit}
                     >
-                      <Text style={styles.signupButtonText}>Sign In</Text>
+                      <Text style={styles.signupButtonText}>{loading === false ? "Sign In": <ActivityIndicator style={{alignSelf: "center"}}  />}</Text>
                     </TouchableOpacity>
                   </View>
                 </>
@@ -173,7 +218,7 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     alignSelf: "flex-end",
-    color: "#F2C950",
+    color: "purple",
   },
   signupButton: {
     backgroundColor: "#390D7C",
