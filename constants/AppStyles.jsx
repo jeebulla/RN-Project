@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "#e3e3e3",
     borderRadius: 10,
-    marginVertical: 30,
+    marginVertical: 15,
   },
   testimonialText: {
     fontSize: fontScale * 15,

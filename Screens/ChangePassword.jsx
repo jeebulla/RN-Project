@@ -6,72 +6,124 @@ import {
   TouchableOpacity,
   Image,
   View,
+  TextInput,
+  ScrollView,
+  SafeAreaView,
+  Dimensions,
 } from "react-native";
-import CustomInput from "../components/CustomInput";
-import { ScrollView } from "react-native-gesture-handler";
+import { Formik, Field } from "formik";
+import * as Yup from "yup";
 
-export default function ChangePassword({ navigation }) {
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+import CustomInput from "../components/CustomInput";
+const { width, height } = Dimensions.get("window");
+const ChangePasswordSchema = Yup.object().shape({
+  currentPassword: Yup.string()
+    .required("Current password is required.")
+    .test(
+      "match-current-password",
+      "Current password is incorrect.",
+      (value, context) => {
+        // This is to Access stored current password from context
+        const storedPassword = context.password;
+        return value === storedPassword;
+      }
+    ),
+  newPassword: Yup.string()
+    .required("New password is required.")
+    .min(6, "New password must be at least 6 characters.")
+    .oneOf([Yup.ref("confirmPassword"), null], "Passwords must match."),
+  confirmPassword: Yup.string()
+    .required("Confirm password is required.")
+    .oneOf([Yup.ref("newPassword"), null], "Passwords must match."),
+});
+
+export default function ChangePassword() {
+  const [storedPassword, setStoredPassword] = useState(""); // Store  current password here
 
   const imageUrl =
-    "https://res.cloudinary.com/dycukxm7r/image/upload/v1702378915/Lock_-3-removebg-preview_rolwtl.png";
+    "https://res.cloudinary.com/dycukxm7r/image/upload/v1702723200/IMG-20231216-WA0012_kw4fiw.jpg";
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "Android" ? "padding" : "height"}
-    >
-      <ScrollView keyboardDismissMode="on-drag">
-        <View>
-          <View style={styles.header}>
-            <Image source={{ uri: imageUrl }} style={styles.image} />
-            <Text style={styles.title}>Change Password</Text>
-          </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+        <Text style={styles.title}>Change Password</Text>
+      </View>
+      <Formik
+        initialValues={{
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        }}
+        validationSchema={ChangePasswordSchema}
+        onSubmit={(values) => {
+          // Implement the logic to update password with newPassword
+          console.log("New password:", values.newPassword);
+        }}
+      >
+        {({ values, errors, handleChange, handleSubmit }) => (
+          <KeyboardAvoidingView behavior="Platform.OS === 'ios' ? 'padding' : 'height'">
+            <ScrollView keyboardDismissMode="on-drag">
+              <View style={styles.inputBox}>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Current Password"
+                    secureTextEntry
+                    value={values.currentPassword}
+                    onChangeText={handleChange("currentPassword")}
+                  />
+                  {errors.currentPassword && (
+                    <Text style={styles.errorMsg}>
+                      {errors.currentPassword}
+                    </Text>
+                  )}
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="New Password"
+                    secureTextEntry
+                    value={values.newPassword}
+                    onChangeText={handleChange("newPassword")}
+                  />
+                  {errors.newPassword && (
+                    <Text style={styles.errorMsg}>{errors.newPassword}</Text>
+                  )}
+                </View>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Confirm Password"
+                    secureTextEntry
+                    value={values.confirmPassword}
+                    onChangeText={handleChange("confirmPassword")}
+                  />
+                  {errors.confirmPassword && (
+                    <Text style={styles.errorMsg}>
+                      {errors.confirmPassword}
+                    </Text>
+                  )}
+                </View>
 
-          <CustomInput
-            style={styles.container}
-            containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
-            placeholder={"Current Password"}
-            onChangeText={setPassword}
-            error={passwordError}
-            secureTextEntry
-          />
-          <CustomInput
-            containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
-            placeholder={"New Password"}
-            onChangeText={setPassword}
-            error={passwordError}
-            secureTextEntry
-          />
-          <CustomInput
-            containerStyle={{ marginHorizontal: 20, marginTop: 10 }}
-            placeholder={"Confirm New Password"}
-            onChangeText={setPassword}
-            error={passwordError}
-            secureTextEntry
-          />
-          <TouchableOpacity
-            style={styles.signupButton}
-            onPress={() => {
-              if (password.length < 6) {
-                setPasswordError("The password is to short");
-              } else {
-                setPasswordError("");
-              }
-            }}
-          >
-            <Text style={styles.signupButtonText}>Reset Password</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+                <TouchableOpacity
+                  style={styles.signupButton}
+                  onPress={handleSubmit}
+                >
+                  <Text style={styles.signupButtonText}>Reset Password</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        )}
+      </Formik>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "white",
-    justifyContent: "center",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 20,
@@ -79,7 +131,20 @@ const styles = StyleSheet.create({
     color: "#390D7C",
     marginBottom: 10,
   },
-
+  inputContainer: {
+    width: "90%",
+    alignSelf: "center",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  input: {
+    width: "100%",
+    borderColor: "#AE9CC9",
+    borderWidth: 1,
+    padding: 15,
+    borderRadius: 5,
+    justifyContent: "center",
+  },
   signupButtonText: {
     color: "#fff",
     textAlign: "center",
@@ -93,20 +158,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#390D7C",
     padding: 10,
     borderRadius: 5,
-    marginTop: 30,
+    marginTop: 10,
     width: "90%",
     paddingVertical: 15,
+  },
+  inputBox: {
     alignItems: "center",
-    alignSelf: "center",
-    justifyContent: "center",
   },
   buttonText: {
     fontSize: 18,
     color: "white",
   },
   image: {
-    width: 300,
-    height: 300,
+    width: width * 0.8,
+    height: height * 0.3,
     resizeMode: "cover",
+    margin: 10,
+  },
+  errorMsg: {
+    color: "red",
+    marginVertical: 5,
+    alignSelf: "flex-start",
+    // marginLeft: ,
   },
 });
