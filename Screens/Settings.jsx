@@ -16,46 +16,32 @@ import LogOut from "./LogOut";
 import { useTheme } from "../ThemeContext";
 import { AuthContext } from "../store/auth-context";
 
-// import { createStackNavigator } from '@react-navigation/stack';
+
 import ChangePassword from "./ChangePassword";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // const Stack = createStackNavigator();
 
-{
-  /*
-const Item = ({ item, index, navigation }) => {
-  return (
-    <TouchableOpacity
-      style={{ flexDirection: "row", alignItems: "center", padding: 10 }}
-      onPress={() => navigation.navigate(item.id)}
-    >
-      <Ionicons
-        name={item.icon}
-        size={24}
-        style={{
-          marginRight: 10,
-          color: index === data.length - 1 ? "red" : "black",
-        }}
-      />
-      <Text style={{ marginLeft: 5 }}>{item.text}</Text>
-      {index !== data.length - 1 && (
-        <Ionicons
-          name="md-chevron-forward"
-          size={24}
-          style={{ marginLeft: "auto" }}
-        />
-      )}
-    </TouchableOpacity>
-  );
-};
-*/
-}
+
 
 const { height, width } = Dimensions.get("window");
+
+
+
+
 export default function Settings() {
   const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
+
+
+  const [launchReceived, setLaunchReceived] = useState(0)
+  const [launchRewarded, setLaunchRewarded] = useState(0)
+  const [launchRedeemed, setLaunchRedeemed] = useState(0)
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
+  const [role, setRole] = useState('')
 
   const navigateToScreen = (screenName) => {
     navigation.navigate(screenName);
@@ -70,6 +56,28 @@ export default function Settings() {
   ];
 
   const image = require("../assets/images/profile.png");
+
+
+  useEffect(() => {
+(async () => {
+  const fetchedName = await AsyncStorage.getItem("username");
+  setName(fetchedName)
+  const fetchedEmail = await AsyncStorage.getItem('email');
+  setEmail(fetchedEmail);
+  const fetchedCode = await AsyncStorage.getItem('organization_code');
+  setCode(fetchedCode);
+  const fetchedRole = await AsyncStorage.getItem('userrole');
+  setRole(fetchedRole);
+  const fetchedLaunchReceived = await AsyncStorage.getItem("number_of_launched_received");
+  setLaunchReceived(parseInt(fetchedLaunchReceived));
+  const fetchedLaunchRedeemed = await AsyncStorage.getItem('number_of_launched_redeemed');
+  setLaunchRedeemed(parseInt(fetchedLaunchRedeemed));
+  const fetchedLaunchRewarded = await AsyncStorage.getItem('number_of_launched_sent');
+  setLaunchRewarded(parseInt(fetchedLaunchRewarded));
+})()
+  }, [])
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerText}>
@@ -78,18 +86,19 @@ export default function Settings() {
 
       <View style={styles.header}>
         <Image source={image} />
-        <Text style={styles.heading}>Tofunmi Awolowo</Text>
-        <Text style={styles.smallText}>tofunmi.awolowo@gmail.com</Text>
+        <Text style={styles.heading}>{name}</Text>
+        <Text style={styles.smallText}>{email}</Text>
+        <Text style={styles.smallText}>{code}</Text>
       </View>
 
       <View style={styles.card}>
         <Card
           title="Lunches Redeemed"
-          number="21"
+          number={launchRedeemed}
           backgroundColor="#390D7C"
           color="white"
         />
-        <Card title="Lunches Rewarded" number="10" backgroundColor="#F2C950" />
+        <Card title={role === "organization" ? "Lunches Rewarded": "Launches Received"} number={role === "organization" ? launchRewarded: launchReceived} backgroundColor="#F2C950" />
       </View>
 
       <View>
@@ -112,7 +121,7 @@ export default function Settings() {
           style={styles.button}
           onPress={() => navigateToScreen("ChangePassword")}
         >
-          <View style={styles.iconContainer}>
+          <View /* style={styles.iconContainer} */>
             <Ionicons
               name="ios-lock-closed-outline"
               size={24}

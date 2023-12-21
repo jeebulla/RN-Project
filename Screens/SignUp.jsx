@@ -75,13 +75,14 @@ const SignUp = () => {
   };
 
   const handleSignup = async (values) => {
+    console.log("======== This is me pressing the button =======")
     setIsLoading(true)
     const result = await signUp(
       isOrganization ? "organization" : "staff",
-      isOrganization ? values.organizationName : values.fullName,
+      values.name,
       values.email,
       values.password,
-      isOrganization ? null : values.verificationCode
+      values.code
     );
     console.log("========= This is the result of the api call ==============", result.data)
     if (result.status !== 201) {
@@ -92,31 +93,19 @@ const SignUp = () => {
     toggleSuccessModal(result);
   };
 
- /*  const goToHome = (param) => {
-    Close the modal and navigate to the login screen
-    toggleSuccessModal(param);
-    navigation.navigate("Login");
-  }; */
 
   const validationSchema = Yup.object().shape({
-    organizationName: isOrganization
-      ? Yup.string()
-          .required("Please enter an organization name")
-          .min(6, "Name too short")
-      : null,
+    name: Yup.string()
+          .required("Please enter name")
+          .min(6, "Name too short"),
     email: Yup.string()
       .email("Invalid email")
       .required("Please enter your email address"),
     password: Yup.string().required("Please enter a password"),
-    confirmPassword: isOrganization
-      ? Yup.string()
+    confirmPassword: Yup.string()
           .oneOf([Yup.ref("password"), null], "Passwords does not match")
-          .required("Required")
-      : null,
-    fullName: !isOrganization
-      ? Yup.string().required("Please enter your fullname")
-      : null,
-    verificationCode: !isOrganization
+          .required("Required"),
+    code: !isOrganization
       ? Yup.string().required("Required")
       : null,
   });
@@ -178,18 +167,18 @@ const SignUp = () => {
         </View>
       </View>
       <KeyboardAvoidingView
-        behavior="Platform.OS === 'ios' ? 'padding' : 'height'"
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoidingContainer}
       >
         <ScrollView onPress={Keyboard.dismiss}>
           <Formik
             initialValues={{
-              organizationName: "",
+              name: "",
               email: "",
               password: "",
               confirmPassword: "",
-              fullName: "",
-              verificationCode: "",
+              // fullName: "",
+              code: "",
             }}
             validationSchema={validationSchema}
             onSubmit={handleSignup}
@@ -201,19 +190,18 @@ const SignUp = () => {
               values,
               errors,
               touched,
+              isValid,
             }) => (
               <View>
-                {isOrganization ? (
-                  <View>
-                    {/* Organization Form */}
-                    <Text style={styles.inputTitle}>Organization’s Name:</Text>
+                <View>
+                    <Text style={styles.inputTitle}>{isOrganization ? "Organization’s Name:": "Full Name"}</Text>
                     <View style={styles.nameContainer}>
                       <TextInput
                         style={styles.input}
                         placeholder="Enter organization’s name"
-                        onChangeText={handleChange("organizationName")}
-                        onBlur={handleBlur("organizationName")}
-                        value={values.organizationName}
+                        onChangeText={handleChange("name")}
+                        onBlur={() => handleBlur("name")}
+                        value={values.name}
                       />
                       <Icon
                         name="user-edit"
@@ -222,42 +210,9 @@ const SignUp = () => {
                         style={styles.icon}
                       />
                     </View>
+                    {(touched.name || errors.name) && <Text style={styles.errorMessage}>{errors.name}</Text>}
                   </View>
-                ) : (
-                  <View>
-                    {/* Staff Form */}
-                    <Text style={styles.inputTitle}>Full Name:</Text>
-                    <View style={styles.nameContainer}>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Enter full name"
-                        onChangeText={handleChange("fullName")}
-                        onBlur={handleBlur("fullName")}
-                        value={values.fullName}
-                      />
-                      <Icon
-                        name="user-edit"
-                        size={15}
-                        color="#3C3C3C"
-                        style={styles.icon}
-                      />
-                    </View>
 
-                    <Text style={styles.inputTitle}>Company Code:</Text>
-                    <View style={styles.nameContainer}>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Enter company code"
-                        onChangeText={handleChange("verificationCode")}
-                        onBlur={handleBlur("verificationCode")}
-                        value={values.verificationCode}
-                        autoCapitalize="none"
-                      />
-                    </View>
-                  </View>
-                )}
-
-                {/* Common Fields */}
                 <Text style={styles.inputTitle}>Email Address:</Text>
                 <View style={styles.nameContainer}>
                   <TextInput
@@ -279,6 +234,24 @@ const SignUp = () => {
                 <Text style={styles.errorMessage}>
                   {touched.email && errors.email}
                 </Text>
+
+                {!isOrganization && (<>
+                <Text style={styles.inputTitle}>Company Code:</Text>
+                    <View style={styles.nameContainer}>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Enter company code"
+                        onChangeText={handleChange("code")}
+                        onBlur={handleBlur("code")}
+                        value={values.code}
+                        autoCapitalize="none"
+                      />
+                    </View>
+                    <Text style={styles.errorMessage}>
+                  {touched.code && errors.code}
+                </Text>
+                </>
+                    )}
 
                 {/* Display password and confirm password with visibility toggle */}
                 <Text style={styles.inputTitle}>Password:</Text>
@@ -334,11 +307,10 @@ const SignUp = () => {
                 <Text style={styles.errorMessage}>
                   {touched.confirmPassword && errors.confirmPassword}
                 </Text>
-
                 <TouchableOpacity
                   style={styles.signupButton}
                   onPress={handleSubmit}
-                >
+                  >
                   <Text style={styles.signupButtonText}>{isLoading ? <ActivityIndicator /> : "Create Account"}</Text>
                 </TouchableOpacity>
                 <View style={{alignSelf: "center", marginVertical: 20}}>
@@ -349,33 +321,6 @@ const SignUp = () => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-
-      {/* Success Modal */}
-      {/* <Modal
-        animationType="slide"
-        transparent={true}
-        visible={successModalVisible}
-        // onRequestClose={toggleSuccessModal}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.success}>Successful!</Text>
-              <Text style={styles.successMessage}>
-                {isOrganization
-                  ? "Zuri Organization has been created successfully. Your employees can now reward and redeem free lunches."
-                  : "Your details have been registered successfully. You can now reward and redeem free lunches."}
-              </Text>
-              <TouchableOpacity
-                style={styles.goHomeButton}
-                onPress={() => setSuccessModalVisible(false)}
-              >
-                <Text style={styles.goHomeButtonText}>Go Home</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal> */}
     </SafeAreaView>
   );
 };
