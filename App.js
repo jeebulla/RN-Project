@@ -86,6 +86,7 @@ const AuthenticatedScreen = () => {
 const AuthScreen = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {/* <Stack.Screen name="Preview" component={HomePreview} /> */}
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="Login" component={SignIn} />
     </Stack.Navigator>
