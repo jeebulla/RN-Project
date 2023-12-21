@@ -3,15 +3,39 @@ import axios from "axios";
 export async function signUp(role, name, email, password, companyCode) {
   console.log("Expected values ", role, name, email, password, companyCode);
   try {
+    let result;
     const url =
       "https://employee-management-system-z05q.onrender.com/v1/auth/register";
-    const result = await axios.post(url, {
-      role,
-      name,
-      email,
-      password,
-      code: companyCode,
-    });
+
+    if (role === "staff") {
+      console.log({
+        role: "staff",
+        name,
+        email,
+        password,
+        code: companyCode,
+      });
+      result = await axios.post(url, {
+        role: "staff",
+        name,
+        email,
+        password,
+        code: companyCode,
+      });
+    } else if (role === "organization") {
+      console.log({
+        role: "organization",
+        name,
+        email,
+        password,
+      });
+      result = await axios.post(url, {
+        role: "organization",
+        name,
+        email,
+        password,
+      });
+    }
     console.log(result.data);
     return result;
   } catch (error) {
