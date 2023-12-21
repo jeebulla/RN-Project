@@ -1,22 +1,16 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { useEffect, useState } from "react";
+import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "../components/ImageViewer.js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const PlaceholderImage = require("../assets/images/avatar.png");
 
 export default function EditProfile() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [role, setRole] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
 
   const pickImageAsync = async () => {
@@ -36,6 +30,18 @@ export default function EditProfile() {
     //  Implement contact saving logic here
     console.log("Contact saved!");
   };
+  useEffect(() => {
+    (async () => {
+      const fetchedName = await AsyncStorage.getItem("username");
+      setName(fetchedName);
+      const fetchedEmail = await AsyncStorage.getItem("email");
+      setEmail(fetchedEmail);
+      const fetchedRole = await AsyncStorage.getItem("userrole");
+      setRole(fetchedRole);
+
+      // const fetched = await AsyncStorage.getItem("");
+    })();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -73,7 +79,7 @@ export default function EditProfile() {
         style={styles.input}
         placeholder="Phone Number"
         onChangeText={(text) => setPhone(text)}
-        value={phone}
+        value={role}
         editable={false}
       />
 

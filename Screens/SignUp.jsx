@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  Modal,
   Alert,
   SafeAreaView,
   KeyboardAvoidingView,
@@ -86,13 +85,14 @@ const SignUp = () => {
   };
 
   const handleSignup = async (values) => {
+    console.log("======== This is me pressing the button =======");
     setIsLoading(true);
     const result = await signUp(
       isOrganization ? "organization" : "staff",
-      isOrganization ? values.organizationName : values.fullName,
+      values.name,
       values.email,
       values.password,
-      isOrganization ? null : values.verificationCode
+      values.code
     );
     console.log(
       "========= This is the result of the api call ==============",
@@ -107,26 +107,15 @@ const SignUp = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    organizationName: isOrganization
-      ? Yup.string()
-          .required("Please enter an organization name")
-          .min(6, "Name too short")
-      : null,
+    name: Yup.string().required("Please enter name").min(6, "Name too short"),
     email: Yup.string()
       .email("Invalid email")
       .required("Please enter your email address"),
     password: Yup.string().required("Please enter a password"),
-    confirmPassword: isOrganization
-      ? Yup.string()
-          .oneOf([Yup.ref("password"), null], "Passwords does not match")
-          .required("Required")
-      : null,
-    fullName: !isOrganization
-      ? Yup.string().required("Please enter your fullname")
-      : null,
-    verificationCode: !isOrganization
-      ? Yup.string().required("Required")
-      : null,
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords does not match")
+      .required("Required"),
+    code: !isOrganization ? Yup.string().required("Required") : null,
   });
 
   return (
@@ -186,18 +175,18 @@ const SignUp = () => {
         </View>
       </View>
       <KeyboardAvoidingView
-        behavior="Platform.OS === 'ios' ? 'padding' : 'height'"
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingContainer}
       >
         <ScrollView onPress={Keyboard.dismiss}>
           <Formik
             initialValues={{
-              organizationName: "",
+              name: "",
               email: "",
               password: "",
               confirmPassword: "",
-              fullName: "",
-              verificationCode: "",
+              // fullName: "",
+              code: "",
             }}
             validationSchema={validationSchema}
             onSubmit={handleSignup}
@@ -209,63 +198,33 @@ const SignUp = () => {
               values,
               errors,
               touched,
+              isValid,
             }) => (
               <View>
-                {isOrganization ? (
-                  <View>
-                    {/* Organization Form */}
-                    <Text style={styles.inputTitle}>Organization’s Name:</Text>
-                    <View style={styles.nameContainer}>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Enter organization’s name"
-                        onChangeText={handleChange("organizationName")}
-                        onBlur={handleBlur("organizationName")}
-                        value={values.organizationName}
-                      />
-                      <Icon
-                        name="user-edit"
-                        size={15}
-                        color="#3C3C3C"
-                        style={styles.icon}
-                      />
-                    </View>
+                <View>
+                  <Text style={styles.inputTitle}>
+                    {isOrganization ? "Organization’s Name:" : "Full Name"}
+                  </Text>
+                  <View style={styles.nameContainer}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Enter organization’s name"
+                      onChangeText={handleChange("name")}
+                      onBlur={() => handleBlur("name")}
+                      value={values.name}
+                    />
+                    <Icon
+                      name="user-edit"
+                      size={15}
+                      color="#3C3C3C"
+                      style={styles.icon}
+                    />
                   </View>
-                ) : (
-                  <View>
-                    {/* Staff Form */}
-                    <Text style={styles.inputTitle}>Full Name:</Text>
-                    <View style={styles.nameContainer}>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Enter full name"
-                        onChangeText={handleChange("fullName")}
-                        onBlur={handleBlur("fullName")}
-                        value={values.fullName}
-                      />
-                      <Icon
-                        name="user-edit"
-                        size={15}
-                        color="#3C3C3C"
-                        style={styles.icon}
-                      />
-                    </View>
+                  {(touched.name || errors.name) && (
+                    <Text style={styles.errorMessage}>{errors.name}</Text>
+                  )}
+                </View>
 
-                    <Text style={styles.inputTitle}>Company Code:</Text>
-                    <View style={styles.nameContainer}>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Enter company code"
-                        onChangeText={handleChange("verificationCode")}
-                        onBlur={handleBlur("verificationCode")}
-                        value={values.verificationCode}
-                        autoCapitalize="none"
-                      />
-                    </View>
-                  </View>
-                )}
-
-                {/* Common Fields */}
                 <Text style={styles.inputTitle}>Email Address:</Text>
                 <View style={styles.nameContainer}>
                   <TextInput
@@ -287,6 +246,25 @@ const SignUp = () => {
                 <Text style={styles.errorMessage}>
                   {touched.email && errors.email}
                 </Text>
+
+                {!isOrganization && (
+                  <>
+                    <Text style={styles.inputTitle}>Company Code:</Text>
+                    <View style={styles.nameContainer}>
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Enter company code"
+                        onChangeText={handleChange("code")}
+                        onBlur={handleBlur("code")}
+                        value={values.code}
+                        autoCapitalize="none"
+                      />
+                    </View>
+                    <Text style={styles.errorMessage}>
+                      {touched.code && errors.code}
+                    </Text>
+                  </>
+                )}
 
                 {/* Display password and confirm password with visibility toggle */}
                 <Text style={styles.inputTitle}>Password:</Text>
@@ -342,7 +320,6 @@ const SignUp = () => {
                 <Text style={styles.errorMessage}>
                   {touched.confirmPassword && errors.confirmPassword}
                 </Text>
-
                 <TouchableOpacity
                   style={styles.signupButton}
                   onPress={handleSubmit}
