@@ -4,6 +4,7 @@ import RedeemSuccess from "../Screens/RedeemSuccess";
 import GiftSuccess from "../Screens/GiftSuccess";
 import Rewards from "../Screens/Rewards";
 import RewardsNotification from "../Screens/Notification";
+import Transfer from "../Screens/TransferReward";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -21,6 +22,7 @@ const Screens = () => {
       <Stack.Screen name="RedeemSuccess" component={RedeemSuccess} />
       <Stack.Screen name="GiftSuccess" component={GiftSuccess} />
       <Stack.Screen name="Notification" component={RewardsNotification} />
+      <Stack.Screen name="Transfer" component={Transfer} />
     </Stack.Navigator>
   );
 };

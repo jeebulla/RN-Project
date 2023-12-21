@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,10 +12,46 @@ import Gift from "../assets/Gift.svg";
 import Badge from "../assets/Badge.svg";
 import RTrophy from "../assets/TrophyR.svg";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
+import { AuthContext } from "../store/auth-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height, fontScale, scale } = Dimensions.get("window");
 
+
+
+
 const Admin = ({ navigation }) => {
+  const [username, setUsername] = useState("");
+  const [userRole, setUserRole] = useState("")
+  // const [launchGotten, setlaunchGotten] = useState(0);
+  const [launchUserReceived, setLaunchUserReceived] = useState(0)
+  const [launchAdminSent, setLaunchAdminSent] = useState(0);
+  const [redeemedLaunch, setRedeemedLaunc] = useState(0);
+  const [authToken, setAuthToken] = useState("")
+
+  
+  useEffect(() => {
+    const fetchDetails = async () => {
+      const name = await AsyncStorage.getItem("username");
+      const role = await AsyncStorage.getItem('userrole');
+      const launchSent = await AsyncStorage.getItem("number_of_launched_sent");
+      const launchReceived = await AsyncStorage.getItem("number_of_launched_received");
+      const launchRedeemed = await AsyncStorage.getItem('number_of_launched_redeemed');
+      const token = await AsyncStorage.getItem('token');
+      const organizationCode = await AsyncStorage.getItem('organization_code')
+      console.log("====== this is the token ========", name)
+      setAuthToken(token);
+      setUsername(name);
+      setUserRole(role);
+      setLaunchAdminSent(launchSent || 0);
+      setLaunchUserReceived(launchReceived || 0);
+      setRedeemedLaunc(launchRedeemed || 0);
+    }
+    fetchDetails()
+  }, [])
+
+
+  
   return (
     <SafeAreaView>
       <View style={styles.body}>
@@ -25,22 +61,22 @@ const Admin = ({ navigation }) => {
               source={require("../assets/images/profile.png")}
               style={styles.avatar}
             />
-            <Text style={styles.adminTag}>Admin</Text>
+            <Text style={styles.adminTag}>{userRole === "staff" ? "User" : "Admin"}</Text>
           </View>
           <View>
-            <Text style={styles.intro}>Hello, Tofunmi</Text>
+            <Text style={styles.intro}>Hello, {username}</Text>
             <Text style={styles.introGreet}>How are you doing today?</Text>
           </View>
         </View>
         <View style={styles.cheerboard}>
           <View style={styles.cheerboardCards}>
             <View style={styles[("lunchSent", "lunchBox")]}>
-              <Text style={styles.lunchNum}>45</Text>
-              <Text style={styles.lunchText}>Lunch Sent</Text>
+              <Text style={styles.lunchNum}>{userRole === 'staff' ? launchUserReceived : launchAdminSent}</Text>
+              <Text style={styles.lunchText}>{userRole === 'staff'? "Launch Received" : "Launch Sent"}</Text>
             </View>
             <View style={styles[("lunchRedeemed", "lunchBox")]}>
-              <Text style={styles.lunchNum}>21</Text>
-              <Text style={styles.lunchText}>Lunch Redeemed</Text>
+              <Text style={styles.lunchNum}>{redeemedLaunch}</Text>
+              <Text style={styles.lunchText}>Launch Redeemed</Text>
             </View>
           </View>
           <View style={styles.rewardTrophyCon}>
@@ -59,7 +95,7 @@ const Admin = ({ navigation }) => {
                 ]}
               >
                 <View style={styles.cardDescContainer}>
-                  <Text style={styles.cardText}>Reward Employee</Text>
+                  <Text style={styles.cardText}>{userRole === 'staff' ? "Transfer Reward" : "Reward Employee"}</Text>
                   <EvilIcons
                     name="arrow-right"
                     size={50}

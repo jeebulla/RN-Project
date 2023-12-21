@@ -1,9 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicon from "react-native-vector-icons/Ionicons";
@@ -13,17 +8,26 @@ import Settings from "./Pages/SettingsPage";
 import AppLoading from "expo-app-loading";
 import HomePreview from "./Screens/HomePreview";
 
+// import EditProfile from "./Screens/EditProfile";
+// import ChangePassword from "./Screens/ChangePassword";
+
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
+import { useContext, useEffect, useState } from "react";
+import { ThemeProvider } from "./ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import PaymentScreen from "./Screens/PaymentScreen";
-import RecieveReward from "./Screens/RecieveReward";
-import RewardEmployee from "./Screens/EmployeeReward";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+// const SettingsStackScreen = () => (
+//   <Stack.Navigator screenOptions={{ headerShown: false }}>
+//     <Stack.Screen name="Settings" component={Settings} />
+//     <Stack.Screen name="EditProfile" component={EditProfile} />
+//     <Stack.Screen name="ChangePassword" component={ChangePassword} />
+//   </Stack.Navigator>
+// );
 
 // const TabScreen = () => {
 //   return (
@@ -68,14 +72,14 @@ const AuthenticatedScreen = () => {
           }
           return <Ionicon name={iconName} size={25} color={color} />;
         },
+        tabBarActiveTintColor: "#390D7C",
+        tabBarInactiveTintColor: "#390D7C",
       })}
+      initialRouteName="Home"
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Rewards" component={Rewards} />
       <Tab.Screen name="Settings" component={Settings} />
-      {/* <Tab.Screen name="Payment" component={PaymentScreen} />
-      <Tab.Screen name="RecieveReward" component={RecieveReward} />
-      <Tab.Screen name="RewardEmployee" component={RewardEmployee} />  */}
     </Tab.Navigator>
   );
 };
@@ -83,9 +87,15 @@ const AuthenticatedScreen = () => {
 const AuthScreen = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+<<<<<<< HEAD
       <Stack.Screen name="HomePreview" component={HomePreview} />
       {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
       {/* <Stack.Screen name="Login" component={SignIn} /> */}
+=======
+      {/* <Stack.Screen name="Preview" component={HomePreview} /> */}
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="Login" component={SignIn} />
+>>>>>>> 49ee366f3c9ebee41c0bdea6dcc2b1d9a9c6c7b7
     </Stack.Navigator>
   );
 };
@@ -94,8 +104,8 @@ const Navigation = () => {
   const authCtx = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {authCtx.isAuthenticated && <AuthScreen />}
-      {!authCtx.isAuthenticated && <AuthenticatedScreen />}
+      {!authCtx.isAuthenticated && <AuthScreen />}
+      {authCtx.isAuthenticated && <AuthenticatedScreen />}
     </NavigationContainer>
   );
 };
@@ -118,22 +128,20 @@ const Root = () => {
 
     fetchToken();
   }, []);
+
   if (isTryingLogin) {
     return <AppLoading />;
   }
+
   return <Navigation />;
 };
 
-// const toggleTheme = () => {
-//   setTheme((prevTheme) =>
-//     prevTheme === DefaultTheme ? DarkTheme : DefaultTheme
-//   );
-// }
-
 export default function App() {
   return (
-    <AuthContextProvider>
-      <Root />
-    </AuthContextProvider>
+    <ThemeProvider>
+      <AuthContextProvider>
+        <Root />
+      </AuthContextProvider>
+    </ThemeProvider>
   );
 }
