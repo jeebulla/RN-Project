@@ -6,6 +6,7 @@ import Home from "./Pages/HomeAdmin";
 import Rewards from "./Pages/RewardsPage";
 import Settings from "./Pages/SettingsPage";
 import AppLoading from "expo-app-loading";
+import HomePreview from "./Screens/HomePreview";
 
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
@@ -48,8 +49,20 @@ const AuthenticatedScreen = () => {
 const AuthScreen = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <Stack.Screen name="HomePreview" component={HomePreview} />
+      {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
+      {/* <Stack.Screen name="Login" component={SignIn} /> */}
+=======
+      {/* <Stack.Screen name="Preview" component={HomePreview} /> */}
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="Login" component={SignIn} />
+>>>>>>> 49ee366f3c9ebee41c0bdea6dcc2b1d9a9c6c7b7
+=======
       <Stack.Screen name="Login" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
+>>>>>>> c08b520f94615c31537a2584536de03f44ddb217
     </Stack.Navigator>
   );
 };
