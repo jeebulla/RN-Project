@@ -413,7 +413,7 @@ export default PrivacyPolicy = ({ navigation }) => {
             style={styles.acceptButton}
             onPress={() => navigation.navigate("Settings")}
           >
-            <Text style={styles.acceptText}>Accept and Continue</Text>
+            <Text style={styles.acceptText}>Continue</Text>
           </Pressable>
         </View>
       </ScrollView>

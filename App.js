@@ -8,9 +8,6 @@ import Settings from "./Pages/SettingsPage";
 import AppLoading from "expo-app-loading";
 import HomePreview from "./Screens/HomePreview";
 
-// import EditProfile from "./Screens/EditProfile";
-// import ChangePassword from "./Screens/ChangePassword";
-
 import SignUp from "./Screens/SignUp";
 import SignIn from "./Screens/SignIn";
 import { AuthContext, AuthContextProvider } from "./store/auth-context";
@@ -20,41 +17,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-// const SettingsStackScreen = () => (
-//   <Stack.Navigator screenOptions={{ headerShown: false }}>
-//     <Stack.Screen name="Settings" component={Settings} />
-//     <Stack.Screen name="EditProfile" component={EditProfile} />
-//     <Stack.Screen name="ChangePassword" component={ChangePassword} />
-//   </Stack.Navigator>
-// );
-
-// const TabScreen = () => {
-//   return (
-//     <Tab.Navigator
-//       screenOptions={({ route }) => ({
-//         headerShown: false,
-//         tabBarIcon: ({ focused, color, size }) => {
-//           let iconName;
-//           if (route.name === "Home") {
-//             iconName = focused ? "home" : "home-outline";
-//           } else if (route.name === "Rewards") {
-//             iconName = focused ? "trophy" : "trophy-outline";
-//           } else if (route.name === "Settings") {
-//             iconName = focused ? "settings" : "settings-outline";
-//           }
-//           return <Ionicon name={iconName} size={25} color={color} />;
-//         },
-//         tabBarActiveTintColor: "#390D7C",
-//         tabBarInactiveTintColor: "#390D7C",
-//       })}
-//     >
-//       <Tab.Screen name="Home" component={Home} />
-//       <Tab.Screen name="Rewards" component={Rewards} />
-//       <Tab.Screen name="Settings" component={Settings} />
-//     </Tab.Navigator>
-//   );
-// };
 
 const AuthenticatedScreen = () => {
   return (
@@ -88,6 +50,7 @@ const AuthScreen = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <Stack.Screen name="HomePreview" component={HomePreview} />
       {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
       {/* <Stack.Screen name="Login" component={SignIn} /> */}
@@ -96,6 +59,10 @@ const AuthScreen = () => {
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="Login" component={SignIn} />
 >>>>>>> 49ee366f3c9ebee41c0bdea6dcc2b1d9a9c6c7b7
+=======
+      <Stack.Screen name="Login" component={SignIn} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+>>>>>>> c08b520f94615c31537a2584536de03f44ddb217
     </Stack.Navigator>
   );
 };

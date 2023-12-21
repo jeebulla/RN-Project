@@ -6,13 +6,11 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  Modal,
   Alert,
   SafeAreaView,
   KeyboardAvoidingView,
   Keyboard,
   ActivityIndicator,
-  // Platform,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -24,7 +22,7 @@ import AppLoading from "expo-app-loading";
 
 const SignUp = () => {
   const authCtx = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [isOrganization, setIsOrganization] = React.useState(true);
   const [successModalVisible, setSuccessModalVisible] = React.useState(false);
   const [passwordVisible, setPasswordVisible] = React.useState(false); // New state
@@ -33,50 +31,62 @@ const SignUp = () => {
   const navigation = useNavigation();
 
   const toggleSuccessModal = (result) => {
-    console.log("======== I got to the toggle success modal ==========")
+    console.log("======== I got to the toggle success modal ==========");
     console.log(result);
     setSuccessModalVisible(true);
 
     // if (value === "done") {
-      console.log("========= These are the values I am storing in local storage ============");
-      console.log(result?.data?.tokens?.access?.token,
-        result?.data?.user?.name,
-        result?.data?.user?.role,
-        result?.data?.user?.code,
-        result?.data?.organization?.id,
-        result?.data?.user?.email,
-        isOrganization
-          ? JSON.stringify(result?.data?.organization?.numberOfRewardsGenerated)
-          : JSON.stringify(result?.data?.staff?.rewardsReceived),
-        isOrganization
-          ? JSON.stringify(result?.data?.organization?.numberOfRewardsRedeemed)
-          : JSON.stringify(result?.data?.staff?.rewardsRedeemed),
-        isOrganization ? "" : JSON.stringify(result?.data?.staff?.rewardsReceived),
-        isOrganization ? "" : JSON.stringify(result?.data?.staff?.rewardsTransferred),
-        isOrganization ? "" : result?.data?.staff?.id)
-      return authCtx.authenticate(
-        result?.data?.tokens?.access?.token,
-        result?.data?.user?.name,
-        result?.data?.user?.role,
-        result?.data?.user?.code,
-        result?.data?.organization?.id,
-        result?.data?.user?.email,
-        isOrganization
-          ? JSON.stringify(result?.data?.organization?.numberOfRewardsGenerated)
-          : JSON.stringify(result?.data?.staff?.rewardsReceived),
-        isOrganization
-          ? JSON.stringify(result?.data?.organization?.numberOfRewardsRedeemed)
-          : JSON.stringify(result?.data?.staff?.rewardsRedeemed),
-        isOrganization ? "" : JSON.stringify(result?.data?.staff?.rewardsReceived),
-        isOrganization ? "" : JSON.stringify(result?.data?.staff?.rewardsTransferred),
-        isOrganization ? "" : result?.data?.staff?.id
-      );
+    console.log(
+      "========= These are the values I am storing in local storage ============"
+    );
+    console.log(
+      result?.data?.tokens?.access?.token,
+      result?.data?.user?.name,
+      result?.data?.user?.role,
+      result?.data?.user?.code,
+      result?.data?.organization?.id,
+      result?.data?.user?.email,
+      isOrganization
+        ? JSON.stringify(result?.data?.organization?.numberOfRewardsGenerated)
+        : JSON.stringify(result?.data?.staff?.rewardsReceived),
+      isOrganization
+        ? JSON.stringify(result?.data?.organization?.numberOfRewardsRedeemed)
+        : JSON.stringify(result?.data?.staff?.rewardsRedeemed),
+      isOrganization
+        ? ""
+        : JSON.stringify(result?.data?.staff?.rewardsReceived),
+      isOrganization
+        ? ""
+        : JSON.stringify(result?.data?.staff?.rewardsTransferred),
+      isOrganization ? "" : result?.data?.staff?.id
+    );
+    return authCtx.authenticate(
+      result?.data?.tokens?.access?.token,
+      result?.data?.user?.name,
+      result?.data?.user?.role,
+      result?.data?.user?.code,
+      result?.data?.organization?.id,
+      result?.data?.user?.email,
+      isOrganization
+        ? JSON.stringify(result?.data?.organization?.numberOfRewardsGenerated)
+        : JSON.stringify(result?.data?.staff?.rewardsReceived),
+      isOrganization
+        ? JSON.stringify(result?.data?.organization?.numberOfRewardsRedeemed)
+        : JSON.stringify(result?.data?.staff?.rewardsRedeemed),
+      isOrganization
+        ? ""
+        : JSON.stringify(result?.data?.staff?.rewardsReceived),
+      isOrganization
+        ? ""
+        : JSON.stringify(result?.data?.staff?.rewardsTransferred),
+      isOrganization ? "" : result?.data?.staff?.id
+    );
     // }
   };
 
   const handleSignup = async (values) => {
-    console.log("======== This is me pressing the button =======")
-    setIsLoading(true)
+    console.log("======== This is me pressing the button =======");
+    setIsLoading(true);
     const result = await signUp(
       isOrganization ? "organization" : "staff",
       values.name,
@@ -84,30 +94,28 @@ const SignUp = () => {
       values.password,
       values.code
     );
-    console.log("========= This is the result of the api call ==============", result.data)
+    console.log(
+      "========= This is the result of the api call ==============",
+      result.data
+    );
     if (result.status !== 201) {
-      setIsLoading(false)
+      setIsLoading(false);
       return Alert.alert("Error", result.data.message);
     }
-    setIsLoading(false)
+    setIsLoading(false);
     toggleSuccessModal(result);
   };
 
-
   const validationSchema = Yup.object().shape({
-    name: Yup.string()
-          .required("Please enter name")
-          .min(6, "Name too short"),
+    name: Yup.string().required("Please enter name").min(6, "Name too short"),
     email: Yup.string()
       .email("Invalid email")
       .required("Please enter your email address"),
     password: Yup.string().required("Please enter a password"),
     confirmPassword: Yup.string()
-          .oneOf([Yup.ref("password"), null], "Passwords does not match")
-          .required("Required"),
-    code: !isOrganization
-      ? Yup.string().required("Required")
-      : null,
+      .oneOf([Yup.ref("password"), null], "Passwords does not match")
+      .required("Required"),
+    code: !isOrganization ? Yup.string().required("Required") : null,
   });
 
   return (
@@ -167,7 +175,7 @@ const SignUp = () => {
         </View>
       </View>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingContainer}
       >
         <ScrollView onPress={Keyboard.dismiss}>
@@ -194,24 +202,28 @@ const SignUp = () => {
             }) => (
               <View>
                 <View>
-                    <Text style={styles.inputTitle}>{isOrganization ? "Organization’s Name:": "Full Name"}</Text>
-                    <View style={styles.nameContainer}>
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Enter organization’s name"
-                        onChangeText={handleChange("name")}
-                        onBlur={() => handleBlur("name")}
-                        value={values.name}
-                      />
-                      <Icon
-                        name="user-edit"
-                        size={15}
-                        color="#3C3C3C"
-                        style={styles.icon}
-                      />
-                    </View>
-                    {(touched.name || errors.name) && <Text style={styles.errorMessage}>{errors.name}</Text>}
+                  <Text style={styles.inputTitle}>
+                    {isOrganization ? "Organization’s Name:" : "Full Name"}
+                  </Text>
+                  <View style={styles.nameContainer}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Enter organization’s name"
+                      onChangeText={handleChange("name")}
+                      onBlur={() => handleBlur("name")}
+                      value={values.name}
+                    />
+                    <Icon
+                      name="user-edit"
+                      size={15}
+                      color="#3C3C3C"
+                      style={styles.icon}
+                    />
                   </View>
+                  {(touched.name || errors.name) && (
+                    <Text style={styles.errorMessage}>{errors.name}</Text>
+                  )}
+                </View>
 
                 <Text style={styles.inputTitle}>Email Address:</Text>
                 <View style={styles.nameContainer}>
@@ -235,8 +247,9 @@ const SignUp = () => {
                   {touched.email && errors.email}
                 </Text>
 
-                {!isOrganization && (<>
-                <Text style={styles.inputTitle}>Company Code:</Text>
+                {!isOrganization && (
+                  <>
+                    <Text style={styles.inputTitle}>Company Code:</Text>
                     <View style={styles.nameContainer}>
                       <TextInput
                         style={styles.input}
@@ -248,10 +261,10 @@ const SignUp = () => {
                       />
                     </View>
                     <Text style={styles.errorMessage}>
-                  {touched.code && errors.code}
-                </Text>
-                </>
-                    )}
+                      {touched.code && errors.code}
+                    </Text>
+                  </>
+                )}
 
                 {/* Display password and confirm password with visibility toggle */}
                 <Text style={styles.inputTitle}>Password:</Text>
@@ -310,11 +323,20 @@ const SignUp = () => {
                 <TouchableOpacity
                   style={styles.signupButton}
                   onPress={handleSubmit}
-                  >
-                  <Text style={styles.signupButtonText}>{isLoading ? <ActivityIndicator /> : "Create Account"}</Text>
+                >
+                  <Text style={styles.signupButtonText}>
+                    {isLoading ? <ActivityIndicator /> : "Create Account"}
+                  </Text>
                 </TouchableOpacity>
-                <View style={{alignSelf: "center", marginVertical: 20}}>
-                  <Text>Already have an account? <TouchableOpacity onPress={() => navigation.navigate('Login')} ><Text style={{color: "purple"}} >Sign In</Text></TouchableOpacity></Text>
+                <View style={{ alignSelf: "center", marginVertical: 20 }}>
+                  <Text>
+                    Already have an account?{" "}
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("Login")}
+                    >
+                      <Text style={{ color: "purple" }}>Sign In</Text>
+                    </TouchableOpacity>
+                  </Text>
                 </View>
               </View>
             )}

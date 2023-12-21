@@ -3,19 +3,15 @@ import {
   TouchableOpacity,
   StyleSheet,
   Text,
-  FlatList,
+  ScrollView,
   Image,
   View,
 } from "react-native";
 import Card from "../components/Card";
-import SettingsButton from "../components/SettingsButton";
 import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import LogOut from "./LogOut";
 import { useTheme } from "../ThemeContext";
 import { AuthContext } from "../store/auth-context";
-
 
 import ChangePassword from "./ChangePassword";
 import { useContext, useEffect, useState } from "react";
@@ -23,25 +19,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // const Stack = createStackNavigator();
 
-
-
 const { height, width } = Dimensions.get("window");
-
-
-
 
 export default function Settings() {
   const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
 
-
-  const [launchReceived, setLaunchReceived] = useState(0)
-  const [launchRewarded, setLaunchRewarded] = useState(0)
-  const [launchRedeemed, setLaunchRedeemed] = useState(0)
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [code, setCode] = useState('');
-  const [role, setRole] = useState('')
+  const [launchReceived, setLaunchReceived] = useState(0);
+  const [launchRewarded, setLaunchRewarded] = useState(0);
+  const [launchRedeemed, setLaunchRedeemed] = useState(0);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [role, setRole] = useState("");
 
   const navigateToScreen = (screenName) => {
     navigation.navigate(screenName);
@@ -57,29 +47,33 @@ export default function Settings() {
 
   const image = require("../assets/images/profile.png");
 
-
   useEffect(() => {
-(async () => {
-  const fetchedName = await AsyncStorage.getItem("username");
-  setName(fetchedName)
-  const fetchedEmail = await AsyncStorage.getItem('email');
-  setEmail(fetchedEmail);
-  const fetchedCode = await AsyncStorage.getItem('organization_code');
-  setCode(fetchedCode);
-  const fetchedRole = await AsyncStorage.getItem('userrole');
-  setRole(fetchedRole);
-  const fetchedLaunchReceived = await AsyncStorage.getItem("number_of_launched_received");
-  setLaunchReceived(parseInt(fetchedLaunchReceived));
-  const fetchedLaunchRedeemed = await AsyncStorage.getItem('number_of_launched_redeemed');
-  setLaunchRedeemed(parseInt(fetchedLaunchRedeemed));
-  const fetchedLaunchRewarded = await AsyncStorage.getItem('number_of_launched_sent');
-  setLaunchRewarded(parseInt(fetchedLaunchRewarded));
-})()
-  }, [])
-
+    (async () => {
+      const fetchedName = await AsyncStorage.getItem("username");
+      setName(fetchedName);
+      const fetchedEmail = await AsyncStorage.getItem("email");
+      setEmail(fetchedEmail);
+      const fetchedCode = await AsyncStorage.getItem("organization_code");
+      setCode(fetchedCode);
+      const fetchedRole = await AsyncStorage.getItem("userrole");
+      setRole(fetchedRole);
+      const fetchedLaunchReceived = await AsyncStorage.getItem(
+        "number_of_launched_received"
+      );
+      setLaunchReceived(parseInt(fetchedLaunchReceived));
+      const fetchedLaunchRedeemed = await AsyncStorage.getItem(
+        "number_of_launched_redeemed"
+      );
+      setLaunchRedeemed(parseInt(fetchedLaunchRedeemed));
+      const fetchedLaunchRewarded = await AsyncStorage.getItem(
+        "number_of_launched_sent"
+      );
+      setLaunchRewarded(parseInt(fetchedLaunchRewarded));
+    })();
+  }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.headerText}>
         <Text style={styles.headerText}>Profile</Text>
       </View>
@@ -98,7 +92,13 @@ export default function Settings() {
           backgroundColor="#390D7C"
           color="white"
         />
-        <Card title={role === "organization" ? "Lunches Rewarded": "Launches Received"} number={role === "organization" ? launchRewarded: launchReceived} backgroundColor="#F2C950" />
+        <Card
+          title={
+            role === "organization" ? "Lunches Rewarded" : "Launches Received"
+          }
+          number={role === "organization" ? launchRewarded : launchReceived}
+          backgroundColor="#F2C950"
+        />
       </View>
 
       <View>
@@ -109,7 +109,7 @@ export default function Settings() {
           <View>
             <Ionicons name="person-outline" size={24} style={styles.icon} />
           </View>
-          <Text style={styles.text}>Edit Profile</Text>
+          <Text style={styles.text}>Profile</Text>
           <Ionicons
             name="md-chevron-forward"
             size={24}
@@ -136,7 +136,7 @@ export default function Settings() {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        {/* <TouchableOpacity style={styles.button}>
           <View style={styles.iconContainer}>
             <Ionicons name="ios-card-outline" size={24} style={styles.icon} />
           </View>
@@ -159,7 +159,7 @@ export default function Settings() {
             size={24}
             style={{ color: "#390D7C", marginLeft: "auto" }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           style={styles.button}
@@ -190,7 +190,7 @@ export default function Settings() {
           <Text style={styles.text}>Logout</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 
@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     width: width * 1,
+    marginTop: 40,
   },
   darkContainer: {
     backgroundColor: "#000", // Dark background color
