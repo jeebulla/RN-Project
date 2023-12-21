@@ -3,54 +3,18 @@ import {
   TouchableOpacity,
   StyleSheet,
   Text,
-  FlatList,
+  ScrollView,
   Image,
   View,
 } from "react-native";
 import Card from "../components/Card";
-import SettingsButton from "../components/SettingsButton";
 import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import LogOut from "./LogOut";
 import { useTheme } from "../ThemeContext";
 import { AuthContext } from "../store/auth-context";
 
-// import { createStackNavigator } from '@react-navigation/stack';
 import ChangePassword from "./ChangePassword";
 import { useContext } from "react";
-
-// const Stack = createStackNavigator();
-
-{
-  /*
-const Item = ({ item, index, navigation }) => {
-  return (
-    <TouchableOpacity
-      style={{ flexDirection: "row", alignItems: "center", padding: 10 }}
-      onPress={() => navigation.navigate(item.id)}
-    >
-      <Ionicons
-        name={item.icon}
-        size={24}
-        style={{
-          marginRight: 10,
-          color: index === data.length - 1 ? "red" : "black",
-        }}
-      />
-      <Text style={{ marginLeft: 5 }}>{item.text}</Text>
-      {index !== data.length - 1 && (
-        <Ionicons
-          name="md-chevron-forward"
-          size={24}
-          style={{ marginLeft: "auto" }}
-        />
-      )}
-    </TouchableOpacity>
-  );
-};
-*/
-}
 
 const { height, width } = Dimensions.get("window");
 export default function Settings() {
@@ -71,7 +35,7 @@ export default function Settings() {
 
   const image = require("../assets/images/profile.png");
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.headerText}>
         <Text style={styles.headerText}>Profile</Text>
       </View>
@@ -100,7 +64,7 @@ export default function Settings() {
           <View>
             <Ionicons name="person-outline" size={24} style={styles.icon} />
           </View>
-          <Text style={styles.text}>Edit Profile</Text>
+          <Text style={styles.text}>Profile</Text>
           <Ionicons
             name="md-chevron-forward"
             size={24}
@@ -127,7 +91,7 @@ export default function Settings() {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        {/* <TouchableOpacity style={styles.button}>
           <View style={styles.iconContainer}>
             <Ionicons name="ios-card-outline" size={24} style={styles.icon} />
           </View>
@@ -150,7 +114,7 @@ export default function Settings() {
             size={24}
             style={{ color: "#390D7C", marginLeft: "auto" }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           style={styles.button}
@@ -181,7 +145,7 @@ export default function Settings() {
           <Text style={styles.text}>Logout</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 
@@ -190,6 +154,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     width: width * 1,
+    marginTop: 40,
   },
   darkContainer: {
     backgroundColor: "#000", // Dark background color

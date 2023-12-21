@@ -12,7 +12,6 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   ActivityIndicator,
-  // Platform,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -24,7 +23,7 @@ import AppLoading from "expo-app-loading";
 
 const SignUp = () => {
   const authCtx = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [isOrganization, setIsOrganization] = React.useState(true);
   const [successModalVisible, setSuccessModalVisible] = React.useState(false);
   const [passwordVisible, setPasswordVisible] = React.useState(false); // New state
@@ -33,49 +32,61 @@ const SignUp = () => {
   const navigation = useNavigation();
 
   const toggleSuccessModal = (result) => {
-    console.log("======== I got to the toggle success modal ==========")
+    console.log("======== I got to the toggle success modal ==========");
     console.log(result);
     setSuccessModalVisible(true);
 
     // if (value === "done") {
-      console.log("========= These are the values I am storing in local storage ============");
-      console.log(result?.data?.tokens?.access?.token,
-        result?.data?.user?.name,
-        result?.data?.user?.role,
-        result?.data?.user?.code,
-        result?.data?.organization?.id,
-        result?.data?.user?.email,
-        isOrganization
-          ? JSON.stringify(result?.data?.organization?.numberOfRewardsGenerated)
-          : JSON.stringify(result?.data?.staff?.rewardsReceived),
-        isOrganization
-          ? JSON.stringify(result?.data?.organization?.numberOfRewardsRedeemed)
-          : JSON.stringify(result?.data?.staff?.rewardsRedeemed),
-        isOrganization ? "" : JSON.stringify(result?.data?.staff?.rewardsReceived),
-        isOrganization ? "" : JSON.stringify(result?.data?.staff?.rewardsTransferred),
-        isOrganization ? "" : result?.data?.staff?.id)
-      return authCtx.authenticate(
-        result?.data?.tokens?.access?.token,
-        result?.data?.user?.name,
-        result?.data?.user?.role,
-        result?.data?.user?.code,
-        result?.data?.organization?.id,
-        result?.data?.user?.email,
-        isOrganization
-          ? JSON.stringify(result?.data?.organization?.numberOfRewardsGenerated)
-          : JSON.stringify(result?.data?.staff?.rewardsReceived),
-        isOrganization
-          ? JSON.stringify(result?.data?.organization?.numberOfRewardsRedeemed)
-          : JSON.stringify(result?.data?.staff?.rewardsRedeemed),
-        isOrganization ? "" : JSON.stringify(result?.data?.staff?.rewardsReceived),
-        isOrganization ? "" : JSON.stringify(result?.data?.staff?.rewardsTransferred),
-        isOrganization ? "" : result?.data?.staff?.id
-      );
+    console.log(
+      "========= These are the values I am storing in local storage ============"
+    );
+    console.log(
+      result?.data?.tokens?.access?.token,
+      result?.data?.user?.name,
+      result?.data?.user?.role,
+      result?.data?.user?.code,
+      result?.data?.organization?.id,
+      result?.data?.user?.email,
+      isOrganization
+        ? JSON.stringify(result?.data?.organization?.numberOfRewardsGenerated)
+        : JSON.stringify(result?.data?.staff?.rewardsReceived),
+      isOrganization
+        ? JSON.stringify(result?.data?.organization?.numberOfRewardsRedeemed)
+        : JSON.stringify(result?.data?.staff?.rewardsRedeemed),
+      isOrganization
+        ? ""
+        : JSON.stringify(result?.data?.staff?.rewardsReceived),
+      isOrganization
+        ? ""
+        : JSON.stringify(result?.data?.staff?.rewardsTransferred),
+      isOrganization ? "" : result?.data?.staff?.id
+    );
+    return authCtx.authenticate(
+      result?.data?.tokens?.access?.token,
+      result?.data?.user?.name,
+      result?.data?.user?.role,
+      result?.data?.user?.code,
+      result?.data?.organization?.id,
+      result?.data?.user?.email,
+      isOrganization
+        ? JSON.stringify(result?.data?.organization?.numberOfRewardsGenerated)
+        : JSON.stringify(result?.data?.staff?.rewardsReceived),
+      isOrganization
+        ? JSON.stringify(result?.data?.organization?.numberOfRewardsRedeemed)
+        : JSON.stringify(result?.data?.staff?.rewardsRedeemed),
+      isOrganization
+        ? ""
+        : JSON.stringify(result?.data?.staff?.rewardsReceived),
+      isOrganization
+        ? ""
+        : JSON.stringify(result?.data?.staff?.rewardsTransferred),
+      isOrganization ? "" : result?.data?.staff?.id
+    );
     // }
   };
 
   const handleSignup = async (values) => {
-    setIsLoading(true)
+    setIsLoading(true);
     const result = await signUp(
       isOrganization ? "organization" : "staff",
       isOrganization ? values.organizationName : values.fullName,
@@ -83,20 +94,17 @@ const SignUp = () => {
       values.password,
       isOrganization ? null : values.verificationCode
     );
-    console.log("========= This is the result of the api call ==============", result.data)
+    console.log(
+      "========= This is the result of the api call ==============",
+      result.data
+    );
     if (result.status !== 201) {
-      setIsLoading(false)
+      setIsLoading(false);
       return Alert.alert("Error", result.data.message);
     }
-    setIsLoading(false)
+    setIsLoading(false);
     toggleSuccessModal(result);
   };
-
- /*  const goToHome = (param) => {
-    Close the modal and navigate to the login screen
-    toggleSuccessModal(param);
-    navigation.navigate("Login");
-  }; */
 
   const validationSchema = Yup.object().shape({
     organizationName: isOrganization
@@ -339,43 +347,25 @@ const SignUp = () => {
                   style={styles.signupButton}
                   onPress={handleSubmit}
                 >
-                  <Text style={styles.signupButtonText}>{isLoading ? <ActivityIndicator /> : "Create Account"}</Text>
+                  <Text style={styles.signupButtonText}>
+                    {isLoading ? <ActivityIndicator /> : "Create Account"}
+                  </Text>
                 </TouchableOpacity>
-                <View style={{alignSelf: "center", marginVertical: 20}}>
-                  <Text>Already have an account? <TouchableOpacity onPress={() => navigation.navigate('Login')} ><Text style={{color: "purple"}} >Sign In</Text></TouchableOpacity></Text>
+                <View style={{ alignSelf: "center", marginVertical: 20 }}>
+                  <Text>
+                    Already have an account?{" "}
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("Login")}
+                    >
+                      <Text style={{ color: "purple" }}>Sign In</Text>
+                    </TouchableOpacity>
+                  </Text>
                 </View>
               </View>
             )}
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-
-      {/* Success Modal */}
-      {/* <Modal
-        animationType="slide"
-        transparent={true}
-        visible={successModalVisible}
-        // onRequestClose={toggleSuccessModal}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.success}>Successful!</Text>
-              <Text style={styles.successMessage}>
-                {isOrganization
-                  ? "Zuri Organization has been created successfully. Your employees can now reward and redeem free lunches."
-                  : "Your details have been registered successfully. You can now reward and redeem free lunches."}
-              </Text>
-              <TouchableOpacity
-                style={styles.goHomeButton}
-                onPress={() => setSuccessModalVisible(false)}
-              >
-                <Text style={styles.goHomeButtonText}>Go Home</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal> */}
     </SafeAreaView>
   );
 };
