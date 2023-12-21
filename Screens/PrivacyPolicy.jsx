@@ -52,12 +52,12 @@ export default PrivacyPolicy = ({ navigation }) => {
               authority.
             </Text>
             <Text style={styles.normalText}>
-              Application refers to LunchApp, the software program provided by
+              Application refers to BravoApp, the software program provided by
               the Company.
             </Text>
             <Text style={styles.normalText}>
               Company (referred to as either the Company, We, Us or Our in this
-              Agreement) refers to LunchApp.
+              Agreement) refers to BravoApp.
             </Text>
             <Text style={styles.textHeader}>Country refers to: Nigeria</Text>
             <Text style={styles.normalText}>
@@ -406,7 +406,7 @@ export default PrivacyPolicy = ({ navigation }) => {
 
             <Text>Email: yusnaj21@gmail.com</Text>
             <Text>Phone number: 08105475021</Text>
-            <Text>visit our page on: www.lunchapp.com</Text>
+            <Text>visit our page on: www.Bravohapp.com</Text>
           </View>
 
           <Pressable
